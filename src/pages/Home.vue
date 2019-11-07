@@ -141,12 +141,12 @@ export default {
     return {
       // Local data variable
       categories: [],
-      meets: []
+      meetings: []
     };
   },
   created() {
-    dataService.methods.getMeets.then(res => {
-      this.meets = res.data;
+    dataService.methods.getMeetings.then(res => {
+      this.meetings = res.data;
     });
 
     dataService.methods.getCategories.then(res => {
