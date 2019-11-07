@@ -251,7 +251,7 @@ export default {
   },
   created() {
     // sending GET request to get all categories
-    dataService.methods.oke.then(res => {
+    dataService.methods.getCategories.then(res => {
       // setting local data to the response data
       this.categories = res.data.categories;
     });
