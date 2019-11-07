@@ -8,8 +8,8 @@
 
 <script>
 import  PageHome from '@/pages/Home'
-import TheNavbar from '@/components/Navbar'
-import TheFooter from '@/components/Footer'
+import TheNavbar from '@/components/shared/Navbar'
+import TheFooter from '@/components/shared/Footer'
 export default {
   name: 'app',
   components: {
