@@ -3,6 +3,8 @@ const mongoose = require("mongoose"); // driver for mongoDB
 const bodyParser = require("body-parser");
 const config = require("./config/dev"); // config variables
 const logger = config.logger;
+const morgan = require("morgan");
+const cors = require("cors");
 
 // Models
 require("./models/meetups");
@@ -31,17 +33,21 @@ mongoose
 const app = express();
 
 app.use(bodyParser.json());
+app.use(morgan("dev"));
+app.use(cors());
 
 // Back-end routes for crud operations
-app.use("/api/meetups", meetupsRoutes);
-app.use("/api/users", usersRoutes);
-app.use("/api/posts", postsRoutes);
-app.use("/api/threads", threadsRoutes);
-app.use("/api/categories", categoriesRoutes);
+app.use("/api/v1/meetups", meetupsRoutes);
+app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/posts", postsRoutes);
+app.use("/api/v1/threads", threadsRoutes);
+app.use("/api/v1/categories", categoriesRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 // Determine on wich port the server is listening to
 app.listen(PORT, function() {
-  logger.debug("App is running on port: " + PORT + " in " + process.env.NODE_ENV + " mode");
+  logger.debug(
+    "App is running on port: " + PORT + " in " + process.env.NODE_ENV + " mode"
+  );
 });

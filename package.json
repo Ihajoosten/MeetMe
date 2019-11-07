@@ -16,6 +16,7 @@
     "bulma": "^0.7.2",
     "cache-loader": "^2.0.1",
     "connect-mongodb-session": "^2.0.7",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
@@ -66,7 +67,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-debugger": 0
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
