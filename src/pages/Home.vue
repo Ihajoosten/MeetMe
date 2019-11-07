@@ -140,13 +140,16 @@ export default {
   data() {
     return {
       // Local data variable
-      categories: []
+      categories: [],
+      meets: []
     };
   },
   created() {
-    // sending GET request to get all categories
+    dataService.methods.getMeets.then(res => {
+      this.meets = res.data;
+    });
+
     dataService.methods.getCategories.then(res => {
-      // setting local data to the response data
       this.categories = res.data;
     });
   }
