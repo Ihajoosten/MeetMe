@@ -30,12 +30,3 @@
     </div>
   </div>
 </template>
-
-<script>
-  export default {
-      name: 'app-dropdown'
-  }
-</script>
-
-<style>
-</style>

@@ -14,12 +14,3 @@
     </div>
   </section>
 </template>
-
-<script>
-  export default {
-      name: 'app-hero'
-  }
-</script>
-
-<style scoped>
-</style>
