@@ -27,9 +27,6 @@
         </div>
         <div class="card-content">
           {{meeting.description}}
-          <div class="background-icon">
-            <barcode :value="meeting.category.name" text-align="center" format="code39">rendering fails.</barcode>
-          </div>
         </div>
       </div>
     </div>
@@ -37,7 +34,6 @@
 </template>
 
 <script>
-import barcode from "vue-barcode";
 
 export default {
   props: {
@@ -45,9 +41,6 @@ export default {
       required: true,
       type: Object
     }
-  },
-  components: {
-    barcode: barcode
   }
 };
 </script>

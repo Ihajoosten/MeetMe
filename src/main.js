@@ -1,5 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
+import router from "./Router/router";
 import AppDropdown from "./components/shared/AppDropdown";
 import AppHero from "./components/shared/AppHero";
 import moment from "moment";
@@ -33,5 +34,6 @@ Vue.filter("month", value => {
 });
 
 new Vue({
+  router,
   render: h => h(App)
 }).$mount("#app");

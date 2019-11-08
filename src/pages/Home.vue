@@ -9,23 +9,19 @@
           <button class="button is-primary is-pulled-right m-r-sm">Create Meetups</button>
           <button class="button is-primary is-pulled-right m-r-sm">All</button>
         </div>
-        <div class="row columns">
-          <MeetingItem 
-          v-for="meeting in meetings" 
-          v-bind:key="meeting._id" 
-          :meeting="meeting"/>
+        <div class="row columns is-multiline">
+          <MeetingItem v-for="meeting in meetings" v-bind:key="meeting._id" :meeting="meeting" />
         </div>
       </section>
       <section class="section">
-        <div>
           <h1 class="title">Categories</h1>
           <div class="columns cover is-multiline is-mobile">
-            <CategoryItem 
-            v-for="category in categories" 
-            v-bind:key="category._id" 
-            :category="category"/>
+            <CategoryItem
+              v-for="category in categories"
+              v-bind:key="category._id"
+              :category="category"
+            />
           </div>
-        </div>
       </section>
     </div>
   </div>
