@@ -1,7 +1,7 @@
 const Thread = require('../models/threads');
 
 exports.getThreads = function(req, res) {
-  const meetingId = req.query.Id;
+  const meetingId = req.query.meetingId;
 
   Thread.find({})
         .where({'meeting': meetingId})
