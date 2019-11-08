@@ -5,12 +5,12 @@ const user1Id = mongoose.Types.ObjectId();
 const user2Id = mongoose.Types.ObjectId();
 const user3Id = mongoose.Types.ObjectId();
 
-const meetup1Id = mongoose.Types.ObjectId();
-const meetup2Id = mongoose.Types.ObjectId();
-const meetup3Id = mongoose.Types.ObjectId();
-const meetup4Id = mongoose.Types.ObjectId();
-const meetup5Id = mongoose.Types.ObjectId();
-const meetup6Id = mongoose.Types.ObjectId();
+const meeting1Id = mongoose.Types.ObjectId();
+const meeting2Id = mongoose.Types.ObjectId();
+const meeting3Id = mongoose.Types.ObjectId();
+const meeting4Id = mongoose.Types.ObjectId();
+const meeting5Id = mongoose.Types.ObjectId();
+const meeting6Id = mongoose.Types.ObjectId();
 
 const thread1Id = mongoose.Types.ObjectId();
 const thread2Id = mongoose.Types.ObjectId();
@@ -29,9 +29,9 @@ const category4Id = mongoose.Types.ObjectId();
 const category5Id = mongoose.Types.ObjectId();
 
 module.exports = {
-  "meetups": [
+  "meetings": [
      {
-      "_id": meetup1Id,
+      "_id": meeting1Id,
       "location": "Bratislava, SK",
       "processedLocation": "bratislavask",
       "title": "Night in the City",
@@ -47,10 +47,10 @@ module.exports = {
       "status": "active",
       "category": category1Id,
       "joinedPeople": [user2Id],
-      "meetupCreator": user1Id
+      "meetingCreator": user1Id
     },
     {
-      "_id": meetup2Id,
+      "_id": meeting2Id,
       "location": "New York, US",
       "processedLocation": "newyorkus",
       "title": "New Aquaman",
@@ -66,10 +66,10 @@ module.exports = {
       "status": "active",
       "category": category2Id,
       "joinedPeople": [user1Id, user3Id],
-      "meetupCreator": user2Id
+      "meetingCreator": user2Id
     },
     {
-      "_id": meetup3Id,
+      "_id": meeting3Id,
       "location": "Lisbon, PT",
       "processedLocation": "lisbonpt",
       "title": "Cycling Together",
@@ -85,10 +85,10 @@ module.exports = {
       "status": "active",
       "category": category5Id,
       "joinedPeople": [user1Id, user3Id],
-      "meetupCreator": user2Id
+      "meetingCreator": user2Id
     },
     {
-      "_id": meetup4Id,
+      "_id": meeting4Id,
       "location": "Los Angeles, US",
       "processedLocation": "losangelesus",
       "title": "New Aquaman 2",
@@ -104,10 +104,10 @@ module.exports = {
       "status": "active",
       "category": category1Id,
       "joinedPeople": [user1Id, user3Id],
-      "meetupCreator": user2Id
+      "meetingCreator": user2Id
     },
     {
-      "_id": meetup5Id,
+      "_id": meeting5Id,
       "location": "Berlin, GE",
       "processedLocation": "berlinge",
       "title": "New Aquaman 5",
@@ -123,10 +123,10 @@ module.exports = {
       "status": "active",
       "category": category2Id,
       "joinedPeople": [user1Id, user3Id],
-      "meetupCreator": user2Id
+      "meetingCreator": user2Id
     },
     {
-      "_id": meetup6Id,
+      "_id": meeting6Id,
       "location": "London, UK",
       "processedLocation": "londonuk",
       "title": "New Spiderman",
@@ -142,7 +142,7 @@ module.exports = {
       "status": "active",
       "category": category3Id,
       "joinedPeople": [user1Id, user3Id],
-      "meetupCreator": user2Id
+      "meetingCreator": user2Id
     }
   ],
   "users": [
@@ -156,7 +156,7 @@ module.exports = {
       "updatedAt": moment().toISOString(),
       "username": "Rhonyn99",
       "password": "testtest",
-      joinedMeetups: [meetup2Id, meetup3Id, meetup4Id, meetup5Id, meetup6Id]
+      joinedMeetings: [meeting2Id, meeting3Id, meeting4Id, meeting5Id, meeting6Id]
     },
     {
       "_id": user2Id,
@@ -168,7 +168,7 @@ module.exports = {
       "updatedAt": moment().toISOString(),
       "username": "Petergreen",
       "password": "testtest1",
-      joinedMeetups: [meetup1Id]
+      joinedMeetings: [meeting1Id]
     },
     {
       "_id": user3Id,
@@ -180,7 +180,7 @@ module.exports = {
       "updatedAt": moment().toISOString(),
       "username": "Kevin21",
       "password": "testtest2",
-      joinedMeetups: [meetup2Id, meetup3Id, meetup4Id, meetup5Id, meetup6Id]
+      joinedMeetings: [meeting2Id, meeting3Id, meeting4Id, meeting5Id, meeting6Id]
     }
   ],
   "threads": [
@@ -189,7 +189,7 @@ module.exports = {
       "title": "Should I take some food?",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
-      "meetup": meetup1Id,
+      "meeting": meeting1Id,
       "user": user1Id,
       "posts": [post1Id, post2Id]
     },
@@ -198,7 +198,7 @@ module.exports = {
       "title": "I dont know what to think about this.",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
-      "meetup": meetup2Id,
+      "meeting": meeting2Id,
       "user": user2Id,
       "posts": [post3Id, post4Id]
     },
@@ -207,7 +207,7 @@ module.exports = {
       "title": "Here should be something about thread 3",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
-      "meetup": meetup2Id,
+      "meeting": meeting2Id,
       "user": user2Id,
       "posts": [post5Id]
     }

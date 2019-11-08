@@ -7,7 +7,7 @@
             Welcome to MeetMe
           </h1>
           <h2 class="subtitle">
-            Plan your meetups simple and anywhere
+            Plan your s simple and anywhere
           </h2>
         </div>
       </div>

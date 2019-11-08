@@ -4,9 +4,9 @@
     <div class="container">
       <section class="section">
         <div class="m-b-lg">
-          <h1 class="title is-inline">Featured Meetups in "Location"</h1>
+          <h1 class="title is-inline">Featured meetings in "Location"</h1>
           <AppDropdown />
-          <button class="button is-primary is-pulled-right m-r-sm">Create Meetups</button>
+          <button class="button is-primary is-pulled-right m-r-sm">Create s</button>
           <button class="button is-primary is-pulled-right m-r-sm">All</button>
         </div>
         <div class="row columns is-multiline">
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import dataService from "../services/DataService";
 import CategoryItem from "../components/category/CategoryItem";
 import MeetingItem from "../components/meeting/MeetingItem";
+import axios from "axios";
 
 export default {
   name: "home",
@@ -42,16 +42,18 @@ export default {
     return {
       // Local data variable
       meetings: [],
-      categories: []
+      categories: [],
+      url: "http://localhost:5000"
     };
   },
   created() {
-    dataService.methods.getMeetings.then(res => {
-      this.meetings = res.data;
+    const url = this.url
+    axios.get(url + "/api/v1/categories").then(res => {
+      this.categories = res.data
     });
 
-    dataService.methods.getCategories.then(res => {
-      this.categories = res.data;
+        axios.get(url + "/api/v1/meetings").then(res => {
+      this.meetings = res.data
     });
   }
 };

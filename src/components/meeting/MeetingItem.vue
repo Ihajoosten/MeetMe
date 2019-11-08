@@ -1,6 +1,6 @@
 <template>
   <div class="column is-one-third">
-    <div class="card large">
+    <router-link :to="{name: 'meeting-detail',params: {id: meeting._id}}" class="card large">
       <div class="card-image">
         <figure class="image is-4by3">
           <img :src="meeting.image" alt="Image" />
@@ -25,16 +25,13 @@
             >{{meeting.location}} · {{meeting.timeFrom}} - {{meeting.timeTo}}</p>
           </div>
         </div>
-        <div class="card-content">
-          {{meeting.description}}
-        </div>
+        <div class="card-content">{{meeting.description}}</div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     meeting: {

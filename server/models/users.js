@@ -24,7 +24,7 @@ const userSchema = new Schema({
   info: String,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  joinedMeetups: [{ type: Schema.Types.ObjectId, ref: 'Meetup' }]
+  joinedMeetings: [{ type: Schema.Types.ObjectId, ref: 'Meeting' }]
 });
 
 userSchema.pre("save", function(next){

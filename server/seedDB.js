@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Meetup = require('./models/meetups');
+const Meeting = require('./models/meetings');
 const User = require('./models/users');
 const Post = require('./models/posts');
 const Thread = require('./models/threads');
@@ -10,12 +10,12 @@ const config = require('./config/dev');
 
 class DB {
   constructor() {
-    this.meetups = data.meetups;
+    this.meetings = data.meetings;
     this.users = data.users;
     this.threads = data.threads;
     this.posts = data.posts;
     this.categories = data.categories;
-    this.models = [Meetup, User, Post, Thread, Category];
+    this.models = [Meeting, User, Post, Thread, Category];
   }
 
   async cleanDb() {
@@ -35,8 +35,8 @@ class DB {
       await (new User(user)).save(() => {})
     })
 
-    await this.meetups.forEach(async meetup => {
-      await (new Meetup(meetup)).save(() => {})
+    await this.meetings.forEach(async meeting => {
+      await (new Meeting(meeting)).save(() => {})
     })
 
     await this.threads.forEach(async thread => {

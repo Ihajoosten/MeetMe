@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const meetupSchema = new Schema({
+const meetingSchema = new Schema({
   location: { type: String, required: true },
   processedLocation: String,
   title: { type: String, required: true },
@@ -16,8 +16,8 @@ const meetupSchema = new Schema({
   joinedPeopleCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  meetupCreator: { type: Schema.Types.ObjectId, ref: 'User' },
+  meetingCreator: { type: Schema.Types.ObjectId, ref: 'User' },
   joinedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 
-module.exports = mongoose.model('Meetup', meetupSchema );
+module.exports = mongoose.model('Meeting', meetingSchema );

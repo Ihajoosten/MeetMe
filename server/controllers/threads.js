@@ -1,10 +1,10 @@
 const Thread = require('../models/threads');
 
 exports.getThreads = function(req, res) {
-  const meetupId = req.query.meetupId;
+  const meetingId = req.query.Id;
 
   Thread.find({})
-        .where({'meetup': meetupId})
+        .where({'meeting': meetingId})
         .populate({
           path: 'posts',
           options: { limit: 5, sort: {'createdAt': -1}},

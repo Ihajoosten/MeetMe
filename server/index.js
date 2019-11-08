@@ -7,14 +7,14 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 // Models
-require("./models/meetups");
+require("./models/meetings");
 require("./models/users");
 require("./models/threads");
 require("./models/posts");
 require("./models/categories");
 
 // Routes
-const meetupsRoutes = require("./routes/meetups"),
+const meetingsRoutes = require("./routes/meetings"),
   usersRoutes = require("./routes/users"),
   threadsRoutes = require("./routes/threads"),
   postsRoutes = require("./routes/posts"),
@@ -37,11 +37,11 @@ app.use(morgan("dev"));
 app.use(cors());
 
 // Back-end routes for crud operations
-app.use("/api/v1/meetups", meetupsRoutes);
-app.use("/api/v1/users", usersRoutes);
-app.use("/api/v1/posts", postsRoutes);
-app.use("/api/v1/threads", threadsRoutes);
-app.use("/api/v1/categories", categoriesRoutes);
+app.use("/api/v1", meetingsRoutes);
+app.use("/api/v1", usersRoutes);
+app.use("/api/v1", postsRoutes);
+app.use("/api/v1", threadsRoutes);
+app.use("/api/v1", categoriesRoutes);
 
 const PORT = process.env.PORT || 5000;
 
