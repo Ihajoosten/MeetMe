@@ -10,108 +10,10 @@
           <button class="button is-primary is-pulled-right m-r-sm">All</button>
         </div>
         <div class="row columns">
-          <div class="column is-one-third">
-            <div class="card large">
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img
-                    src="https://images.unsplash.com/photo-1475778057357-d35f37fa89dd?dpr=1&auto=compress,format&fit=crop&w=1920&h=&q=80&cs=tinysrgb&crop="
-                    alt="Image"
-                  />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="level m-b-md">
-                  <div class="media-left">
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="title">JAN</p>
-                        <p class="title">16</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-4 no-padding is-marginless">Beer and Burger in Hamburg</p>
-                    <!-- <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p> -->
-                    <span class="tag is-success">Music</span>
-                    <p class="subtitle is-7">Tomorrow · Times Square · 05201</p>
-                  </div>
-                </div>
-                <div class="content">
-                  The Beast stumbled in the dark for it could no longer see the path...
-                  <div class="background-icon">
-                    <span class="icon-twitter"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="column is-one-third">
-            <div class="card large">
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img src="https://source.unsplash.com/uzDLtlPY8kQ" alt="Image" />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="level m-b-md">
-                  <div class="media-left">
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="title">JAN</p>
-                        <p class="title">16</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-4 no-padding is-marginless">Beer and Burger in Hamburg</p>
-                    <!-- <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p> -->
-                    <span class="tag is-success">Music</span>
-                    <p class="subtitle is-7">Tomorrow · Times Square · 05201</p>
-                  </div>
-                </div>
-                <div class="content">
-                  The Beast stumbled in the dark for it could no longer see the path...
-                  <div class="background-icon">
-                    <span class="icon-facebook"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="column is-one-third">
-            <div class="card large">
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img src="https://source.unsplash.com/pe_R74hldW4" alt="Image" />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="level m-b-md">
-                  <div class="media-left">
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="title">JAN</p>
-                        <p class="title">16</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-4 no-padding is-marginless">Beer and Burger in Hamburg</p>
-                    <!-- <p><span class="title is-6"><a href="http://twitter.com/#">@twitterid</a></span></p> -->
-                    <span class="tag is-success">Music</span>
-                    <p class="subtitle is-7">Tomorrow · Times Square · 05201</p>
-                  </div>
-                </div>
-                <div class="content">
-                  The Beast stumbled in the dark for it could no longer see the path...
-                  <div class="background-icon">
-                    <span class="icon-barcode"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <MeetingItem 
+          v-for="meeting in meetings" 
+          v-bind:key="meeting._id" 
+          :meeting="meeting"/>
         </div>
       </section>
       <section class="section">
@@ -132,16 +34,19 @@
 <script>
 import dataService from "../services/DataService";
 import CategoryItem from "../components/category/CategoryItem";
+import MeetingItem from "../components/meeting/MeetingItem";
+
 export default {
   name: "home",
   components: {
-    CategoryItem
+    CategoryItem,
+    MeetingItem
   },
   data() {
     return {
       // Local data variable
-      categories: [],
-      meetings: []
+      meetings: [],
+      categories: []
     };
   },
   created() {
