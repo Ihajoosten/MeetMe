@@ -3,13 +3,13 @@ import App from "./App.vue";
 import router from "./Router/router";
 import 'bootstrap'; 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import AppDropdown from "./components/shared/AppDropdown";
-import AppHero from "./components/shared/AppHero";
+import HomeDropdown from "./components/shared/HomeDropdown";
+import Hometop from "./components/shared/HomeTop";
 import moment from "moment";
 Vue.config.productionTip = false;
 
-Vue.component("AppHero", AppHero);
-Vue.component("AppDropdown", AppDropdown);
+Vue.component("HomeTop", Hometop);
+Vue.component("HomeDropdown", HomeDropdown);
 
 Vue.filter("capitalize", function(value) {
   if (value && typeof value === "string") {

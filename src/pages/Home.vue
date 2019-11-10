@@ -1,28 +1,26 @@
 <template>
   <div>
-    <AppHero />
+    <HomeTop />
     <div class="container">
-      <section class="section">
-        <div class="m-b-lg">
-          <h1 class="title is-inline">Featured meetings in "Location"</h1>
-          <AppDropdown />
-          <button class="button is-primary is-pulled-right m-r-sm">Create s</button>
-          <button class="button is-primary is-pulled-right m-r-sm">All</button>
+      <h1 class="m-5 text-center">Meetings in "Location"</h1>
+      <div class="m-5 text-center">
+        <button class="btn btn-success m-2">Create meeting</button>
+        <button class="btn btn-success m-2">See all</button>
+        <HomeDropdown />
+      </div>
+
+      <div class="row mb-5">
+        <MeetingItem v-for="meeting in meetings" v-bind:key="meeting._id" :meeting="meeting" />
+      </div>
+
+        <h1 class="text-center m-5">Categories</h1>
+        <div class="row mb-2">
+          <CategoryItem
+            v-for="category in categories"
+            v-bind:key="category._id"
+            :category="category"
+          />
         </div>
-        <div class="row columns is-multiline">
-          <MeetingItem v-for="meeting in meetings" v-bind:key="meeting._id" :meeting="meeting" />
-        </div>
-      </section>
-      <section class="section">
-          <h1 class="title">Categories</h1>
-          <div class="columns cover is-multiline is-mobile">
-            <CategoryItem
-              v-for="category in categories"
-              v-bind:key="category._id"
-              :category="category"
-            />
-          </div>
-      </section>
     </div>
   </div>
 </template>
@@ -47,15 +45,20 @@ export default {
     };
   },
   created() {
-    const url = this.url
+    const url = this.url;
     axios.get(url + "/api/v1/categories").then(res => {
-      this.categories = res.data
+      this.categories = res.data;
     });
 
-        axios.get(url + "/api/v1/meetings").then(res => {
-      this.meetings = res.data
+    axios.get(url + "/api/v1/meetings").then(res => {
+      this.meetings = res.data;
     });
   }
 };
 </script>
 
+<style scoped>
+.inline-text {
+  display: inline;
+}
+</style>
