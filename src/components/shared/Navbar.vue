@@ -33,7 +33,7 @@
               data-offset="10,20"
             >More</a>
             <div class="dropdown-menu" aria-labelledby="menu-drop">
-              <a class="dropdown-item" href="#">About</a>
+              <router-link class="dropdown-item" :to="{name: 'about'}">About</router-link>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Contact</a>
             </div>
