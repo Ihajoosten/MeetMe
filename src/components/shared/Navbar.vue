@@ -1,8 +1,55 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <router-link class="navbar-item text-muted" :to="{name: 'home'}">
-      <h1 class="title is-4">Meet Me</h1>
-    </router-link>
+    <div id="navbar" class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+        <router-link class="nav-link" :to="{name: 'home'}"><a>Home</a></router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Find</a>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{name: 'about'}">
+            <a class="nav-link">About</a>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Meetings</a>
+        </li>
+      </ul>
+    </div>
+    <div class="mx-auto order-0">
+      <router-link :to="{name: 'home'}">
+        <a class="navbar-brand mx-auto text-success brand-name">
+          <strong>Meet Me</strong>
+        </a>
+      </router-link>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar"
+      aria-controls="navbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navbar" class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item mr-2">
+          <router-link :to="{name: 'login'}"><a class="btn btn-outline-success mt-2" href="#">Login</a></router-link>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-dark mt-2" href="#">Account</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <router-link class="navbar-item d-flex justify-content-center" :to="{name: 'home'}"><a class="navbar-brand text-muted brand-name"><strong>Meet Me</strong></a></router-link>
+
     <button
       class="navbar-toggler"
       type="button"
@@ -39,18 +86,21 @@
             </div>
           </div>
         </li>
+        <li>
+        <a class="btn btn-success mt-2" href="#">Login</a>
+        </li>
       </ul>
-      <div class="col-4 d-flex justify-content-end align-items-center">
-        <a class="btn btn-success mr-2" href="#">Sign up</a>
-        <a class="btn btn-secondary mr-3" href="#">Login</a>
-      </div>
     </div>
-  </nav>
+  </nav>-->
 </template>
 
 <style scoped>
+.brand-name {
+  font-size: 30px;
+}
 a {
   text-decoration: none !important;
+  font-size: 20px;
 }
 .dropdown:hover > .dropdown-menu {
   display: block;
