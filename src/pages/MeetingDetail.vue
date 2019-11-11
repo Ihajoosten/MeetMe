@@ -57,11 +57,11 @@
 
     <div class="row">
       <!-- Thread List START -->
-      <div class="col d-flex justify-content-center">
+      <div class="row col d-flex justify-content-center">
         <div
           v-for="thread in threads"
           v-bind:key="thread._id"
-          class="comments col-md-10 shadow p-3 mb-5 bg-white rounded"
+          class="col-md-10 shadow p-3 mb-5 bg-white rounded"
         >
           <!-- Thread title -->
           <h3 class="mb-4 mt-4"><strong>{{thread.title}}</strong></h3>
