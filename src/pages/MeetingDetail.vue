@@ -46,7 +46,7 @@
     <!-- Related Projects Row -->
     <h3 class="my-4">People who joined</h3>
 
-    <div class="row">
+    <div class="row md-2">
       <div v-for="person in joinedPeople" v-bind:key="person._id" class="col-1">
         <img class="img-fluid is-rounded" :src="person.avatar" alt />
         <br />
@@ -54,40 +54,86 @@
       </div>
     </div>
     <!-- /.row -->
-
-    <div class="row">
-      <div class="col-8 offset-md-2">
-        <div class="box">
-          <!-- Thread title -->
-          <h4 id="const" class="title is-3">Should I follow some dresscode ?</h4>
-          <!-- Create new post, handle later -->
-          <form class="post-create">
-            <div class="field">
-              <textarea class="textarea textarea-post" placeholder="Write a post" rows="1"></textarea>
-              <button class="btn btn-success mt-2">Send</button>
-            </div>
-          </form>
-          <!-- Create new post END, handle later -->
-          <!-- Posts START -->
-          <article class="offset-md-3">
-        <img class="is-rounded" :src="meetingCreator.avatar" />
-            <div class="media-content">
-              <div class="content is-medium">
-                <div class="post-content">
-                  <!-- Post User Name -->
-                  <strong class="author">Filip Jerga</strong>
-                  {{' '}}
-                  <!-- Post Updated at -->
-                  <small class="post-time">13th Jan</small>
-                  <br />
-                  <p class="post-content-message">It's up to you ;-)</p>
+    <div class="row mt-3 shadow p-3 mb-5 bg-white rounded">
+        <div class="comments col-md-9" id="comments">
+            <h1 class="m-5">Meeting Conversation</h1>
+            <!-- comment -->
+            <div class="comment m-4 row">
+                <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                    <a href=""><img class="mx-auto rounded-circle img-fluid" :src="meetingCreator.avatar" alt="avatar"></a>
                 </div>
-              </div>
+                <div class="comment-content col-md-11 col-sm-10">
+                    <h6 class="small comment-meta"><a href="#">{{meetingCreator.name}}</a> Today, 2:38</h6>
+                    <div class="comment-body">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod <a href>http://wwwwww.com</a> tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+                            <br>
+                            <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- reply is indented -->
+                <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2 shadow-sm p-3 mb-5 bg-white rounded">
+                    <div class="row">
+                        <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                            <a href=""><img class="mx-auto rounded-circle img-fluid" :src="joinedPeople[0].avatar" alt="avatar"></a>
+                        </div>
+                        <div class="comment-content col-md-11 col-sm-10 col-12">
+                            <h6 class="small comment-meta"><a href="#">{{joinedPeople[0].name}}</a> Today, 12:31</h6>
+                            <div class="comment-body">
+                                <p>Really?? Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
+                                    <br>
+                                    <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+               <!-- /reply is indented -->
+                               <!-- reply is indented -->
+                <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2 shadow-sm p-3 mb-5 bg-white rounded">
+                    <div class="row">
+                        <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                            <a href=""><img class="mx-auto rounded-circle img-fluid" :src="joinedPeople[0].avatar" alt="avatar"></a>
+                        </div>
+                        <div class="comment-content col-md-11 col-sm-10 col-12">
+                            <h6 class="small comment-meta"><a href="#">{{joinedPeople[0].name}}</a> Today, 12:31</h6>
+                            <div class="comment-body">
+                                <p>Really?? Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
+                                    <br>
+                                    <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+               <!-- /reply is indented -->
             </div>
-          </article>
-          <!-- Posts END -->
+            <!-- /comment -->
+            <!-- comment -->
+            <div class="comment m-4 row">
+                <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
+                    <a href=""><img class="mx-auto rounded-circle img-fluid" :src="meetingCreator.avatar" alt="avatar"></a>
+                </div>
+                <div class="comment-content col-md-11 col-sm-10">
+                    <h6 class="small comment-meta"><a href="#">{{meetingCreator.name}}</a> Yesterday, 5:03 PM</h6>
+                    <div class="comment-body">
+                        <p>Sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+                            <br>
+                            <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- /comment -->
+            <div class="row pt-2">
+                <div class="col-12">
+                    <a href="" class="btn btn-sm btn-primary">Comment</a>
+                </div>
+            </div>
+
         </div>
-      </div>
     </div>
   </div>
   <!-- /.container -->
