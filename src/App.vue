@@ -7,24 +7,21 @@
 </template>
 
 <script>
-import TheNavbar from '@/components/shared/Navbar'
-import TheFooter from '@/components/shared/Footer'
+import TheNavbar from "@/components/shared/Navbar";
+import TheFooter from "@/components/shared/Footer";
+import UIkit from "uikit";
+import Icons from "uikit/dist/js/uikit-icons";
+
+UIkit.use(Icons);
 export default {
-  name: 'app',
+  name: "app",
   components: {
     TheNavbar,
     TheFooter
   }
-}
+};
 </script>
 
-<style lang="scss">
-@import'assets/css/spacing.css';
-@import '~bulma/bulma.sass';
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+<style lang="less">
+@import "../node_modules/uikit/src/less/uikit.less"; 
 </style>

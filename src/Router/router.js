@@ -16,6 +16,11 @@ const router = new Router({
             component: () => import("@/pages/About.vue")
         },
         {
+            path: "/login",
+            name: "login",
+            component: () => import("@/pages/Login.vue")
+        },
+        {
             path: "/meetings/:id",
             name: "meeting-detail",
             component: () => import("@/pages/MeetingDetail.vue")
