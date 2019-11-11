@@ -26,6 +26,11 @@ const router = new Router({
             component: () => import("@/pages/FindMeeting.vue")
         },
         {
+            path: "*",
+            name: "not-found",
+            component: () => import("@/pages/NotFound.vue")
+        },
+        {
             path: "/meetings/:id",
             name: "meeting-detail",
             component: () => import("@/pages/MeetingDetail.vue")
