@@ -54,86 +54,51 @@
       </div>
     </div>
     <!-- /.row -->
-    <div class="row mt-3 shadow p-3 mb-5 bg-white rounded">
-        <div class="comments col-md-9" id="comments">
-            <h1 class="m-5">Meeting Conversation</h1>
-            <!-- comment -->
-            <div class="comment m-4 row">
-                <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                    <a href=""><img class="mx-auto rounded-circle img-fluid" :src="meetingCreator.avatar" alt="avatar"></a>
-                </div>
-                <div class="comment-content col-md-11 col-sm-10">
-                    <h6 class="small comment-meta"><a href="#">{{meetingCreator.name}}</a> Today, 2:38</h6>
-                    <div class="comment-body">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod <a href>http://wwwwww.com</a> tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                            <br>
-                            <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- reply is indented -->
-                <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2 shadow-sm p-3 mb-5 bg-white rounded">
-                    <div class="row">
-                        <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                            <a href=""><img class="mx-auto rounded-circle img-fluid" :src="joinedPeople[0].avatar" alt="avatar"></a>
-                        </div>
-                        <div class="comment-content col-md-11 col-sm-10 col-12">
-                            <h6 class="small comment-meta"><a href="#">{{joinedPeople[0].name}}</a> Today, 12:31</h6>
-                            <div class="comment-body">
-                                <p>Really?? Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
-                                    <br>
-                                    <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-               <!-- /reply is indented -->
-                               <!-- reply is indented -->
-                <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2 shadow-sm p-3 mb-5 bg-white rounded">
-                    <div class="row">
-                        <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                            <a href=""><img class="mx-auto rounded-circle img-fluid" :src="joinedPeople[0].avatar" alt="avatar"></a>
-                        </div>
-                        <div class="comment-content col-md-11 col-sm-10 col-12">
-                            <h6 class="small comment-meta"><a href="#">{{joinedPeople[0].name}}</a> Today, 12:31</h6>
-                            <div class="comment-body">
-                                <p>Really?? Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
-                                    <br>
-                                    <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-               <!-- /reply is indented -->
-            </div>
-            <!-- /comment -->
-            <!-- comment -->
-            <div class="comment m-4 row">
-                <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                    <a href=""><img class="mx-auto rounded-circle img-fluid" :src="meetingCreator.avatar" alt="avatar"></a>
-                </div>
-                <div class="comment-content col-md-11 col-sm-10">
-                    <h6 class="small comment-meta"><a href="#">{{meetingCreator.name}}</a> Yesterday, 5:03 PM</h6>
-                    <div class="comment-body">
-                        <p>Sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                            <br>
-                            <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <!-- /comment -->
-            <div class="row pt-2">
-                <div class="col-12">
-                    <a href="" class="btn btn-sm btn-primary">Comment</a>
-                </div>
-            </div>
 
+    <div class="row">
+      <!-- Thread List START -->
+      <div class="col d-flex justify-content-center">
+        <div
+          v-for="thread in threads"
+          v-bind:key="thread._id"
+          class="comments col-md-10 shadow p-3 mb-5 bg-white rounded"
+        >
+          <!-- Thread title -->
+          <h3 class="mb-4 mt-4"><strong>{{thread.title}}</strong></h3>
+          <!-- Create new post, handle later -->
+          <form>
+            <div class="field">
+              <textarea
+                class="form-control mt-3 mb-4"
+                id="textarea-post"
+                rows="5"
+                placeholder="Write something."
+              ></textarea>
+              <button class="btn btn-success mb-5">Post</button>
+            </div>
+          </form>
+          <!-- Create new post END, handle later -->
+          <!-- Posts START -->
+          <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
+            <div class="row offset-md-1">
+              <img class="is-rounded" :src="post.user.avatar" />
+              <div class="content is-medium">
+                <div class="post-content">
+                  <!-- Post User Name -->
+                  <strong class="ml-3">{{post.user.name}}</strong>
+                  {{' '}}
+                  <!-- Post Updated at -->
+                  <small class="ml-2">{{post.updatedAt | fromNow}}</small>
+                  <br />
+                  <p class="ml-3">{{post.text}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Posts END -->
         </div>
+      </div>
+      <!-- Thread List END -->
     </div>
   </div>
   <!-- /.container -->
@@ -141,13 +106,20 @@
 
 <script>
 import axios from "axios";
+// import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
+// import ThreadList from '@/components/threads/ThreadList'
 
 export default {
   name: "meeting-detail",
+  // components: {
+  //   ThreadCreateModal,
+  //   ThreadList
+  // },
   data() {
     return {
       meeting: {},
       joinedPeople: [],
+      threads: [],
       url: "http://localhost:5000",
       active: ""
     };
@@ -160,10 +132,14 @@ export default {
       this.meeting.status = res.data.status;
       this.joinedPeople = res.data.joinedPeople;
     });
+
+    axios.get(url + `/api/v1/threads?meetingId=${id}`).then(res => {
+      this.threads = res.data;
+    });
   },
   computed: {
     meetingCreator() {
-      return this.meeting.meetingCreator;
+      return this.meeting.meetingCreator || "";
     },
     isActive() {
       return {

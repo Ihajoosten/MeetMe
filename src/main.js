@@ -27,6 +27,13 @@ Vue.filter("capitalize", function(value) {
   return "";
 });
 
+Vue.filter('fromNow', function (value) {
+  if (!value) return ''
+
+  return moment(value).fromNow()
+})
+
+
 Vue.filter("date", value => {
   if (!value) {
     return "";
