@@ -22,6 +22,9 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import "../node_modules/uikit/src/less/uikit.less"; 
+<style lang="sass">
 </style>
+
+//@import '~bulma/bulma.sass';
+
+// @import "../node_modules/uikit/src/less/uikit.less"; 

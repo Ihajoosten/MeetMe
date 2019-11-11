@@ -46,7 +46,7 @@
     <!-- Related Projects Row -->
     <h3 class="my-4">People who joined</h3>
 
-    <div class="row">
+    <div class="row md-2">
       <div v-for="person in joinedPeople" v-bind:key="person._id" class="col-1">
         <img class="img-fluid is-rounded" :src="person.avatar" alt />
         <br />
@@ -56,38 +56,49 @@
     <!-- /.row -->
 
     <div class="row">
-      <div class="col-8 offset-md-2">
-        <div class="box">
+      <!-- Thread List START -->
+      <div class="row col d-flex justify-content-center">
+        <div
+          v-for="thread in threads"
+          v-bind:key="thread._id"
+          class="col-md-10 shadow p-3 mb-5 bg-white rounded"
+        >
           <!-- Thread title -->
-          <h4 id="const" class="title is-3">Should I follow some dresscode ?</h4>
+          <h3 class="mb-4 mt-4"><strong>{{thread.title}}</strong></h3>
           <!-- Create new post, handle later -->
-          <form class="post-create">
+          <form>
             <div class="field">
-              <textarea class="textarea textarea-post" placeholder="Write a post" rows="1"></textarea>
-              <button class="btn btn-success mt-2">Send</button>
+              <textarea
+                class="form-control mt-3 mb-4"
+                id="textarea-post"
+                rows="5"
+                placeholder="Write something."
+              ></textarea>
+              <button class="btn btn-success mb-5">Post</button>
             </div>
           </form>
           <!-- Create new post END, handle later -->
           <!-- Posts START -->
-          <article class="offset-md-3">
-        <img class="is-rounded" :src="meetingCreator.avatar" />
-            <div class="media-content">
+          <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
+            <div class="row offset-md-1">
+              <img class="is-rounded" :src="post.user.avatar" />
               <div class="content is-medium">
                 <div class="post-content">
                   <!-- Post User Name -->
-                  <strong class="author">Filip Jerga</strong>
+                  <strong class="ml-3">{{post.user.name}}</strong>
                   {{' '}}
                   <!-- Post Updated at -->
-                  <small class="post-time">13th Jan</small>
+                  <small class="ml-2">{{post.updatedAt | fromNow}}</small>
                   <br />
-                  <p class="post-content-message">It's up to you ;-)</p>
+                  <p class="ml-3">{{post.text}}</p>
                 </div>
               </div>
             </div>
-          </article>
+          </div>
           <!-- Posts END -->
         </div>
       </div>
+      <!-- Thread List END -->
     </div>
   </div>
   <!-- /.container -->
@@ -95,13 +106,20 @@
 
 <script>
 import axios from "axios";
+// import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
+// import ThreadList from '@/components/threads/ThreadList'
 
 export default {
   name: "meeting-detail",
+  // components: {
+  //   ThreadCreateModal,
+  //   ThreadList
+  // },
   data() {
     return {
       meeting: {},
       joinedPeople: [],
+      threads: [],
       url: "http://localhost:5000",
       active: ""
     };
@@ -114,10 +132,14 @@ export default {
       this.meeting.status = res.data.status;
       this.joinedPeople = res.data.joinedPeople;
     });
+
+    axios.get(url + `/api/v1/threads?meetingId=${id}`).then(res => {
+      this.threads = res.data;
+    });
   },
   computed: {
     meetingCreator() {
-      return this.meeting.meetingCreator;
+      return this.meeting.meetingCreator || "";
     },
     isActive() {
       return {

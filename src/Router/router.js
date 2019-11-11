@@ -21,6 +21,11 @@ const router = new Router({
             component: () => import("@/pages/Login.vue")
         },
         {
+            path: "/find",
+            name: "find",
+            component: () => import("@/pages/FindMeeting.vue")
+        },
+        {
             path: "/meetings/:id",
             name: "meeting-detail",
             component: () => import("@/pages/MeetingDetail.vue")
