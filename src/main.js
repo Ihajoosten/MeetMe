@@ -1,15 +1,23 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./Router/router";
-import 'bootstrap'; 
-import 'bootstrap/dist/css/bootstrap.min.css'
-import AppDropdown from "./components/shared/AppDropdown";
-import AppHero from "./components/shared/AppHero";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "uikit/dist/css/uikit.min.css";
+import 'less-loader';
+import HomeDropdown from "./components/shared/HomeDropdown";
+import Hometop from "./components/shared/HomeTop";
 import moment from "moment";
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+
+
+UIkit.use(Icons);
+
 Vue.config.productionTip = false;
 
-Vue.component("AppHero", AppHero);
-Vue.component("AppDropdown", AppDropdown);
+Vue.component("HomeTop", Hometop);
+Vue.component("HomeDropdown", HomeDropdown);
 
 Vue.filter("capitalize", function(value) {
   if (value && typeof value === "string") {
@@ -22,7 +30,7 @@ Vue.filter("capitalize", function(value) {
 Vue.filter("date", value => {
   if (!value) {
     return "";
-  } 
+  }
 
   return moment(value).format("DD MMM, YYYY");
 });
@@ -30,7 +38,7 @@ Vue.filter("date", value => {
 Vue.filter("day", value => {
   if (!value) {
     return "";
-  } 
+  }
 
   return moment(value).format("DD");
 });
@@ -38,7 +46,7 @@ Vue.filter("day", value => {
 Vue.filter("month", value => {
   if (!value) {
     return "";
-  } 
+  }
 
   return moment(value).format("MMMM");
 });
