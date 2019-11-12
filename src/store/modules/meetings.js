@@ -8,7 +8,7 @@ export default {
   },
   actions: {
     fetchMeetings({ state, commit }) {
-      return axios.get("/api/v1/meetings").then(res => {
+      return axios.get("/api/meetings").then(res => {
         commit("setItems", { resource: "meetings", items: [] }, { root: true });
         const meetings = res.data;
         commit(
@@ -21,7 +21,7 @@ export default {
     },
     fetchMeeting({ state, commit }, meetingId) {
       commit("setItem", { resource: "meetings", item: {} }, { root: true });
-      return axios.get(`/api/v1/meetings/${meetingId}`).then(res => {
+      return axios.get(`/api/meetings/${meetingId}`).then(res => {
         const meeting = res.data;
         commit(
           "setItem",

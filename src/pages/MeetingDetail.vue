@@ -81,7 +81,7 @@
           </form>
           <!-- Create new post END, handle later -->
           <!-- Posts START -->
-          <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
+          <div v-for="post in thread.meeting" v-bind:key="post._id" class="mb-3">
             <div class="row offset-md-1">
               <img class="is-rounded" :src="post.user.avatar" />
               <div class="content is-medium">

@@ -11,7 +11,9 @@
           <div
             class="mb-1 text-muted"
           >{{meeting.startDate | date}} · {{meeting.timeFrom}} - {{meeting.timeTo}}</div>
-          <p class="card-text mb-auto">{{meeting.shortInfo}}</p>
+                  <p v-if="meeting.joinedPeopleCount === 1" class="card-text mb-auto">{{meeting.joinedPeopleCount}} Person has already joined!</p>
+                  <p v-else-if="meeting.joinedPeopleCount === 0" class="card-text mb-auto">No persons have joined so far!</p>
+                  <p v-else class="card-text mb-auto">{{meeting.joinedPeopleCount}} Persons have already joined!</p>
         </div>
         <div class="col-auto d-none d-lg-block">
           <img

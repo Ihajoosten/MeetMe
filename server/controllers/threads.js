@@ -19,7 +19,10 @@ module.exports = {
   },
 
   getAllThreads: (req, res, next) => {
+    const meetupId = req.query.meetupId;
+
     Thread.find({})
+      .where({'meetup': meetupId})
       .populate("comments")
       .populate("author")
       .then(threads => {
