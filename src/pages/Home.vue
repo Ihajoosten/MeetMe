@@ -31,6 +31,7 @@
 <script>
 import CategoryItem from "../components/category/CategoryItem";
 import MeetingItem from "../components/meeting/MeetingItem";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "home",
@@ -39,16 +40,17 @@ export default {
     MeetingItem
   },
   computed: {
-    meetings() {
-      return this.$store.state.meetings;
-    },
-    categories() {
-      return this.$store.state.categories;
-    }
+    ...mapState({
+      meetings: state => state.meetings,
+      categories: state => state.categories
+    })
   },
   created() {
-    this.$store.dispatch("fetchMeetings");
-    this.$store.dispatch("fetchCategories");
+    this.fetchMeetings();
+    this.fetchCategories();
+  },
+  methods: {
+    ...mapActions(["fetchMeetings", "fetchCategories"])
   }
 };
 </script>

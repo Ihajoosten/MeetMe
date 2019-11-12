@@ -15,7 +15,7 @@
 
     <div class="container mt-5">
       <div
-        v-if="noMeetings.amount === 0"
+        v-if="amount === 0"
         class="alert alert-warning text-center"
         role="alert"
       >No meetings found! Change the search criteria to find some</div>
@@ -28,28 +28,23 @@
 
 <script>
 import MeetingItem from "../components/meeting/MeetingItem";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  data() {
-    return {
-      amount: null
-    };
-  },
   components: {
     MeetingItem
   },
   computed: {
-    meetings() {
-      return this.$store.state.meetings;
-    },
-    noMeetings() {
-      return {
-        amount: this.$store.state.meetings.length
-      };
-    }
+    ...mapState({
+      meetings: state => state.meetings,
+      amount: state => state.meetings.length
+    })
   },
   created() {
-    this.$store.dispatch("fetchMeetings");
+    this.fetchMeetings();
+  },
+  methods: {
+    ...mapActions(["fetchMeetings"])
   }
 };
 </script>

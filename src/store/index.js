@@ -19,46 +19,44 @@ export default new Vuex.Store({
   actions: {
     fetchMeetings({ state, commit }) {
       axios.get("/api/v1/meetings").then(res => {
+        commit("setItems", { resource: "meetings", items: [] });
         const meetings = res.data;
-        commit("setMeetings", meetings);
+        commit("setItems", { resource: "meetings", items: meetings });
         return state.meetings;
       });
     },
     fetchCategories({ state, commit }) {
       axios.get("/api/v1/categories").then(res => {
+        commit("setItems", { resource: "categories", items: [] });
         const categories = res.data;
-        commit("setCategories", categories);
+        commit("setItems", { resource: "categories", items: categories });
         return state.categories;
       });
     },
     fetchMeeting({ state, commit }, meetingId) {
+      commit("setItem", { resource: "meeting", item: {} });
       axios.get(`/api/v1/meetings/${meetingId}`).then(res => {
         const meeting = res.data;
-        commit("setMeeting", meeting);
+        commit("setItem", { resource: "meeting", item: meeting });
         return state.meeting;
       });
     },
     fetchThreads({ state, commit }, meetingId) {
+      commit("setItems", { resource: "threads", items: [] });
       axios.get(`/api/v1/threads?meetingId=${meetingId}`).then(res => {
         const threads = res.data;
-        commit("setThreads", threads);
+        commit("setItems", { resource: "threads", items: threads });
         return state.threads;
       });
     }
   },
   // Functions to mutate the state
   mutations: {
-    setMeetings(state, meetings) {
-      state.meetings = meetings;
+    setItems(state, { resource, items }) {
+      state[resource] = items;
     },
-    setCategories(state, categories) {
-      state.categories = categories;
-    },
-    setMeeting(state, meeting) {
-      state.meeting = meeting;
-    },
-    setThreads(state, threads) {
-      state.threads = threads;
+    setItem(state, { resource, item }) {
+      state[resource] = item;
     }
   }
 });
