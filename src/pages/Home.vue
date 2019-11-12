@@ -41,8 +41,8 @@ export default {
   },
   computed: {
     ...mapState({
-      meetings: state => state.meetings,
-      categories: state => state.categories
+      meetings: state => state.meetings.items,
+      categories: state => state.categories.items
     })
   },
   created() {
@@ -50,7 +50,8 @@ export default {
     this.fetchCategories();
   },
   methods: {
-    ...mapActions(["fetchMeetings", "fetchCategories"])
+    ...mapActions("meetings", ["fetchMeetings"]),
+    ...mapActions("categories", ["fetchCategories"])
   }
 };
 </script>

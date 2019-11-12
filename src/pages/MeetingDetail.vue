@@ -3,7 +3,7 @@
   <div class="container">
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
-      <div v-if="status === 'active'">
+      <div v-if="isActive === 'active'">
         <h1 class="my-4">
           {{meeting.title}}
           <span class="badge badge-success">{{meeting.status | capitalize}}</span>
@@ -119,14 +119,19 @@ export default {
   // },
   computed: {
     ...mapState({
-      meeting: state => state.meeting,
-      threads: state => state.threads,
-      meetingCreator: state => state.meeting.meetingCreator || {},
-      status: state => state.meeting.status
-    })
+      meeting: state => state.meetings.item,
+      threads: state => state.threads.items,
+    }),
+    meetingCreator() {
+      return this.meeting.meetingCreator || {};
+    },
+    isActive() {
+      return this.meeting.status;
+    }
   },
   methods: {
-    ...mapActions(["fetchMeeting", "fetchThreads"])
+    ...mapActions("meetings", ["fetchMeeting"]),
+    ...mapActions("threads", ["fetchThreads"])
   },
   created() {
     const id = this.$route.params.id;
