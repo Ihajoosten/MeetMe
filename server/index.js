@@ -5,6 +5,18 @@ const config = require("./config/dev"); // config variables
 const logger = config.logger;
 const morgan = require("morgan");
 const cors = require("cors");
+const session = require("express-session");
+const passport = require("passport");
+const MongoDbStore = require("connect-mongodb-session")(session);
+
+const store = new MongoDbStore({
+  uri: config.DB_URI,
+  collection: "sessions"
+});
+
+store.on("error", error => {
+  console.log(error);
+});
 
 // Models
 require("./models/meetings");
@@ -33,6 +45,22 @@ mongoose
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(
+  session({
+    secret: config.SESSION_SECRET,
+    cookie: {
+      maxAge: 3600000
+    },
+    resave: false,
+    saveUninitialized: false,
+    store
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(morgan("dev"));
 app.use(cors());
 
