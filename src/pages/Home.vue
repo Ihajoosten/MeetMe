@@ -1,7 +1,7 @@
 <template>
   <div>
     <HomeTop />
-    <div class="container">
+    <div v-if="isDataLoaded" class="container">
       <h1 class="m-5 text-center">Meetings in "Location"</h1>
       <div class="m-5 text-center">
         <button class="btn btn-success m-2">Create meeting</button>
@@ -25,6 +25,9 @@
         />
       </div>
     </div>
+    <div class="container" v-else>
+      <Spinner class="text-center" />
+    </div>
   </div>
 </template>
 
@@ -35,6 +38,11 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   name: "home",
+  data() {
+    return {
+      isDataLoaded: false
+    };
+  },
   components: {
     CategoryItem,
     MeetingItem
@@ -46,8 +54,15 @@ export default {
     })
   },
   created() {
-    this.fetchMeetings();
-    this.fetchCategories();
+    Promise.all([this.fetchMeetings(), this.fetchCategories()])
+    .then(() => this.isDataLoaded = true)
+    .catch((err) => {console.log(err), this.isDataLoaded = true})
+
+    this.fetchMeetings().then(() => {
+      this.fetchCategories().then(() => {
+        this.isDataLoaded = true;
+      });
+    });
   },
   methods: {
     ...mapActions("meetings", ["fetchMeetings"]),
