@@ -1,8 +1,11 @@
-const express = require('express');
-const router = express.Router();
+const controller = require("../controllers/threads");
+const auth = require('../services/authentication');
 
-const ThreadsCtrl = require('../controllers/threads');
-
-router.get('/threads', ThreadsCtrl.getThreads);
-
-module.exports = router;
+module.exports = app => {
+  // Thread endpoints
+  app.post("/api/threads/", auth.validateToken, controller.postThread);
+  app.get("/api/threads", auth.validateToken,  controller.getAllThreads);
+  app.put("/api/threads/:id", auth.validateToken,  controller.updateThreadById);
+  app.delete("/api/threads/:id", auth.validateToken,  controller.deleteThreadById);
+  app.post("/api/threads/:id/comment", auth.validateToken,  controller.postCommentToThread);
+};

@@ -5,32 +5,14 @@ const config = require("./config/dev"); // config variables
 const logger = config.logger;
 const morgan = require("morgan");
 const cors = require("cors");
-const session = require("express-session");
-const passport = require("passport");
-const MongoDbStore = require("connect-mongodb-session")(session);
+const PORT = process.env.PORT || 5000;
+const app = express();
 
-const store = new MongoDbStore({
-  uri: config.DB_URI,
-  collection: "sessions"
-});
-
-store.on("error", error => {
-  console.log(error);
-});
-
-// Models
-require("./models/meetings");
-require("./models/users");
-require("./models/threads");
-require("./models/posts");
-require("./models/categories");
-
-// Routes
-const meetingsRoutes = require("./routes/meetings"),
-  usersRoutes = require("./routes/users"),
-  threadsRoutes = require("./routes/threads"),
-  postsRoutes = require("./routes/posts"),
-  categoriesRoutes = require("./routes/categories");
+const commentRoutes = require('./routes/comments');
+const threadRoutes = require('./routes/threads');
+const userRoutes = require('./routes/users');
+const categoryRoutes = require('./routes/categories');
+const meetingRoutes = require('./routes/meetings');
 
 // Database connection
 mongoose
@@ -42,40 +24,35 @@ mongoose
   .then(() => logger.info("DB Connected!"))
   .catch(err => logger.error(err));
 
-const app = express();
-
 app.use(bodyParser.json());
-
-app.use(
-  session({
-    secret: config.SESSION_SECRET,
-    cookie: {
-      maxAge: 3600000
-    },
-    resave: false,
-    saveUninitialized: false,
-    store
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(morgan("dev"));
 app.use(cors());
 
-// Back-end routes for crud operations
-app.use("/api/v1", meetingsRoutes);
-app.use("/api/v1", usersRoutes);
-app.use("/api/v1", postsRoutes);
-app.use("/api/v1", threadsRoutes);
-app.use("/api/v1", categoriesRoutes);
+commentRoutes(app);
+threadRoutes(app);
+userRoutes(app);
+categoryRoutes(app);
+meetingRoutes(app);
 
-const PORT = process.env.PORT || 5000;
+// Handle endpoint not found.
+app.all("*", function(req, res, next) {
+  logger.error("Endpoint not found.");
+  var errorObject = {
+    message: "Endpoint does not exist!",
+    code: 404,
+    date: new Date()
+  };
+  next(errorObject);
+});
+
+// Error handler
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
+  res.status(error.code).json(error);
+});
+
 
 // Determine on wich port the server is listening to
 app.listen(PORT, function() {
-  logger.debug(
-    "App is running on port: " + PORT + " in " + process.env.NODE_ENV + " mode"
-  );
+  logger.debug("Server is running on port: " + PORT);
 });

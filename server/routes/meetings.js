@@ -1,9 +1,8 @@
-const express = require('express');
-const router = express.Router();
+const controller = require("../controllers/meetings");
+const auth = require('../services/authentication');
 
-const meetingsCtrl = require('../controllers/meetings');
-
-router.get('/meetings', meetingsCtrl.getmeetings);
-router.get('/meetings/:id', meetingsCtrl.getmeetingById);
-
-module.exports = router;
+module.exports = app => {
+  // Thread endpoints
+  app.get("/api/meetings", auth.validateToken,  controller.getAllMeetings);
+  app.get("/api/meetings/:id", auth.validateToken,  controller.getMeetingById);
+  };
