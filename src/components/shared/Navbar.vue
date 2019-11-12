@@ -39,10 +39,10 @@
     <div id="navbar" class="navbar-collapse collapse w-100 order-3 dual-collapse2">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item mr-2">
-          <router-link :to="{name: 'login'}"><a class="btn btn-outline-success mt-2" href="#">Login</a></router-link>
+          <router-link :to="{name: 'register'}"><a class="btn btn-sm btn-outline-primary mt-2" href="#">Register</a></router-link>
         </li>
         <li class="nav-item">
-          <a class="btn btn-outline-dark mt-2" href="#">Account</a>
+          <router-link :to="{name: 'login'}"><a class="btn btn-sm btn-outline-success mt-2" href="#">Login</a></router-link>
         </li>
       </ul>
     </div>

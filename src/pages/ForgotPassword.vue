@@ -16,12 +16,18 @@
                 uk-switcher="animation: uk-animation-fade"
               >
                 <li>
-                  <a href="#">Log In</a>
+                  <a href="#">Change password</a>
                 </li>
               </ul>
               <ul class="uk-switcher uk-margin">
                 <li>
-                  <h3 class="uk-card-title uk-text-center">Welcome back!</h3>
+                  <h3 class="uk-card-title uk-text-center">
+                    Forgot your password?
+                  </h3>
+                  <p class="uk-text-center uk-width-medium@s uk-margin-auto">
+                    Enter your email address and we will send you a link to
+                    reset your password.
+                  </p>
                   <form>
                     <div class="uk-margin">
                       <div class="uk-inline uk-width-1-1">
@@ -31,49 +37,21 @@
                           uk-icon="icon: mail"
                         ></span>
                         <input
-                          v-model="form.email"
                           class="uk-input uk-form-large"
-                          type="text"
+                          type="email"
                           placeholder="Email address"
                         />
                       </div>
                     </div>
                     <div class="uk-margin">
-                      <div class="uk-inline uk-width-1-1">
-                        <span
-                          id="icon"
-                          class="uk-form-icon"
-                          uk-icon="icon: lock"
-                        ></span>
-                        <input
-                          v-model="form.password"
-                          class="uk-input uk-form-large"
-                          type="password"
-                          placeholder="Password"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="uk-margin uk-text-right@s uk-text-center uk-text-small"
-                    >
-                      <router-link :to="{ name: 'change-password' }"
-                        ><a href="#" uk-switcher-item="2"
-                          >Forgot Password?</a
-                        ></router-link
-                      >
-                    </div>
-                    <div class="uk-margin">
-                      <button @click.prevent="login" class="btn btn-success uk-width-1-1">
-                        Login
+                      <button class="btn btn-success uk-width-1-1">
+                        Send Email
                       </button>
                     </div>
                     <div class="uk-text-small uk-text-center">
-                      Not registered?
-                      <router-link :to="{ name: 'register' }"
-                        ><a href="#" uk-switcher-item="0"
-                          >Create an account</a
-                        ></router-link
-                      >
+                      <router-link :to="{ name: 'login' }">
+                        <a href="#" uk-switcher-item="1">Back to login</a>
+                      </router-link>
                     </div>
                   </form>
                 </li>
@@ -92,14 +70,8 @@ export default {
     return {
       form: {
         email: null,
-        password: null
       }
     };
-  },
-  methods: {
-    login() {
-      console.log(this.form)
-    }
   }
 };
 </script>

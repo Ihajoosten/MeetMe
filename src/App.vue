@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <TheNavbar />
-    <div class="wrapper">
     <router-view />
-    </div>
     <TheFooter />
   </div>
 </template>
@@ -25,9 +23,6 @@ export default {
 </script>
 
 <style lang="css">
-.wrapper {
-
-}
 </style>
 
 //@import '~bulma/bulma.sass';

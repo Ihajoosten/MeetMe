@@ -11,10 +11,10 @@
 
 <style scoped>
 .sk-chase {
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   margin-left: 45%;
-  margin-top: 50px;
+  margin-top: 5%;
   margin-bottom: 1500px;
   position: relative;
   animation: sk-chase 2.5s infinite linear both;

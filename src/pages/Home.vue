@@ -58,11 +58,11 @@ export default {
     .then(() => this.isDataLoaded = true)
     .catch((err) => {console.log(err), this.isDataLoaded = true})
 
-    this.fetchMeetings().then(() => {
-      this.fetchCategories().then(() => {
-        this.isDataLoaded = true;
-      });
-    });
+    // this.fetchMeetings().then(() => {
+    //   this.fetchCategories().then(() => {
+    //     this.isDataLoaded = true;
+    //   });
+    // });
   },
   methods: {
     ...mapActions("meetings", ["fetchMeetings"]),

@@ -36,15 +36,15 @@ export default {
   },
   computed: {
     ...mapState({
-      meetings: state => state.meetings,
-      amount: state => state.meetings.length
+      meetings: state => state.meetings.items,
+      amount: state => state.meetings.items.length 
     })
   },
   created() {
     this.fetchMeetings();
   },
   methods: {
-    ...mapActions(["fetchMeetings"])
+    ...mapActions('meetings', ["fetchMeetings"])
   }
 };
 </script>
