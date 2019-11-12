@@ -153,7 +153,7 @@ export default {
   },
   methods: {
       register() {
-          console.log(this.form)
+      this.$store.dispatch('auth/register', this.form)
       }
   }
 };
