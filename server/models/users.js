@@ -8,25 +8,25 @@ const userSchema = new Schema({
     type: String,
     required: "Email is Required",
     lowercase: true,
-    unique: true,
-    name: {
-      type: String,
-      required: true,
-      min: [6, "Too short, min is 6 characters"]
-    },
-    username: {
-      type: String,
-      required: true,
-      min: [6, "Too short, min is 6 characters"]
-    },
-    password: {
-      type: String,
-      min: [4, "Too short, min is 4 characters"],
-      max: [32, "Too long, max is 32 characters"],
-      required: "Password is required"
-    },
-    joinedMeetings: [{ type: Schema.Types.ObjectId, ref: "Meeting" }]
-  }
+    unique: true
+  },
+  name: {
+    type: String,
+    required: true,
+    min: [6, "Too short, min is 6 characters"]
+  },
+  username: {
+    type: String,
+    required: true,
+    min: [6, "Too short, min is 6 characters"]
+  },
+  password: {
+    type: String,
+    min: [4, "Too short, min is 4 characters"],
+    max: [32, "Too long, max is 32 characters"],
+    required: "Password is required"
+  },
+  joinedMeetings: [{ type: Schema.Types.ObjectId, ref: "Meeting" }]
 });
 
 userSchema.pre("save", function(next) {

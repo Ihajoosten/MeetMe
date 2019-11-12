@@ -6,11 +6,12 @@ module.exports = {
   postThread: (req, res, next) => {
     const body = req.body;
 
-    let thread = new Thread({
-      author: req.userId,
-      title: body.title,
-      content: body.title
-    });
+    let thread = new Thread(body);
+    console.log(thread);
+
+    if (!thread) {
+      return res.status(422).json();
+    }
 
     thread.save().then(() => {
       res.status(200).json({ result: "OK" });

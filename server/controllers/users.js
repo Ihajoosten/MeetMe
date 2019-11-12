@@ -8,9 +8,11 @@ module.exports = {
     const body = req.body;
 
     let user = new User({
+      avatar: body.avatar,
+      email: body.email,
       name: body.name,
+      username: body.username,
       password: body.password,
-      active: true
     });
 
     user.save().then(() => res.status(200).json({ result: "OK" }));
@@ -39,9 +41,8 @@ module.exports = {
   },
   loginUser: (req, res, next) => {
     const body = req.body;
-    let h;
 
-    User.findOne({ name: body.username }).then(user => {
+    User.findOne({ username: body.username }).then(user => {
       if (!bcrypt.compareSync(body.password, user.password)) {
         let errorObj = {
           message: "Login not correct",
@@ -54,5 +55,5 @@ module.exports = {
         res.status(200).json({ result: token });
       }
     });
-  }
+  } 
 };

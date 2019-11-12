@@ -5,12 +5,10 @@ const Thread = require("../models/threads");
 module.exports = {
   postComment: (req, res, next) => {
     const body = req.body;
+    const author = req.userId;
 
-    let comment = new Comment({
-      author: req.userId,
-      content: body.content,
-      thread: body.thread
-    });
+    let comment = new Comment(body);
+    comment.author = author;
 
     comment
       .save()
