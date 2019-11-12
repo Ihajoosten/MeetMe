@@ -15,7 +15,7 @@
 
     <div class="container mt-5">
       <div
-        v-if="noMeetings === 0"
+        v-if="amount === 0"
         class="alert alert-warning text-center"
         role="alert"
       >No meetings found! Change the search criteria to find some</div>
@@ -27,32 +27,24 @@
 </template>
 
 <script>
-import axios from "axios";
 import MeetingItem from "../components/meeting/MeetingItem";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  data() {
-    return {
-      meetings: [],
-      url: "http://localhost:5000",
-      amount: null
-    };
-  },
-  created() {
-    const url = this.url;
-    axios.get(url + "/api/v1/meetings").then(res => {
-      this.meetings = res.data;
-    });
-  },
-  computed: {
-    noMeetings() {
-      return {
-        amount: this.meetings.length
-      };
-    }
-  },
   components: {
     MeetingItem
+  },
+  computed: {
+    ...mapState({
+      meetings: state => state.meetings.items,
+      amount: state => state.meetings.items.length 
+    })
+  },
+  created() {
+    this.fetchMeetings();
+  },
+  methods: {
+    ...mapActions('meetings', ["fetchMeetings"])
   }
 };
 </script>

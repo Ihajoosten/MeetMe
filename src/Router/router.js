@@ -21,9 +21,24 @@ const router = new Router({
             component: () => import("@/pages/Login.vue")
         },
         {
+            path: "/register",
+            name: "register",
+            component: () => import("@/pages/Register.vue")
+        },
+        {
+            path: "/change-password",
+            name: "change-password",
+            component: () => import("@/pages/ForgotPassword.vue")
+        },
+        {
             path: "/find",
             name: "find",
             component: () => import("@/pages/FindMeeting.vue")
+        },
+        {
+            path: "*",
+            name: "not-found",
+            component: () => import("@/pages/NotFound.vue")
         },
         {
             path: "/meetings/:id",

@@ -4,13 +4,14 @@ import router from "./Router/router";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "uikit/dist/css/uikit.min.css";
-import 'less-loader';
+import "less-loader";
 import HomeDropdown from "./components/shared/HomeDropdown";
 import Hometop from "./components/shared/HomeTop";
 import moment from "moment";
-import UIkit from 'uikit';
-import Icons from 'uikit/dist/js/uikit-icons';
-
+import UIkit from "uikit";
+import Icons from "uikit/dist/js/uikit-icons";
+import store from "./store/index";
+import Spinner from "./components/shared/Spinner";
 
 UIkit.use(Icons);
 
@@ -18,6 +19,7 @@ Vue.config.productionTip = false;
 
 Vue.component("HomeTop", Hometop);
 Vue.component("HomeDropdown", HomeDropdown);
+Vue.component("Spinner", Spinner);
 
 Vue.filter("capitalize", function(value) {
   if (value && typeof value === "string") {
@@ -27,12 +29,11 @@ Vue.filter("capitalize", function(value) {
   return "";
 });
 
-Vue.filter('fromNow', function (value) {
-  if (!value) return ''
+Vue.filter("fromNow", function(value) {
+  if (!value) return "";
 
-  return moment(value).fromNow()
-})
-
+  return moment(value).fromNow();
+});
 
 Vue.filter("date", value => {
   if (!value) {
@@ -60,5 +61,6 @@ Vue.filter("month", value => {
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

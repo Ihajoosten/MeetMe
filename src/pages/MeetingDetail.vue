@@ -3,16 +3,16 @@
   <div class="container">
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
-      <div v-if="!isActive">
+      <div v-if="isActive === 'active'">
         <h1 class="my-4">
           {{meeting.title}}
-          <span class="badge badge-danger">{{meeting.status | capitalize}}</span>
+          <span class="badge badge-success">{{meeting.status | capitalize}}</span>
         </h1>
       </div>
       <div v-else>
         <h1 class="my-4">
           {{meeting.title}}
-          <span class="badge badge-success">{{meeting.status | capitalize}}</span>
+          <span class="badge badge-danger">{{meeting.status | capitalize}}</span>
         </h1>
       </div>
     </div>
@@ -47,7 +47,7 @@
     <h3 class="my-4">People who joined</h3>
 
     <div class="row md-2">
-      <div v-for="person in joinedPeople" v-bind:key="person._id" class="col-1">
+      <div v-for="person in meeting.joinedPeople" v-bind:key="person._id" class="col-1">
         <img class="img-fluid is-rounded" :src="person.avatar" alt />
         <br />
         <p class="person-name text-center">{{person.name}}</p>
@@ -64,7 +64,9 @@
           class="col-md-10 shadow p-3 mb-5 bg-white rounded"
         >
           <!-- Thread title -->
-          <h3 class="mb-4 mt-4"><strong>{{thread.title}}</strong></h3>
+          <h3 class="mb-4 mt-4">
+            <strong>{{thread.title}}</strong>
+          </h3>
           <!-- Create new post, handle later -->
           <form>
             <div class="field">
@@ -105,9 +107,9 @@
 </template>
 
 <script>
-import axios from "axios";
 // import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
 // import ThreadList from '@/components/threads/ThreadList'
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "meeting-detail",
@@ -115,37 +117,26 @@ export default {
   //   ThreadCreateModal,
   //   ThreadList
   // },
-  data() {
-    return {
-      meeting: {},
-      joinedPeople: [],
-      threads: [],
-      url: "http://localhost:5000",
-      active: ""
-    };
+  computed: {
+    ...mapState({
+      meeting: state => state.meetings.item,
+      threads: state => state.threads.items,
+    }),
+    meetingCreator() {
+      return this.meeting.meetingCreator || {};
+    },
+    isActive() {
+      return this.meeting.status;
+    }
+  },
+  methods: {
+    ...mapActions("meetings", ["fetchMeeting"]),
+    ...mapActions("threads", ["fetchThreads"])
   },
   created() {
     const id = this.$route.params.id;
-    const url = this.url;
-    axios.get(url + `/api/v1/meetings/${id}`).then(res => {
-      this.meeting = res.data;
-      this.meeting.status = res.data.status;
-      this.joinedPeople = res.data.joinedPeople;
-    });
-
-    axios.get(url + `/api/v1/threads?meetingId=${id}`).then(res => {
-      this.threads = res.data;
-    });
-  },
-  computed: {
-    meetingCreator() {
-      return this.meeting.meetingCreator || "";
-    },
-    isActive() {
-      return {
-        active: this.active === "active"
-      };
-    }
+    this.fetchMeeting(id);
+    this.fetchThreads(id);
   }
 };
 </script>
