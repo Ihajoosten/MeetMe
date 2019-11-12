@@ -7,7 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   // In state we will keep our data that is been shared within the components.
   state: {
-    apiURL: "http://localhost:5000",
     meetings: [],
     categories: [],
     threads: [],
@@ -26,13 +25,13 @@ export default new Vuex.Store({
   // Good spot to fetch data. Action call should resolve into data
   actions: {
     fetchMeetings(context) {
-      axios.get("http://localhost:5000/api/v1/meetings").then(res => {
+      axios.get("/api/v1/meetings").then(res => {
         const meetings = res.data;
         context.commit("setMeetings", meetings);
       });
     },
     fetchCategories(context) {
-      axios.get("http://localhost:5000/api/v1/categories").then(res => {
+      axios.get("/api/v1/categories").then(res => {
         const categories = res.data;
         context.commit("setCategories", categories);
       });
