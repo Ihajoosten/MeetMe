@@ -31,7 +31,6 @@
 <script>
 import CategoryItem from "../components/category/CategoryItem";
 import MeetingItem from "../components/meeting/MeetingItem";
-import axios from "axios";
 
 export default {
   name: "home",
@@ -39,23 +38,17 @@ export default {
     CategoryItem,
     MeetingItem
   },
-  data() {
-    return {
-      // Local data variable
-      meetings: [],
-      categories: [],
-      url: "http://localhost:5000"
-    };
+  computed: {
+    meetings() {
+      return this.$store.getters["meetings"];
+    },
+    categories() {
+      return this.$store.getters["categories"];
+    }
   },
   created() {
-    const url = this.url;
-    axios.get(url + "/api/v1/categories").then(res => {
-      this.categories = res.data;
-    });
-
-    axios.get(url + "/api/v1/meetings").then(res => {
-      this.meetings = res.data;
-    });
+    this.$store.dispatch("fetchMeetings");
+    this.$store.dispatch("fetchCategories");
   }
 };
 </script>

@@ -10,6 +10,7 @@ import Hometop from "./components/shared/HomeTop";
 import moment from "moment";
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
+import store from "./store/index";
 
 
 UIkit.use(Icons);
@@ -60,5 +61,6 @@ Vue.filter("month", value => {
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");
