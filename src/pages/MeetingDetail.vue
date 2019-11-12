@@ -47,7 +47,7 @@
     <h3 class="my-4">People who joined</h3>
 
     <div class="row md-2">
-      <div v-for="person in joinedPeople" v-bind:key="person._id" class="col-1">
+      <div v-for="person in meeting.joinedPeople" v-bind:key="person._id" class="col-1">
         <img class="img-fluid is-rounded" :src="person.avatar" alt />
         <br />
         <p class="person-name text-center">{{person.name}}</p>
