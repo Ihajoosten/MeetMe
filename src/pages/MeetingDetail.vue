@@ -3,16 +3,16 @@
   <div class="container">
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
-      <div v-if="isActive !== 'active'">
+      <div v-if="status === 'active'">
         <h1 class="my-4">
           {{meeting.title}}
-          <span class="badge badge-danger">{{meeting.status | capitalize}}</span>
+          <span class="badge badge-success">{{meeting.status | capitalize}}</span>
         </h1>
       </div>
       <div v-else>
         <h1 class="my-4">
           {{meeting.title}}
-          <span class="badge badge-success">{{meeting.status | capitalize}}</span>
+          <span class="badge badge-danger">{{meeting.status | capitalize}}</span>
         </h1>
       </div>
     </div>
@@ -109,6 +109,7 @@
 <script>
 // import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
 // import ThreadList from '@/components/threads/ThreadList'
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "meeting-detail",
@@ -117,23 +118,20 @@ export default {
   //   ThreadList
   // },
   computed: {
-    meeting() {
-      return this.$store.state.meeting;
-    },
-    threads() {
-      return this.$store.state.threads;
-    },
-    meetingCreator() {
-      return this.meeting.meetingCreator || {};
-    },
-    isActive() {
-      return this.meeting.status;
-    }
+    ...mapState({
+      meeting: state => state.meeting,
+      threads: state => state.threads,
+      meetingCreator: state => state.meeting.meetingCreator || {},
+      status: state => state.meeting.status
+    })
+  },
+  methods: {
+    ...mapActions(["fetchMeeting", "fetchThreads"])
   },
   created() {
     const id = this.$route.params.id;
-    this.$store.dispatch("fetchMeeting", id);
-    this.$store.dispatch("fetchThreads", id);
+    this.fetchMeeting(id);
+    this.fetchThreads(id);
   }
 };
 </script>
