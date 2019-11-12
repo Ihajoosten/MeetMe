@@ -15,7 +15,7 @@
 
     <div class="container mt-5">
       <div
-        v-if="noMeetings === 0"
+        v-if="noMeetings.amount === 0"
         class="alert alert-warning text-center"
         role="alert"
       >No meetings found! Change the search criteria to find some</div>
@@ -27,32 +27,29 @@
 </template>
 
 <script>
-import axios from "axios";
 import MeetingItem from "../components/meeting/MeetingItem";
 
 export default {
   data() {
     return {
-      meetings: [],
-      url: "http://localhost:5000",
       amount: null
     };
   },
-  created() {
-    const url = this.url;
-    axios.get(url + "/api/v1/meetings").then(res => {
-      this.meetings = res.data;
-    });
+  components: {
+    MeetingItem
   },
   computed: {
+    meetings() {
+      return this.$store.state.meetings;
+    },
     noMeetings() {
       return {
-        amount: this.meetings.length
+        amount: this.$store.state.meetings.length
       };
     }
   },
-  components: {
-    MeetingItem
+  created() {
+    this.$store.dispatch("fetchMeetings");
   }
 };
 </script>

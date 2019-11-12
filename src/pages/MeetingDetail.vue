@@ -3,7 +3,7 @@
   <div class="container">
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
-      <div v-if="!isActive">
+      <div v-if="isActive !== 'active'">
         <h1 class="my-4">
           {{meeting.title}}
           <span class="badge badge-danger">{{meeting.status | capitalize}}</span>
@@ -64,7 +64,9 @@
           class="col-md-10 shadow p-3 mb-5 bg-white rounded"
         >
           <!-- Thread title -->
-          <h3 class="mb-4 mt-4"><strong>{{thread.title}}</strong></h3>
+          <h3 class="mb-4 mt-4">
+            <strong>{{thread.title}}</strong>
+          </h3>
           <!-- Create new post, handle later -->
           <form>
             <div class="field">
@@ -105,7 +107,6 @@
 </template>
 
 <script>
-import axios from "axios";
 // import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
 // import ThreadList from '@/components/threads/ThreadList'
 
@@ -115,37 +116,24 @@ export default {
   //   ThreadCreateModal,
   //   ThreadList
   // },
-  data() {
-    return {
-      meeting: {},
-      joinedPeople: [],
-      threads: [],
-      url: "http://localhost:5000",
-      active: ""
-    };
+  computed: {
+    meeting() {
+      return this.$store.state.meeting;
+    },
+    threads() {
+      return this.$store.state.threads;
+    },
+    meetingCreator() {
+      return this.meeting.meetingCreator || {};
+    },
+    isActive() {
+      return this.meeting.status;
+    }
   },
   created() {
     const id = this.$route.params.id;
-    const url = this.url;
-    axios.get(url + `/api/v1/meetings/${id}`).then(res => {
-      this.meeting = res.data;
-      this.meeting.status = res.data.status;
-      this.joinedPeople = res.data.joinedPeople;
-    });
-
-    axios.get(url + `/api/v1/threads?meetingId=${id}`).then(res => {
-      this.threads = res.data;
-    });
-  },
-  computed: {
-    meetingCreator() {
-      return this.meeting.meetingCreator || "";
-    },
-    isActive() {
-      return {
-        active: this.active === "active"
-      };
-    }
+    this.$store.dispatch("fetchMeeting", id);
+    this.$store.dispatch("fetchThreads", id);
   }
 };
 </script>

@@ -40,10 +40,10 @@ export default {
   },
   computed: {
     meetings() {
-      return this.$store.getters["meetings"];
+      return this.$store.state.meetings;
     },
     categories() {
-      return this.$store.getters["categories"];
+      return this.$store.state.categories;
     }
   },
   created() {

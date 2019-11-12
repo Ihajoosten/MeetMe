@@ -13,27 +13,36 @@ export default new Vuex.Store({
     meeting: {}
   },
   // Getters are like computed properties, they're simple to use functions to get a state.
-  getters: {
-    meetings(state) {
-      return state.meetings;
-    },
-    categories(state) {
-      return state.categories;
-    }
-  },
+  getters: {},
   // Actions are like methods in the vue component. They should not mutate the state.
   // Good spot to fetch data. Action call should resolve into data
   actions: {
-    fetchMeetings(context) {
+    fetchMeetings({ state, commit }) {
       axios.get("/api/v1/meetings").then(res => {
         const meetings = res.data;
-        context.commit("setMeetings", meetings);
+        commit("setMeetings", meetings);
+        return state.meetings;
       });
     },
-    fetchCategories(context) {
+    fetchCategories({ state, commit }) {
       axios.get("/api/v1/categories").then(res => {
         const categories = res.data;
-        context.commit("setCategories", categories);
+        commit("setCategories", categories);
+        return state.categories;
+      });
+    },
+    fetchMeeting({ state, commit }, meetingId) {
+      axios.get(`/api/v1/meetings/${meetingId}`).then(res => {
+        const meeting = res.data;
+        commit("setMeeting", meeting);
+        return state.meeting;
+      });
+    },
+    fetchThreads({ state, commit }, meetingId) {
+      axios.get(`/api/v1/threads?meetingId=${meetingId}`).then(res => {
+        const threads = res.data;
+        commit("setThreads", threads);
+        return state.threads;
       });
     }
   },
@@ -44,6 +53,12 @@ export default new Vuex.Store({
     },
     setCategories(state, categories) {
       state.categories = categories;
+    },
+    setMeeting(state, meeting) {
+      state.meeting = meeting;
+    },
+    setThreads(state, threads) {
+      state.threads = threads;
     }
   }
 });
