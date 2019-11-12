@@ -12,6 +12,8 @@ import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 import store from "./store/index";
 import Spinner from "./components/shared/Spinner";
+import vuelidate from "vuelidate";
+
 
 UIkit.use(Icons);
 
@@ -20,6 +22,8 @@ Vue.config.productionTip = false;
 Vue.component("HomeTop", Hometop);
 Vue.component("HomeDropdown", HomeDropdown);
 Vue.component("Spinner", Spinner);
+
+Vue.use(vuelidate)
 
 Vue.filter("capitalize", function(value) {
   if (value && typeof value === "string") {
@@ -62,5 +66,6 @@ Vue.filter("month", value => {
 new Vue({
   router,
   store,
+  vuelidate,
   render: h => h(App)
 }).$mount("#app");

@@ -24,6 +24,20 @@
                   <h3 class="uk-card-title uk-text-center">Welcome back!</h3>
                   <form>
                     <div class="uk-margin">
+                      <div v-if="$v.form.email.$error" class="text-left">
+                        <ul>
+                          <li v-if="!$v.form.email.required">
+                            <span class="help text-danger"
+                              >Email is required</span
+                            >
+                          </li>
+                          <li v-if="!$v.form.email.email">
+                            <span class="help text-danger"
+                              >Enter a valid email address</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
                           id="icon"
@@ -32,13 +46,24 @@
                         ></span>
                         <input
                           v-model="form.email"
+                          @blur="$v.form.email.$touch()"
                           class="uk-input uk-form-large"
-                          type="text"
+                          type="email"
                           placeholder="Email address"
+                          required
                         />
                       </div>
                     </div>
                     <div class="uk-margin">
+                      <div v-if="$v.form.password.$error" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >password is required</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
                           id="icon"
@@ -47,6 +72,7 @@
                         ></span>
                         <input
                           v-model="form.password"
+                          @blur="$v.form.password.$touch()"
                           class="uk-input uk-form-large"
                           type="password"
                           placeholder="Password"
@@ -63,7 +89,11 @@
                       >
                     </div>
                     <div class="uk-margin">
-                      <button @click.prevent="login" class="btn btn-success uk-width-1-1">
+                      <button
+                        :disabled="notValid"
+                        @click.prevent="login"
+                        class="btn btn-success uk-width-1-1"
+                      >
                         Login
                       </button>
                     </div>
@@ -87,6 +117,7 @@
 </template>
 
 <script>
+import { required, email } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -96,9 +127,20 @@ export default {
       }
     };
   },
+  validations: {
+    form: {
+      email: { required, email },
+      password: { required }
+    }
+  },
+  computed: {
+    notValid() {
+      return this.$v.form.$invalid
+    }
+  },
   methods: {
     login() {
-      this.$store.dispatch('auth/login', this.form)
+      this.$store.dispatch("auth/login", this.form);
     }
   }
 };

@@ -24,17 +24,28 @@
                   <h3 class="uk-card-title uk-text-center">
                     Sign up to get started!
                   </h3>
-                  <form>
+                  <form enctype="multipart/form-data">
                     <div class="uk-margin uk-width-1-1" uk-margin>
+                      <div v-if="$v.form.avatar.$error" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >Invalid filetype! Only 'jpg', 'jpeg' or 'png' are
+                              supported</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div uk-form-custom="target: true">
                         <span
                           id="icon"
                           class="uk-form-icon"
                           uk-icon="icon: image"
                         ></span>
-                        <input type="file" />
+                        <!-- <input type="file" /> -->
                         <input
-                          v-model="form.avatar"
+                        v-model="form.avatar"
+                          @blur="$v.form.avatar.$touch()"
                           class="uk-input uk-form-large uk-form-width-large"
                           type="text"
                           placeholder="Profile photo"
@@ -42,6 +53,15 @@
                       </div>
                     </div>
                     <div class="uk-margin">
+                      <div v-if="$v.form.name.$error" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >Name is required</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
                           id="icon"
@@ -50,6 +70,7 @@
                         ></span>
                         <input
                           v-model="form.name"
+                          @blur="$v.form.name.$touch()"
                           class="uk-input uk-form-large"
                           type="text"
                           placeholder="First and last name"
@@ -57,6 +78,20 @@
                       </div>
                     </div>
                     <div class="uk-margin">
+                      <div v-if="$v.form.email.$error" class="text-left">
+                        <ul>
+                          <li v-if="!$v.form.email.required">
+                            <span class="help text-danger"
+                              >Email is required</span
+                            >
+                          </li>
+                          <li v-if="!$v.form.email.email">
+                            <span class="help text-danger"
+                              >Enter a valid email address</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
                           id="icon"
@@ -65,6 +100,7 @@
                         ></span>
                         <input
                           v-model="form.email"
+                          @blur="$v.form.email.$touch()"
                           class="uk-input uk-form-large"
                           type="email"
                           placeholder="Email address"
@@ -72,6 +108,15 @@
                       </div>
                     </div>
                     <div class="uk-margin">
+                      <div v-if="$v.form.username.$error" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >Username is required</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
                           id="icon"
@@ -80,6 +125,7 @@
                         ></span>
                         <input
                           v-model="form.username"
+                          @blur="$v.form.username.$touch()"
                           class="uk-input uk-form-large"
                           type="text"
                           placeholder="Username"
@@ -87,6 +133,15 @@
                       </div>
                     </div>
                     <div class="uk-margin">
+                      <div v-if="$v.form.password.$error" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >Password is required</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
                           id="icon"
@@ -95,26 +150,39 @@
                         ></span>
                         <input
                           v-model="form.password"
+                          @blur="$v.form.password.$touch()"
                           class="uk-input uk-form-large"
                           type="password"
                           placeholder="Set a password"
                         />
                       </div>
                     </div>
-                    <div
-                      class="uk-margin uk-grid-small uk-child-width-auto uk-grid"
-                    >
+                    <div class="uk-margin">
+                      <div v-if="!$v.form.checked.$model" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >Accepting terms of service is required</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <label>
                         <input
                           v-model="form.checked"
+                          @blur="$v.form.checked.$touch()"
                           class="uk-checkbox"
                           type="checkbox"
                         />
-                        I agree the Terms and Conditions.
+                        I accept the Terms and services.
                       </label>
                     </div>
                     <div class="uk-margin">
-                      <button @click.prevent="register" class="btn btn-success uk-width-1-1">
+                      <button
+                        :disabled="notValid"
+                        @click.prevent="register"
+                        class="btn btn-success uk-width-1-1"
+                      >
                         Register
                       </button>
                     </div>
@@ -138,6 +206,9 @@
 </template>
 
 <script>
+import { required, email } from "vuelidate/lib/validators";
+import { validFileTypes } from "../validators/validators";
+
 export default {
   data() {
     return {
@@ -147,14 +218,29 @@ export default {
         email: null,
         username: null,
         password: null,
-        checked: false
+        checked: null
       }
     };
   },
+  validations: {
+    form: {
+      avatar: { validFileTypes },
+      name: { required },
+      email: { required, email },
+      username: { required },
+      password: { required },
+      checked: { required }
+    }
+  },
+  computed: {
+    notValid() {
+      return this.$v.form.$invalid;
+    }
+  },
   methods: {
-      register() {
-      this.$store.dispatch('auth/register', this.form)
-      }
+    register() {
+      this.$store.dispatch("auth/register", this.form);
+    }
   }
 };
 </script>

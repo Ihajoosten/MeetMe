@@ -1,8 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const controller = require("../controllers/users");
+const auth = require('../services/authentication');
 
-const UsersCtrl = require('../controllers/users');
-
-router.get('/users', UsersCtrl.getUsers);
-
-module.exports = router;
+module.exports = app => {
+  // User endpoints
+  app.post("/api/users", auth.validateToken,  controller.createUser);
+  app.put("/api/users/:id", auth.validateToken,  controller.updateUserByUsername);
+  app.delete("/api/users/:id", auth.validateToken,  controller.deleteUserByUsername);
+  app.post('/api/users/login', controller.loginUser);
+};
