@@ -14,6 +14,7 @@ import store from "./store/index";
 import Spinner from "./components/shared/Spinner";
 import vuelidate from "vuelidate";
 
+
 UIkit.use(Icons);
 
 Vue.config.productionTip = false;

@@ -24,17 +24,28 @@
                   <h3 class="uk-card-title uk-text-center">
                     Sign up to get started!
                   </h3>
-                  <form class="was-validated">
+                  <form enctype="multipart/form-data">
                     <div class="uk-margin uk-width-1-1" uk-margin>
+                      <div v-if="$v.form.avatar.$error" class="text-left">
+                        <ul>
+                          <li>
+                            <span class="help text-danger"
+                              >Invalid filetype! Only 'jpg', 'jpeg' or 'png' are
+                              supported</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                       <div uk-form-custom="target: true">
                         <span
                           id="icon"
                           class="uk-form-icon"
                           uk-icon="icon: image"
                         ></span>
-                        <input type="file" />
+                        <!-- <input type="file" /> -->
                         <input
-                          v-model="form.avatar"
+                        v-model="form.avatar"
+                          @blur="$v.form.avatar.$touch()"
                           class="uk-input uk-form-large uk-form-width-large"
                           type="text"
                           placeholder="Profile photo"
@@ -196,6 +207,7 @@
 
 <script>
 import { required, email } from "vuelidate/lib/validators";
+import { validFileTypes } from "../validators/validators";
 
 export default {
   data() {
@@ -212,6 +224,7 @@ export default {
   },
   validations: {
     form: {
+      avatar: { validFileTypes },
       name: { required },
       email: { required, email },
       username: { required },
