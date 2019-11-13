@@ -25,6 +25,8 @@ Vue.component("Spinner", Spinner);
 
 Vue.use(vuelidate)
 
+// const conn = process.env.VUE_APP_URI
+
 Vue.filter("capitalize", function(value) {
   if (value && typeof value === "string") {
     return value.charAt(0).toUpperCase() + value.slice(1);
