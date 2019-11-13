@@ -21,10 +21,9 @@ module.exports = {
   createCategories(req, res, next) {
     const body = req.body;
 
-    let category = new Comment({
-      author: req.userId,
-      content: body.content,
-      thread: body.thread
+    let category = new Category({
+      name: body.name,
+      image: body.image
     });
 
     category.save().then(() => res.status(200).json({ result: "OK" }));

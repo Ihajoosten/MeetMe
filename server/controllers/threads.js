@@ -5,12 +5,16 @@ const Comment = require("../models/comments");
 module.exports = {
   postThread: (req, res, next) => {
     const body = req.body;
+    const author = req.userId;
 
-    let thread = new Thread({
-      author: req.userId,
-      title: body.title,
-      content: body.title
-    });
+    let thread = new Thread(body);
+    console.log(thread);
+
+    if (!thread) {
+      return res.status(422).json();
+    }
+
+    thread.author = author;
 
     thread.save().then(() => {
       res.status(200).json({ result: "OK" });
@@ -18,11 +22,18 @@ module.exports = {
   },
 
   getAllThreads: (req, res, next) => {
+    const meetingId = req.query.meetingId;
+
     Thread.find({})
-      .populate("comments")
+    .where({'meeting': meetingId})
+      .populate({
+        path: "posts",
+        options: { limit: 5, sort: { createdAt: -1 } },
+        populate: { path: "author" }
+      })
       .populate("author")
       .then(threads => {
-        res.status(200).json({ result: threads });
+        res.status(200).json(threads);
       })
       .catch(err => {
         next({

@@ -5,9 +5,9 @@ export default {
   state: {
     items: []
   },
-      actions: {
+  actions: {
     fetchCategories({ state, commit }) {
-      return axios.get("/api/v1/categories").then(res => {
+      return axios.get("/api/categories").then(res => {
         const categories = res.data;
         commit(
           "setItems",

@@ -6,7 +6,7 @@
           <div class="form-inline">
             <input type="text" class="mr-3 ml-4" placeholder=" New York" />
             <span class="text-muted mr-3">Meetings in New York, USA</span>
-            <button class="btn btn-outline-success mr-2 ml-5">Meetups</button>
+            <button class="btn btn-outline-success mr-2 ml-5">Meetings</button>
             <button class="btn btn-outline-primary">Calendar</button>
           </div>
         </div>

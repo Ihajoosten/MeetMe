@@ -3,6 +3,9 @@ const auth = require('../services/authentication');
 
 module.exports = app => {
   // Thread endpoints
-  app.get("/api/meetings", auth.validateToken,  controller.getAllMeetings);
-  app.get("/api/meetings/:id", auth.validateToken,  controller.getMeetingById);
+  app.post("/api/meetings", auth.validateToken,  controller.createMeeting);
+  app.get("/api/meetings",  controller.getAllMeetings);
+  app.get("/api/meetings/:id",  controller.getMeetingById);
   };
+
+  // auth.validateToken -> authentication works, but for development not currently using

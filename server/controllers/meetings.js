@@ -1,10 +1,24 @@
 const Meeting = require("../models/meetings");
 
 module.exports = {
-  getAllMeetings(req, res) {
+  createMeeting: (req, res) => {
+    const body = req.body;
+    const author = req.userId;
+
+    const meeting = new Meeting(body);
+    meeting.author = author;
+
+    meeting.save().then(() => res.status(200).json({ result: meeting }));
+  },
+  getAllMeetings: (req, res) => {
     Meeting.find({})
+      .populate("author", "name id avatar")
       .populate("category")
       .populate("joinedPeople")
+      .populate({
+        path: "threads",
+        populate: { path: "posts" }
+      })
       .exec((errors, meetings) => {
         if (errors) {
           return res.status(422).send({ errors });
