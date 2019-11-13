@@ -54,17 +54,16 @@
     <h3 class="my-4">People who joined</h3>
 
     <div class="row md-2">
-      <div v-if="amount !== 0" class="alert alert-info" role="alert">
-        <div v-if="count > 1">
+      <div role="alert">
+        <div v-if="count >= 2" class="alert alert-info">
           <i>{{ count }} persons have joined so far</i>
         </div>
-        <div v-else>
+        <div v-else-if="count === 1" class="alert alert-info">
           <i>{{ count }} person has joined so far</i>
         </div>
-      </div>
-
-      <div class="alert alert-warning" role="alert" v-else>
-        <i>0 persons have joined so far</i>
+        <div v-else class="alert alert-warning" role="alert">
+          <i>0 persons have joined so far</i>
+        </div>
       </div>
     </div>
     <!-- /.row -->
@@ -131,11 +130,15 @@ export default {
   //   ThreadCreateModal,
   //   ThreadList
   // },
+  data() {
+    return {
+      amount: null
+    };
+  },
   computed: {
     ...mapState({
       meeting: state => state.meetings.item,
       threads: state => state.threads.items,
-      amount: state => state.meetings.item.joinedPeople.length || 0 ,
       count: state => state.meetings.item.joinedPeopleCount,
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {}
