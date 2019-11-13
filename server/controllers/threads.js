@@ -25,6 +25,7 @@ module.exports = {
     const meetingId = req.query.meetingId;
 
     Thread.find({})
+    .where({'meeting': meetingId})
       .populate({
         path: "posts",
         options: { limit: 5, sort: { createdAt: -1 } },

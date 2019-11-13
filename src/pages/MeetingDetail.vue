@@ -135,7 +135,7 @@ export default {
     ...mapState({
       meeting: state => state.meetings.item,
       threads: state => state.threads.items,
-      amount: state => state.meetings.item.joinedPeople.length,
+      amount: state => state.meetings.item.joinedPeople.length || 0 ,
       count: state => state.meetings.item.joinedPeopleCount,
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {}
