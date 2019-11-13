@@ -1,4 +1,4 @@
-# MeetMe
+# MeetMe [![Build Status](https://travis-ci.com/LucJoostenNL/MeetMe.svg?token=MzyseizasM3XhpqpM8gg&branch=master)](https://travis-ci.com/LucJoostenNL/MeetMe)
 
 ## Project setup
 ```
