@@ -56,7 +56,6 @@ export default {
   created() {
     Promise.all([this.fetchMeetings(), this.fetchCategories()])
     .then(() => this.isDataLoaded = true)
-    .catch((err) => {console.log(err), this.isDataLoaded = true})
 
     // this.fetchMeetings().then(() => {
     //   this.fetchCategories().then(() => {
