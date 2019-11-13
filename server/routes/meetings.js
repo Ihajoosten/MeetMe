@@ -1,9 +1,9 @@
 const controller = require("../controllers/meetings");
-// const auth = require('../services/authentication');
+const auth = require('../services/authentication');
 
 module.exports = app => {
   // Thread endpoints
-  app.post("/api/meetings",  controller.createMeeting);
+  app.post("/api/meetings", auth.validateToken,  controller.createMeeting);
   app.get("/api/meetings",  controller.getAllMeetings);
   app.get("/api/meetings/:id",  controller.getMeetingById);
   };

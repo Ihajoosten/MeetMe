@@ -7,14 +7,10 @@ export default {
   },
   actions: {
     fetchThreads({ state, commit }, meetingId) {
-      commit("setItems", { resource: "threads", items: [] },    );
+      commit("setItems", { resource: "threads", items: [] }, { root: true });
       return axios.get(`/api/threads?meetingId=${meetingId}`).then(res => {
         const threads = res.data;
-        commit(
-          "setItems",
-          { resource: "threads", items: threads },
-          { root: true }
-        );
+        commit("setItems",{ resource: "threads", items: threads }, { root: true });
         return state.items;
       });
     }

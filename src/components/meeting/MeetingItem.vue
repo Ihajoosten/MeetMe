@@ -8,9 +8,7 @@
 
         <div class="col p-4 d-flex flex-column position-static">
           <h3 class="mb-0">{{meeting.title}}</h3>
-          <div
-            class="mb-1 text-muted"
-          >{{meeting.startDate | date}} · {{meeting.timeFrom}} - {{meeting.timeTo}}</div>
+          <div class="mb-1 text-muted">{{meeting.startDate | date}} · {{meeting.timeFrom}} - {{meeting.timeTo}}</div>
                   <p v-if="meeting.joinedPeopleCount === 1" class="card-text mb-auto">{{meeting.joinedPeopleCount}} Person has already joined!</p>
                   <p v-else-if="meeting.joinedPeopleCount === 0" class="card-text mb-auto">No persons have joined so far!</p>
                   <p v-else class="card-text mb-auto">{{meeting.joinedPeopleCount}} Persons have already joined!</p>
