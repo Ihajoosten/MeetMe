@@ -1,16 +1,16 @@
-//import axios from "axios";
+// //import axios from "axios";
 
-export default {
-  namespaced: true,
-  state: {
+// export default {
+//   namespaced: true,
+//   state: {
     
-  },
-  actions: {
-    login(context, userData) {
-      console.log(userData);
-    },
-    register(context, userData) {
-        console.log(userData)
-    }
-  }
-};
+//   },
+//   actions: {
+//     login(context, userData) {
+//       console.log(userData);
+//     },
+//     register(context, userData) {
+//         console.log(userData)
+//     }
+//   }
+// };

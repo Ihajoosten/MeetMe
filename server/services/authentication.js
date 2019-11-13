@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const logger = require('../config/dev').logger;
+const logger = require('../config/prod').logger;
 
 module.exports = {
   generateJWT: user => {
