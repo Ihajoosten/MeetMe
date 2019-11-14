@@ -42,17 +42,16 @@ module.exports = {
   loginUser: (req, res, next) => {
     const body = req.body;
 
-    User.findOne({ username: body.username }).then(user => {
+    User.findOne({ email: body.email }).then(user => {
       if (!bcrypt.compareSync(body.password, user.password)) {
         let errorObj = {
           message: "Login not correct",
           code: 400
         };
-
         next(errorObj);
       } else {
         const token = auth.generateJWT(user);
-        res.status(200).json({ result: token });
+        res.status(200).json({ token: token });
       }
     });
   } 

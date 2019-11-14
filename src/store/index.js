@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import meetings from "./modules/meetings";
 import threads from "./modules/threads";
 import categories from "./modules/categories";
-import auth from "./modules/auth";
+import * as auth from "../services/authService";
 
 Vue.use(Vuex);
 
@@ -12,8 +12,14 @@ export default new Vuex.Store({
   modules: {
     meetings,
     threads,
-    categories,
-    auth
+    categories
+    //auth
+  },
+  state: {
+    isLoggedIn: false,
+    email: null,
+    userId: null,
+    token: localStorage.getItem("token") || null,
   },
   // Functions to mutate the state
   mutations: {
@@ -22,6 +28,21 @@ export default new Vuex.Store({
     },
     setItem(state, { resource, item }) {
       state[resource].item = item;
+    },
+    authenticate(state) {
+      state.isLoggedIn = auth.isLoggedIn();
+      if (state.isLoggedIn) {
+        state.email = auth.getEmail();
+        state.userId = auth.getUserId();
+      } else {
+        state.email = null;
+        state.userId = null;
+      }
+    }
+  },
+  actions: {
+    authenticate(context) {
+      context.commit("authenticate");
     }
   }
 });
