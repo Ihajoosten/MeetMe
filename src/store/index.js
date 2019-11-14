@@ -20,7 +20,7 @@ export default new Vuex.Store({
     username: null,
     email: null,
     userId: null,
-    token: localStorage.getItem("token") || null,
+    token: localStorage.getItem("access_token") || null,
   },
   // Functions to mutate the state
   mutations: {
@@ -31,14 +31,12 @@ export default new Vuex.Store({
       state[resource].item = item;
     },
     authenticate(state) {
-      if (auth.isLoggedIn()) {
-        state.isLoggedIn = true;
+      state.isLoggedIn = auth.isLoggedIn(); 
+      if (state.isLoggedIn) {
         state.email = auth.getEmail();
         state.userId = auth.getUserId();
         state.username = auth.getUsername();
       } else {
-        localStorage.clear();
-        state.isLoggedIn = false;
         state.email = null;
         state.userId = null;
         state.username = null;

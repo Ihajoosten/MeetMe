@@ -18,11 +18,13 @@ export default {
   components: {
     TheNavbar,
     TheFooter
+  },
+  beforeCreate() {
+    this.$store.dispatch("authenticate");
   }
 };
 </script>
 
-<style lang="css">
-</style>
+<style lang="css"></style>
 
 //@import '~bulma/bulma.sass';
