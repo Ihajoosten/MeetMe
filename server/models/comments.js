@@ -14,10 +14,10 @@
 //     type: Date,
 //     default: Date.now
 //   },
-//   thread: {
+//   post: {
 //     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Thread",
-//     required: [true, "Thread is required!"]
+//     ref: "Post",
+//     required: [true, "Post is required!"]
 //   }
 // });
 
