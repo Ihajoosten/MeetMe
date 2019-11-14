@@ -180,7 +180,7 @@
                     <div class="uk-margin">
                       <button
                         :disabled="notValid"
-                        @click.prevent="register"
+                        @click.prevent="onSubmit"
                         class="btn btn-success uk-width-1-1"
                       >
                         Register
@@ -208,6 +208,8 @@
 <script>
 import { required, email } from "vuelidate/lib/validators";
 import { validFileTypes } from "../validators/validators";
+import * as auth from "../services/authService";
+
 
 export default {
   data() {
@@ -238,8 +240,19 @@ export default {
     }
   },
   methods: {
-    register() {
-      this.$store.dispatch("auth/register", this.form);
+    // register() {
+    //   this.$store.dispatch("auth/register", this.form);
+    // }
+    onSubmit: async function() {
+      const user = {
+        avatar: this.form.avatar,
+        name: this.form.name,
+        email: this.form.email,
+        username: this.form.username,
+        password: this.form.password
+      };
+      await auth.registerUser(user);
+      this.$router.push({ name: "login" });
     }
   }
 };

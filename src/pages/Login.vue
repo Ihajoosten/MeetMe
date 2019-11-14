@@ -91,7 +91,7 @@
                     <div class="uk-margin">
                       <button
                         :disabled="notValid"
-                        @click.prevent="login"
+                        @click.prevent="onSubmit"
                         class="btn btn-success uk-width-1-1"
                       >
                         Login
@@ -118,6 +118,8 @@
 
 <script>
 import { required, email } from "vuelidate/lib/validators";
+import * as auth from "../services/authService";
+
 export default {
   data() {
     return {
@@ -135,12 +137,20 @@ export default {
   },
   computed: {
     notValid() {
-      return this.$v.form.$invalid
+      return this.$v.form.$invalid;
     }
   },
   methods: {
-    login() {
-      this.$store.dispatch("auth/login", this.form);
+    // login() {
+    //   this.$store.dispatch("auth/login", this.form);
+    // }
+    onSubmit: async function() {
+      const user = {
+        email: this.form.email,
+        password: this.form.password
+      };
+      await auth.login(user);
+      this.$router.push({ name: "home" });
     }
   }
 };
