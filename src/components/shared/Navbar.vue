@@ -51,6 +51,9 @@
         <li v-if="!isLoggedIn" class="nav-item">
           <router-link :to="{ name: 'login' }"><button class="btn btn-sm btn-outline-success mt-2">Login</button></router-link>
         </li>
+        <li v-if="isLoggedIn" class="nav-item mt-2 mr-3">
+          <i>Welcome {{user}}!</i>
+        </li>
         <li v-if="isLoggedIn" class="nav-item">
           <button v-on:click.prevent="logout()" class="btn btn-sm btn-outline-danger mt-2">Logout</button>
         </li>
@@ -67,7 +70,8 @@ export default {
   name: "Navbar",
   computed: {
     ...mapState({
-      isLoggedIn: state => state.isLoggedIn
+      isLoggedIn: state => state.isLoggedIn,
+      user: state => state.username
     })
   },
   methods: {

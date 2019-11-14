@@ -22,6 +22,7 @@ export function logout() {
 }
 
 function setToken(token) {
+  setTimeout(function(){localStorage.removeItem("token");}, 1000 * 60 * 3);
   localStorage.setItem("token", token);
   store.dispatch("authenticate");
 }
@@ -32,6 +33,14 @@ export function getEmail() {
     return null;
   }
   return token.user.email;
+}
+
+export function getUsername() {
+  const token = decodeToken();
+  if (!token) {
+    return null;
+  }
+  return token.user.username;
 }
 
 export function getUserId() {

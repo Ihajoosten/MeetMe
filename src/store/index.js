@@ -17,6 +17,7 @@ export default new Vuex.Store({
   },
   state: {
     isLoggedIn: false,
+    username: null,
     email: null,
     userId: null,
     token: localStorage.getItem("token") || null,
@@ -30,13 +31,17 @@ export default new Vuex.Store({
       state[resource].item = item;
     },
     authenticate(state) {
-      state.isLoggedIn = auth.isLoggedIn();
-      if (state.isLoggedIn) {
+      if (auth.isLoggedIn()) {
+        state.isLoggedIn = true;
         state.email = auth.getEmail();
         state.userId = auth.getUserId();
+        state.username = auth.getUsername();
       } else {
+        localStorage.clear();
+        state.isLoggedIn = false;
         state.email = null;
         state.userId = null;
+        state.username = null;
       }
     }
   },

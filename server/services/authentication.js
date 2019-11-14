@@ -3,10 +3,10 @@ const logger = require('../config/prod').logger;
 
 module.exports = {
   generateJWT: user => {
-    const tokenData = { username: user.name, id: user.id };
+    const tokenData = { username: user.username, id: user.id };
     return jwt.sign({ user: tokenData }, "secret", {
       algorithm: "HS256",
-      expiresIn: 86400 // expires in 24 hours
+      expiresIn: 60 // expires in 24 hours
     });
   },
   decodeToken: req => {
