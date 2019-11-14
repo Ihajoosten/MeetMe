@@ -6,15 +6,12 @@
         <router-link class="nav-link" :to="{name: 'home'}"><a>Home</a></router-link>
         </li>
         <li class="nav-item">
-        <router-link class="nav-link" :to="{name: 'find'}"><a>Find</a></router-link>
+        <router-link class="nav-link" :to="{name: 'find'}"><a>Meetings</a></router-link>
         </li>
         <li class="nav-item">
           <router-link :to="{name: 'about'}">
             <a class="nav-link">About</a>
           </router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Meetings</a>
         </li>
       </ul>
     </div>
