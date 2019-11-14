@@ -43,7 +43,7 @@ export function getUserId() {
 }
 
 export function registerUser(user) {
-  return http().post("/api/register", user);
+  return axios.post("/api/users/register", user);
 }
 
 export function getToken() {
