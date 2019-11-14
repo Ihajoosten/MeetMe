@@ -46,19 +46,13 @@
     >
       <ul class="navbar-nav ml-auto">
         <li v-if="!isLoggedIn" class="nav-item mr-2">
-          <router-link :to="{ name: 'register' }"
-            ><a class="btn btn-sm btn-outline-primary mt-2">Register</a
-            ></router-link
-          >
+          <router-link :to="{ name: 'register' }"><button class="btn btn-sm btn-outline-primary mt-2">Register</button></router-link>
         </li>
         <li v-if="!isLoggedIn" class="nav-item">
-          <router-link :to="{ name: 'login' }"
-            ><a class="btn btn-sm btn-outline-success mt-2">Login</a
-            ></router-link
-          >
+          <router-link :to="{ name: 'login' }"><button class="btn btn-sm btn-outline-success mt-2">Login</button></router-link>
         </li>
         <li v-if="isLoggedIn" class="nav-item">
-          <a v-on:click.prevent="logout()" class="btn btn-sm btn-outline-success mt-2">Logout</a>
+          <button v-on:click.prevent="logout()" class="btn btn-sm btn-outline-danger mt-2">Logout</button>
         </li>
       </ul>
     </div>
@@ -89,7 +83,7 @@ export default {
 .brand-name {
   font-size: 30px;
 }
-a {
+li a {
   text-decoration: none !important;
   font-size: 20px;
 }

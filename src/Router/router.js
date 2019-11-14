@@ -74,7 +74,7 @@ const router = new Router({
       name: "meeting-detail",
       component: () => import("@/pages/MeetingDetail.vue"),
       beforeEnter: (to, from, next) => {
-        if (!auth.isLoggedIn()) {
+        if (auth.isLoggedIn()) {
           next();
         } else {
           next("/login");
