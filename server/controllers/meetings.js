@@ -7,8 +7,14 @@ module.exports = {
 
     const meeting = new Meeting(body);
     meeting.author = author;
+    meeting.status = "active";
 
-    meeting.save().then(() => res.status(200).json({ result: meeting }));
+    meeting.save((err, meeting) => {
+      if (err) {
+        return res.status(422).send({ err });
+      }
+      return res.status(200).json(meeting);
+    });
   },
   getAllMeetings: (req, res) => {
     Meeting.find({})
