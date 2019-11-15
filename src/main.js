@@ -1,68 +1,68 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./Router/router";
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "uikit/dist/css/uikit.min.css";
-import "less-loader";
-import HomeDropdown from "./components/shared/HomeDropdown";
-import Hometop from "./components/shared/HomeTop";
-import moment from "moment";
-import UIkit from "uikit";
-import Icons from "uikit/dist/js/uikit-icons";
-import store from "./store/index";
-import Spinner from "./components/shared/Spinner";
-import vuelidate from "vuelidate";
+import Vue from 'vue';
+import App from './App.vue';
+import router from './Router/router';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'uikit/dist/css/uikit.min.css';
+import 'less-loader';
+import HomeDropdown from './components/shared/HomeDropdown';
+import Hometop from './components/shared/HomeTop';
+import moment from 'moment';
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+import store from './store/index';
+import Spinner from './components/shared/Spinner';
+import vuelidate from 'vuelidate';
 import Toasted from 'vue-toasted';
- 
+
 Vue.config.productionTip = false;
 
-Vue.component("HomeTop", Hometop);
-Vue.component("HomeDropdown", HomeDropdown);
-Vue.component("Spinner", Spinner);
+Vue.component('HomeTop', Hometop);
+Vue.component('HomeDropdown', HomeDropdown);
+Vue.component('Spinner', Spinner);
 
-Vue.use(Toasted)
+Vue.use(Toasted);
 UIkit.use(Icons);
-Vue.use(vuelidate)
+Vue.use(vuelidate);
 
 // const conn = process.env.VUE_APP_URI
 
-Vue.filter("capitalize", function(value) {
-  if (value && typeof value === "string") {
+Vue.filter('capitalize', function(value) {
+  if (value && typeof value === 'string') {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
-  return "";
+  return '';
 });
 
-Vue.filter("fromNow", function(value) {
-  if (!value) return "";
+Vue.filter('fromNow', function(value) {
+  if (!value) return '';
 
   return moment(value).fromNow();
 });
 
-Vue.filter("date", value => {
+Vue.filter('date', value => {
   if (!value) {
-    return "";
+    return '';
   }
 
-  return moment(value).format("DD MMM, YYYY");
+  return moment(value).format('DD MMM, YYYY');
 });
 
-Vue.filter("day", value => {
+Vue.filter('day', value => {
   if (!value) {
-    return "";
+    return '';
   }
 
-  return moment(value).format("DD");
+  return moment(value).format('DD');
 });
 
-Vue.filter("month", value => {
+Vue.filter('month', value => {
   if (!value) {
-    return "";
+    return '';
   }
 
-  return moment(value).format("MMMM");
+  return moment(value).format('MMMM');
 });
 
 new Vue({
@@ -70,4 +70,4 @@ new Vue({
   store,
   vuelidate,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');

@@ -6,7 +6,8 @@
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
-    >Change View</a>
+      >Change View</a
+    >
     <div class="dropdown-menu" aria-labelledby="menu-drop">
       <a class="dropdown-item" href="#">Item 1</a>
       <a class="dropdown-item" href="#">Item 2</a>

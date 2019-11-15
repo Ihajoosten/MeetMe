@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-const User = require("../models/users");
-const bcrypt = require("bcrypt");
-const auth = require("../services/authentication");
+const User = require('../models/users');
+const bcrypt = require('bcrypt');
+const auth = require('../services/authentication');
 
 module.exports = {
   createUser: (req, res, next) => {
@@ -15,7 +15,7 @@ module.exports = {
       password: body.password
     });
 
-    user.save().then(() => res.status(200).json({ result: "OK" }));
+    user.save().then(() => res.status(200).json({ result: 'OK' }));
   },
   updateUserByUsername: (req, res, next) => {
     const username = req.params.username;
@@ -46,18 +46,27 @@ module.exports = {
     }
     User.findOne({ email: req.body.email }, (error, user) => {
       if (error) {
-        return res.status(500).json({message: "Something went wrong on the server!", status: 500});
+        return res
+          .status(500)
+          .json({
+            message: 'Something went wrong on the server!',
+            status: 500
+          });
       }
       if (!user) {
-        return res.status(401).json({message: "Email does not match!", status: 401});
+        return res
+          .status(401)
+          .json({ message: 'Email does not match!', status: 401 });
       }
-  
+
       const passwordMatch = User.passwordMatches(
         req.body.password,
         user.password
       );
       if (!passwordMatch) {
-        return res.status(401).json({message: "Password does not match!", status: 401});
+        return res
+          .status(401)
+          .json({ message: 'Password does not match!', status: 401 });
       }
       const token = auth.generateJWT(user);
       return res.status(200).json({ token: token });

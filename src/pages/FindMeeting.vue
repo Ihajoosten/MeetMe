@@ -18,17 +18,23 @@
         v-if="amount === 0"
         class="alert alert-warning text-center"
         role="alert"
-      >No meetings found! Change the search criteria to find some</div>
+      >
+        No meetings found! Change the search criteria to find some
+      </div>
       <div class="row">
-        <MeetingItem v-for="meeting in meetings" v-bind:key="meeting._id" :meeting="meeting" />
+        <MeetingItem
+          v-for="meeting in meetings"
+          v-bind:key="meeting._id"
+          :meeting="meeting"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import MeetingItem from "../components/meeting/MeetingItem";
-import { mapActions, mapState } from "vuex";
+import MeetingItem from '../components/meeting/MeetingItem';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   components: {
@@ -37,14 +43,14 @@ export default {
   computed: {
     ...mapState({
       meetings: state => state.meetings.items,
-      amount: state => state.meetings.items.length 
+      amount: state => state.meetings.items.length
     })
   },
   created() {
     this.fetchMeetings();
   },
   methods: {
-    ...mapActions('meetings', ["fetchMeetings"])
+    ...mapActions('meetings', ['fetchMeetings'])
   }
 };
 </script>

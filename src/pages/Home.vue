@@ -40,12 +40,12 @@
 </template>
 
 <script>
-import CategoryItem from "../components/category/CategoryItem";
-import MeetingItem from "../components/meeting/MeetingItem";
-import { mapActions, mapState } from "vuex";
+import CategoryItem from '../components/category/CategoryItem';
+import MeetingItem from '../components/meeting/MeetingItem';
+import { mapActions, mapState } from 'vuex';
 
 export default {
-  name: "home",
+  name: 'home',
   data() {
     return {
       isDataLoaded: false
@@ -73,8 +73,8 @@ export default {
     // });
   },
   methods: {
-    ...mapActions("meetings", ["fetchMeetings"]),
-    ...mapActions("categories", ["fetchCategories"])
+    ...mapActions('meetings', ['fetchMeetings']),
+    ...mapActions('categories', ['fetchCategories'])
   }
 };
 </script>

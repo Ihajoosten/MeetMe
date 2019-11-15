@@ -35,16 +35,18 @@
       >
         Next
       </button>
-      <button v-on:click="createMeeting" v-else class="btn btn-outline-success">Confirm</button>
+      <button v-on:click="createMeeting" v-else class="btn btn-outline-success">
+        Confirm
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import MeetingLocation from "./MeetingLocation";
-import MeetingDetail from "./MeetingDetail";
-import MeetingDescription from "./MeetingDescription";
-import MeetingConfirmation from "./MeetingConfirmation";
+import MeetingLocation from './MeetingLocation';
+import MeetingDetail from './MeetingDetail';
+import MeetingDescription from './MeetingDescription';
+import MeetingConfirmation from './MeetingConfirmation';
 export default {
   components: {
     MeetingLocation,
@@ -56,10 +58,10 @@ export default {
     return {
       currentPage: 1,
       formSteps: [
-        "MeetingLocation",
-        "MeetingDetail",
-        "MeetingDescription",
-        "MeetingConfirmation"
+        'MeetingLocation',
+        'MeetingDetail',
+        'MeetingDescription',
+        'MeetingConfirmation'
       ],
       canProceed: false,
       form: {
@@ -91,7 +93,7 @@ export default {
       this.currentPage++;
 
       this.$nextTick(() => {
-        this.canProceed = !this.$refs["currentComponent"].$v.$invalid;
+        this.canProceed = !this.$refs['currentComponent'].$v.$invalid;
       });
     },
     toPreviousPage() {
@@ -99,7 +101,7 @@ export default {
       this.canProceed = true;
     },
     createMeeting() {
-      this.$emit("confirmed", this.form)
+      this.$emit('confirmed', this.form);
     }
   }
 };

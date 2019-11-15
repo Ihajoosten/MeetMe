@@ -46,16 +46,29 @@
     >
       <ul class="navbar-nav ml-auto">
         <li v-if="!$store.state.isLoggedIn" class="nav-item mr-2">
-          <router-link :to="{ name: 'register' }"><button class="btn btn-sm btn-outline-primary mt-2">Register</button></router-link>
+          <router-link :to="{ name: 'register' }"
+            ><button class="btn btn-sm btn-outline-primary mt-2">
+              Register
+            </button></router-link
+          >
         </li>
         <li v-if="!$store.state.isLoggedIn" class="nav-item">
-          <router-link :to="{ name: 'login' }"><button class="btn btn-sm btn-outline-success mt-2">Login</button></router-link>
+          <router-link :to="{ name: 'login' }"
+            ><button class="btn btn-sm btn-outline-success mt-2">
+              Login
+            </button></router-link
+          >
         </li>
         <li v-if="$store.state.isLoggedIn" class="nav-item mt-2 mr-3">
-          <i>Welcome {{user}}!</i>
+          <i>Welcome {{ user }}!</i>
         </li>
         <li v-if="$store.state.isLoggedIn" class="nav-item">
-          <button v-on:click.prevent="logout()" class="btn btn-sm btn-outline-danger mt-2">Logout</button>
+          <button
+            v-on:click.prevent="logout()"
+            class="btn btn-sm btn-outline-danger mt-2"
+          >
+            Logout
+          </button>
         </li>
       </ul>
     </div>
@@ -63,11 +76,11 @@
 </template>
 
 <script>
-import * as auth from "../../services/authService";
-import { mapState } from "vuex";
+import * as auth from '../../services/authService';
+import { mapState } from 'vuex';
 
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   computed: {
     ...mapState({
       isLoggedIn: state => state.isLoggedIn,
@@ -77,7 +90,7 @@ export default {
   methods: {
     logout: function() {
       auth.logout();
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: 'home' });
     }
   }
 };

@@ -3,76 +3,76 @@
     <h1 class="title m-b-sm">Please confirm entered data</h1>
 
     <div class="content">
-      <div >
+      <div>
         <span class="result-title">
-        Location
+          Location
         </span>
-        <p>{{createMeeting.location}}</p>
+        <p>{{ createMeeting.location }}</p>
       </div>
       <div>
         <span class="result-title">
-        Title
+          Title
         </span>
-        <p>{{createMeeting.title}}</p>
+        <p>{{ createMeeting.title }}</p>
       </div>
       <div>
         <span class="result-title">
-        Start Date
+          Start Date
         </span>
-        <p>{{createMeeting.startDate | date}}</p>
+        <p>{{ createMeeting.startDate | date }}</p>
       </div>
       <div>
         <span class="result-title">
-        From
+          From
         </span>
-        <p>{{createMeeting.timeFrom}}</p>
+        <p>{{ createMeeting.timeFrom }}</p>
       </div>
       <div>
         <span class="result-title">
-        To
+          To
         </span>
-        <p>{{createMeeting.timeTo}}</p>
+        <p>{{ createMeeting.timeTo }}</p>
       </div>
       <div>
         <span class="result-title">
-        Category
+          Category
         </span>
-        <p>{{createMeeting.category.name}}</p>
+        <p>{{ createMeeting.category.name }}</p>
       </div>
       <div>
         <span class="result-title">
-        Image
+          Image
         </span>
-        <p>{{createMeeting.image}}</p>
+        <p>{{ createMeeting.image }}</p>
       </div>
       <div>
         <span class="result-title">
-        Description
+          Description
         </span>
-        <p>{{createMeeting.description}}</p>
+        <p>{{ createMeeting.description }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    props: {
-      createMeeting: {
-        required: true,
-        type: Object
-      }
-    },
-    validations: {}
-  }
+export default {
+  props: {
+    createMeeting: {
+      required: true,
+      type: Object
+    }
+  },
+  validations: {}
+};
 </script>
 
 <style scoped>
-  .result-title {
-    font-size: 29px;
-    font-weight: bold;
-  }
-  .result-title + p {
-    font-size: 20px;
-  }
+.result-title {
+  font-size: 29px;
+  font-weight: bold;
+}
+.result-title + p {
+  font-size: 20px;
+}
 </style>

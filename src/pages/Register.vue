@@ -62,9 +62,7 @@
                           class="alert alert-danger"
                           role="alert"
                         >
-                          <i
-                            >Name is required</i
-                          >
+                          <i>Name is required</i>
                         </div>
                       </div>
                       <div class="uk-inline uk-width-1-1">
@@ -83,7 +81,7 @@
                       </div>
                     </div>
                     <div class="uk-margin">
-                       <div class="text-left">
+                      <div class="text-left">
                         <div
                           v-if="$v.form.email.$error"
                           class="alert alert-danger"
@@ -119,9 +117,7 @@
                           class="alert alert-danger"
                           role="alert"
                         >
-                          <i
-                            >Username is required</i
-                          >
+                          <i>Username is required</i>
                         </div>
                       </div>
                       <div class="uk-inline uk-width-1-1">
@@ -146,9 +142,7 @@
                           class="alert alert-danger"
                           role="alert"
                         >
-                          <i
-                            >Password is required</i
-                          >
+                          <i>Password is required</i>
                         </div>
                       </div>
                       <div class="uk-inline uk-width-1-1">
@@ -167,15 +161,13 @@
                       </div>
                     </div>
                     <div class="uk-margin">
-                        <div
-                          v-if="!$v.form.checked.$model"
-                          class="alert alert-danger"
-                          role="alert"
-                        >
-                          <i
-                            >Accepting Terms of Service is required</i
-                          >
-                        </div>
+                      <div
+                        v-if="!$v.form.checked.$model"
+                        class="alert alert-danger"
+                        role="alert"
+                      >
+                        <i>Accepting Terms of Service is required</i>
+                      </div>
                       <label>
                         <input
                           v-model="form.checked"
@@ -215,9 +207,9 @@
 </template>
 
 <script>
-import { required, email } from "vuelidate/lib/validators";
-import { validFileTypes } from "../validators/validators";
-import * as auth from "../services/authService";
+import { required, email } from 'vuelidate/lib/validators';
+import { validFileTypes } from '../validators/validators';
+import * as auth from '../services/authService';
 
 export default {
   data() {
@@ -260,7 +252,7 @@ export default {
         password: this.form.password
       };
       await auth.registerUser(user);
-      this.$router.push({ name: "login" });
+      this.$router.push({ name: 'login' });
     }
   }
 };

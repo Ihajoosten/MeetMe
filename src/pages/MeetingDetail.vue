@@ -122,10 +122,10 @@
 <script>
 // import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
 // import ThreadList from '@/components/threads/ThreadList'
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from 'vuex';
 
 export default {
-  name: "meeting-detail",
+  name: 'meeting-detail',
   // components: {
   //   ThreadCreateModal,
   //   ThreadList
@@ -145,8 +145,8 @@ export default {
     })
   },
   methods: {
-    ...mapActions("meetings", ["fetchMeeting"]),
-    ...mapActions("threads", ["fetchThreads"])
+    ...mapActions('meetings', ['fetchMeeting']),
+    ...mapActions('threads', ['fetchThreads'])
   },
   created() {
     const id = this.$route.params.id;

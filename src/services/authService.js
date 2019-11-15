@@ -1,15 +1,15 @@
 /* eslint-disable no-undef */
-import store from "../store/index";
-import axios from "axios";
-import jwt from "jsonwebtoken";
+import store from '../store/index';
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 export function isLoggedIn() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   return token != null;
 }
 
 export function login(user) {
-  return axios.post("/api/users/login", user).then(res => {
+  return axios.post('/api/users/login', user).then(res => {
     if (res) {
       setToken(res.data.token);
     }
@@ -18,13 +18,15 @@ export function login(user) {
 
 export function logout() {
   localStorage.clear();
-  store.dispatch("authenticate");
+  store.dispatch('authenticate');
 }
 
 function setToken(token) {
-  setTimeout(function(){localStorage.removeItem("token");}, 1000 * 60 * 3);
-  localStorage.setItem("token", token);
-  store.dispatch("authenticate");
+  setTimeout(function() {
+    localStorage.removeItem('token');
+  }, 1000 * 60 * 3);
+  localStorage.setItem('token', token);
+  store.dispatch('authenticate');
 }
 
 export function getEmail() {
@@ -52,11 +54,11 @@ export function getUserId() {
 }
 
 export function registerUser(user) {
-  return axios.post("/api/users/register", user);
+  return axios.post('/api/users/register', user);
 }
 
 export function getToken() {
-  return localStorage.getItem("token");
+  return localStorage.getItem('token');
 }
 
 export function decodeToken() {

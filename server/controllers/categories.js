@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-const Category = require("../models/categories");
+const Category = require('../models/categories');
 
 module.exports = {
   getAllCategories(req, res, next) {
@@ -12,7 +12,7 @@ module.exports = {
       if (!categories) {
         return res
           .status(404)
-          .json({ Message: "No categories found! Create one" });
+          .json({ Message: 'No categories found! Create one' });
       }
 
       return res.json(categories);
@@ -26,7 +26,7 @@ module.exports = {
       image: body.image
     });
 
-    category.save().then(() => res.status(200).json({ result: "OK" }));
+    category.save().then(() => res.status(200).json({ result: 'OK' }));
   },
   updateCategoryById(req, res, next) {
     const id = req.params.id;
@@ -40,13 +40,13 @@ module.exports = {
   deleteCategoryById(req, res, next) {
     const id = req.params.id;
     let c;
-    Category.findOne({_id: id})
-        .then((category) => {
-            c = category;
-        })
-        .then(() => Category.findOneAndDelete({_id: id}))
-        .then(() => {
-            res.status(200).json({result: c});
-        });
+    Category.findOne({ _id: id })
+      .then(category => {
+        c = category;
+      })
+      .then(() => Category.findOneAndDelete({ _id: id }))
+      .then(() => {
+        res.status(200).json({ result: c });
+      });
   }
 };

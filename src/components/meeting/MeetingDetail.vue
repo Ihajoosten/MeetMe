@@ -25,6 +25,7 @@
         :disabledDates="disabledDates"
         @input="setDate"
         :input-class="'input'"
+        @blur="$v.form.startDate.$touch()"
         :placeholder="new Date() | date"
       />
       <div class="text-left mt-2">
@@ -39,7 +40,11 @@
     </div>
     <div class="field">
       <label class="title m-b-sm">Start time</label>
-      <timepicker :minute-interval="10" v-on:change="changeTime($event, 'timeFrom')" />
+      <timepicker
+        :minute-interval="10"
+        v-on:change="changeTime($event, 'timeFrom')"
+        @blur="$v.form.timeFrom.$touch()"
+      />
       <div class="text-left mt-2">
         <div
           v-if="$v.form.timeFrom.$error"
@@ -52,7 +57,11 @@
     </div>
     <div class="field">
       <label class="title m-b-sm">End time</label>
-      <timepicker :minute-interval="10" v-on:change="changeTime($event, 'timeTo')" />
+      <timepicker
+        :minute-interval="10"
+        v-on:change="changeTime($event, 'timeTo')"
+        @blur="$v.form.timeTo.$touch()"
+      />
       <div class="text-left mt-2">
         <div
           v-if="$v.form.timeTo.$error"
@@ -94,10 +103,10 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
-import moment from "moment";
-import datepicker from "vuejs-datepicker";
-import timepicker from "vue2-timepicker";
+import { required } from 'vuelidate/lib/validators';
+import moment from 'moment';
+import datepicker from 'vuejs-datepicker';
+import timepicker from 'vue2-timepicker';
 
 export default {
   components: {
@@ -138,7 +147,7 @@ export default {
   },
   methods: {
     emitFormData() {
-      this.$emit("nextStep", { data: this.form, isValid: !this.$v.$invalid });
+      this.$emit('nextStep', { data: this.form, isValid: !this.$v.$invalid });
     },
     setDate(date) {
       this.form.startDate = moment(date).format();
@@ -147,7 +156,7 @@ export default {
     changeTime({ data }, field) {
       const minutes = data.mm || '00';
       const hours = data.HH || '00';
-      this.form[field] = hours + ":" + minutes;
+      this.form[field] = hours + ':' + minutes;
       this.emitFormData();
     }
   }

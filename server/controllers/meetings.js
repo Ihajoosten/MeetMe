@@ -1,4 +1,4 @@
-const Meeting = require("../models/meetings");
+const Meeting = require('../models/meetings');
 
 module.exports = {
   createMeeting: (req, res) => {
@@ -7,23 +7,26 @@ module.exports = {
 
     const meeting = new Meeting(body);
     meeting.author = author;
-    meeting.status = "active";
+    meeting.status = 'active';
 
-    meeting.save((err, meeting) => {
-      if (err) {
-        return res.status(422).send({ err });
-      }
-      return res.status(200).json(meeting);
-    });
+    meeting.save().then(() => res.status(200).json({ result: meeting }));
+
+    // meeting.save((err, meeting) => {
+    //   console.log(meeting)
+    //   if (err) {
+    //     return res.status(422).send({ err });
+    //   }
+    //   return res.status(200).json(meeting);
+    // });
   },
   getAllMeetings: (req, res) => {
     Meeting.find({})
-      .populate("author", "name id avatar")
-      .populate("category")
-      .populate("joinedPeople")
+      .populate('author', 'name id avatar')
+      .populate('category')
+      .populate('joinedPeople')
       .populate({
-        path: "threads",
-        populate: { path: "posts" }
+        path: 'threads',
+        populate: { path: 'posts' }
       })
       .exec((errors, meetings) => {
         if (errors) {
@@ -37,10 +40,10 @@ module.exports = {
     const { id } = req.params;
 
     Meeting.findById(id)
-      .populate("author", "name id avatar")
-      .populate("category")
+      .populate('author', 'name id avatar')
+      .populate('category')
       .populate({
-        path: "joinedPeople",
+        path: 'joinedPeople',
         options: { limit: 5, sort: { username: -1 } }
       })
       .exec((errors, meeting) => {
