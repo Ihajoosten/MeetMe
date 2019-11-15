@@ -2,22 +2,20 @@ const Meeting = require('../models/meetings');
 
 module.exports = {
   createMeeting: (req, res) => {
-    const body = req.body;
+    const body = req.body.meetingToCreate;
     const author = req.userId;
 
     const meeting = new Meeting(body);
     meeting.author = author;
     meeting.status = 'active';
 
-    meeting.save().then(() => res.status(200).json({ result: meeting }));
 
-    // meeting.save((err, meeting) => {
-    //   console.log(meeting)
-    //   if (err) {
-    //     return res.status(422).send({ err });
-    //   }
-    //   return res.status(200).json(meeting);
-    // });
+    meeting.save((errors, createdMeetup) => {
+      if (errors) {
+        return res.status(422).send({errors});
+      }
+      return res.json({createdMeetup})
+    })
   },
   getAllMeetings: (req, res) => {
     Meeting.find({})

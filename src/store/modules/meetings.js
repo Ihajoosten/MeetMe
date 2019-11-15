@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from '../../services/axiosInstance';
 
 export default {
   namespaced: true,
@@ -31,12 +32,10 @@ export default {
         return state.item;
       });
     },
-    createMeeting(meeting) {
-      const token = localStorage.getItem('token');
-      return axios
-        .post('/api/meetings', meeting, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+    createMeeting({ rootState }, meetingToCreate) {
+      meetingToCreate.author = rootState.userId;
+      return axiosInstance
+        .post('/api/meetings', meetingToCreate)
         .then(res => res.data);
     }
   }

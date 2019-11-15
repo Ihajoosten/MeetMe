@@ -25,7 +25,6 @@
         :disabledDates="disabledDates"
         @input="setDate"
         :input-class="'input'"
-        @blur="$v.form.startDate.$touch()"
         :placeholder="new Date() | date"
       />
       <div class="text-left mt-2">
@@ -43,34 +42,14 @@
       <timepicker
         :minute-interval="10"
         v-on:change="changeTime($event, 'timeFrom')"
-        @blur="$v.form.timeFrom.$touch()"
       />
-      <div class="text-left mt-2">
-        <div
-          v-if="$v.form.timeFrom.$error"
-          class="alert alert-danger"
-          role="alert"
-        >
-          <i v-if="!$v.form.timeFrom.required">The Start time is required</i>
-        </div>
-      </div>
     </div>
     <div class="field">
       <label class="title m-b-sm">End time</label>
       <timepicker
         :minute-interval="10"
         v-on:change="changeTime($event, 'timeTo')"
-        @blur="$v.form.timeTo.$touch()"
       />
-      <div class="text-left mt-2">
-        <div
-          v-if="$v.form.timeTo.$error"
-          class="alert alert-danger"
-          role="alert"
-        >
-          <i v-if="!$v.form.timeTo.required">The end time is required</i>
-        </div>
-      </div>
     </div>
     <div class="field">
       <label class="title m-b-sm">Please Choose the Category.</label>
@@ -118,8 +97,8 @@ export default {
       disabledDates: {
         customPredictor: function(date) {
           const today = new Date();
-          today.setDate(today.getDate() - 1);
-          return date < today;
+          const yesterday = today.setDate(today.getDate() - 1);
+          return date < yesterday;
         }
       },
       form: {

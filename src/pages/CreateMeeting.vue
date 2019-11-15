@@ -2,7 +2,7 @@
   <div class="meetup-create-page">
     <section class="section">
       <div class="container">
-        <CreateWizard @confirmed="createNewMeeting" />
+        <CreateWizard @confirmMeeting="createNewMeeting" />
       </div>
     </section>
   </div>
@@ -10,6 +10,7 @@
 
 <script>
 import CreateWizard from '@/components/meeting/CreateMeetingWizard';
+
 export default {
   components: {
     CreateWizard
@@ -18,12 +19,13 @@ export default {
     this.$store.dispatch('categories/fetchCategories');
   },
   methods: {
-    createNewMeeting(meeting) {
+    createNewMeeting(meetingToCreate) {
       this.$store
-        .dispatch('meetings/createMeeting', meeting)
-        .then(createdMeeting => {
-          this.$router.push(`/api/meetings/${createdMeeting._id}`);
-        });
+        .dispatch('meetings/createMeeting', meetingToCreate)
+        .then(() => {
+          this.$router.push('/api/meetings');
+        })
+        .catch(err => console.log(err));
     }
   }
 };

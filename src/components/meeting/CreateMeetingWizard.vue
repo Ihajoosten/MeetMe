@@ -35,7 +35,7 @@
       >
         Next
       </button>
-      <button v-on:click="createMeeting" v-else class="btn btn-outline-success">
+      <button v-on:click.prevent="emitMeetingConfirm" v-else class="btn btn-outline-success">
         Confirm
       </button>
     </div>
@@ -100,9 +100,9 @@ export default {
       this.currentPage--;
       this.canProceed = true;
     },
-    createMeeting() {
-      this.$emit('confirmed', this.form);
-    }
+    emitMeetingConfirm () {
+        this.$emit('confirmMeeting', this.form)
+      }
   }
 };
 </script>

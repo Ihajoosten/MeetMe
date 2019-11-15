@@ -3,7 +3,7 @@ const logger = require('../config/prod').logger;
 
 module.exports = {
   generateJWT: user => {
-    const tokenData = { username: user.username, id: user.id };
+    const tokenData = { username: user.username, id: user.id, email: user.email };
     return jwt.sign({ user: tokenData }, 'token');
   },
   decodeToken: req => {
@@ -46,8 +46,13 @@ module.exports = {
 
   validateToken: (req, res, next) => {
     logger.info('validateToken aangeroepen');
-    const token = req.headers.authorization;
-    jwt.verify(token, 'secret', (err, payload) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      logger.warn('Validate token failed! No authorization header');
+      return res.status(401).json({message: "No authorization header"})
+    }
+    const token = authHeader.substring(7, authHeader.length);
+    jwt.verify(token, 'token', (err) => {
       if (err) {
         logger.warn('Validate token failed! Not Authorized ');
         next({
@@ -55,7 +60,9 @@ module.exports = {
           code: 401
         });
       }
+      const payload = jwt.decode(token);
       logger.trace('payload', payload);
+
       if (payload.user.username && payload.user.id) {
         logger.debug('token is valid', payload);
 
