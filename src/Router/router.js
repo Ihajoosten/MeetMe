@@ -19,9 +19,14 @@ const router = new Router({
         if (auth.isLoggedIn()) {
           next();
         } else {
-          next("/login");
+          next("/not-authorized")
         }
       }
+    },
+    {
+      path: "/not-authorized",
+      name: "not-authorized",
+      component: () => import("../components/shared/NotLoggedInModal.vue")
     },
     {
       path: "/login",
@@ -60,7 +65,7 @@ const router = new Router({
         if (auth.isLoggedIn()) {
           next();
         } else {
-          next("/login");
+          next("/not-authorized")
         }
       }
     },
@@ -70,6 +75,18 @@ const router = new Router({
       component: () => import("@/pages/NotFound.vue")
     },
     {
+      path: "/meetings/new",
+      name: "meeting-create",
+      component: () => import("@/pages/CreateMeeting.vue"),
+      beforeEnter: (to, from, next) => {
+        if (auth.isLoggedIn()) {
+          next();
+        } else {
+          next("/not-authorized")
+        }
+      }
+    },
+    {
       path: "/meetings/:id",
       name: "meeting-detail",
       component: () => import("@/pages/MeetingDetail.vue"),
@@ -77,7 +94,7 @@ const router = new Router({
         if (auth.isLoggedIn()) {
           next();
         } else {
-          next("/login");
+          next("/not-authorized")
         }
       }
     }

@@ -30,6 +30,9 @@ export default {
         );
         return state.item;
       });
+    },
+    createMeeting(context, meeting) {
+      console.log(meeting)
     }
   }
 };

@@ -4,16 +4,24 @@
     <div v-if="isDataLoaded" class="container">
       <h1 class="m-5 text-center">Meetings in "Location"</h1>
       <div class="m-5 text-center">
-        <button class="btn btn-success m-2">Create meeting</button>
-        <router-link :to="{name: 'find'}">
-          <button class="btn btn-success m-2">See all</button>
+        <router-link :to="{ name: 'meeting-create' }"
+          ><button class="btn btn-outline-primary ml-2">
+            New Meeting
+          </button></router-link
+        >
+        <router-link :to="{ name: 'find' }">
+          <button class="btn btn-outline-success m-2">See all</button>
         </router-link>
 
-        <HomeDropdown />
+        <!-- <HomeDropdown /> -->
       </div>
 
       <div class="row mb-5">
-        <MeetingItem v-for="meeting in meetings" v-bind:key="meeting._id" :meeting="meeting" />
+        <MeetingItem
+          v-for="meeting in meetings"
+          v-bind:key="meeting._id"
+          :meeting="meeting"
+        />
       </div>
 
       <h1 class="text-center m-5">Categories</h1>
@@ -54,8 +62,9 @@ export default {
     })
   },
   created() {
-    Promise.all([this.fetchMeetings(), this.fetchCategories()])
-    .then(() => this.isDataLoaded = true)
+    Promise.all([this.fetchMeetings(), this.fetchCategories()]).then(
+      () => (this.isDataLoaded = true)
+    );
 
     // this.fetchMeetings().then(() => {
     //   this.fetchCategories().then(() => {
