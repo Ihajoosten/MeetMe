@@ -48,6 +48,10 @@ userSchema.pre("save", function(next) {
   });
 });
 
+userSchema.statics.passwordMatches = function (password, hash) {
+  return bcrypt.compareSync(password, hash);
+}
+
 //Every user have acces to this methods
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {

@@ -13,16 +13,16 @@ import Icons from "uikit/dist/js/uikit-icons";
 import store from "./store/index";
 import Spinner from "./components/shared/Spinner";
 import vuelidate from "vuelidate";
-
-
-UIkit.use(Icons);
-
+import Toasted from 'vue-toasted';
+ 
 Vue.config.productionTip = false;
 
 Vue.component("HomeTop", Hometop);
 Vue.component("HomeDropdown", HomeDropdown);
 Vue.component("Spinner", Spinner);
 
+Vue.use(Toasted)
+UIkit.use(Icons);
 Vue.use(vuelidate)
 
 // const conn = process.env.VUE_APP_URI

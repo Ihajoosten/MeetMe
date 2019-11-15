@@ -12,7 +12,7 @@ module.exports = {
       email: body.email,
       name: body.name,
       username: body.username,
-      password: body.password,
+      password: body.password
     });
 
     user.save().then(() => res.status(200).json({ result: "OK" }));
@@ -39,20 +39,28 @@ module.exports = {
         res.status(200).json({ result: u });
       });
   },
-  loginUser: (req, res, next) => {
+  loginUser: (req, res) => {
     const body = req.body;
-
-    User.findOne({ email: body.email }).then(user => {
-      if (!bcrypt.compareSync(body.password, user.password)) {
-        let errorObj = {
-          message: "Login not correct",
-          code: 400
-        };
-        next(errorObj);
-      } else {
-        const token = auth.generateJWT(user);
-        res.status(200).json({ token: token });
+    if (!body) {
+      return res.status(400).json({ message: body.message });
+    }
+    User.findOne({ email: req.body.email }, (error, user) => {
+      if (error) {
+        return res.status(500).json({message: "Something went wrong on the server!", status: 500});
       }
+      if (!user) {
+        return res.status(401).json({message: "Email does not match!", status: 401});
+      }
+  
+      const passwordMatch = User.passwordMatches(
+        req.body.password,
+        user.password
+      );
+      if (!passwordMatch) {
+        return res.status(401).json({message: "Password does not match!", status: 401});
+      }
+      const token = auth.generateJWT(user);
+      return res.status(200).json({ token: token });
     });
-  } 
+  }
 };
