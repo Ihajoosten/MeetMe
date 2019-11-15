@@ -1,8 +1,12 @@
 <template>
   <div class="col-4">
     <div class="image">
-      <img class="image-container" :src="category.image" style="width: 350px; height: 250px" />
-      <div class="category-name">{{category.name | capitalize}}</div>
+      <img
+        class="image-container"
+        :src="category.image"
+        style="width: 350px; height: 250px"
+      />
+      <div class="category-name">{{ category.name | capitalize }}</div>
     </div>
   </div>
 </template>
@@ -32,7 +36,7 @@ export default {
 }
 
 .image::after {
-  content: "\A";
+  content: '\A';
   position: absolute;
   width: 100%;
   height: 100%;

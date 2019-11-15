@@ -7,24 +7,24 @@
 </template>
 
 <script>
-import TheNavbar from "@/components/shared/Navbar";
-import TheFooter from "@/components/shared/Footer";
-import UIkit from "uikit";
-import Icons from "uikit/dist/js/uikit-icons";
+import TheNavbar from '@/components/shared/Navbar';
+import TheFooter from '@/components/shared/Footer';
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
 
 UIkit.use(Icons);
 export default {
-  name: "app",
+  name: 'app',
   components: {
     TheNavbar,
     TheFooter
   },
   beforeCreate() {
-    this.$store.dispatch("authenticate");
+    this.$store.dispatch('authenticate');
   }
 };
 </script>
 
-<style lang="css"></style>
-
-//@import '~bulma/bulma.sass';
+<style lang="sass">
+@import '~bulma/bulma.sass';
+</style>

@@ -2,17 +2,17 @@
   <div class="container">
     <div class="row">
       <h2 class="col mt-5 text-center">
-        Sorry, the page you are looking for is not found!
+        Sorry, you are not authorized to go to this page. please login first!
       </h2>
     </div>
-    <h1 class="col text-center"><strong>404 :(</strong></h1>
-    <router-link :to="{ name: 'home' }" class="offset-md-1 btn btn-success"
-      >Go to homepage</router-link
-    >
+    <h1 class="col text-center"><strong>401 :(</strong></h1>
   </div>
 </template>
 
 <style scoped>
+h1 {
+  font-size: 50px;
+}
 .title {
   font-size: 40px;
 }

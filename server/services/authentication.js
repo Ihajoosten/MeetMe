@@ -1,18 +1,15 @@
-const jwt = require("jsonwebtoken");
-const logger = require('../config/prod').logger; 
+const jwt = require('jsonwebtoken');
+const logger = require('../config/prod').logger;
 
 module.exports = {
   generateJWT: user => {
-    const tokenData = { username: user.username, id: user.id };
-    return jwt.sign({ user: tokenData }, "secret", {
-      algorithm: "HS256",
-      expiresIn: 60 // expires in 24 hours
-    });
+    const tokenData = { username: user.username, id: user.id, email: user.email };
+    return jwt.sign({ user: tokenData }, 'token');
   },
   decodeToken: req => {
-    const token = req.headers["authorization"].replace(/^JWT\s/, "");
+    const token = req.headers['authorization'].replace(/^JWT\s/, '');
     if (!token) {
-      logger.error("invalid token");
+      logger.error('invalid token');
       return null;
     }
 
@@ -27,7 +24,7 @@ module.exports = {
   requireLogin: (req, res, next) => {
     const token = this.decodeToken(req);
     if (!token) {
-      return res.status(401).json({ message: "You must be logged in." });
+      return res.status(401).json({ message: 'You must be logged in.' });
     }
     next();
   },
@@ -49,38 +46,34 @@ module.exports = {
 
   validateToken: (req, res, next) => {
     logger.info('validateToken aangeroepen');
-    // logger.debug(req.headers)
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      logger.warn('Validate token failed! No authorization');
-      return next({
-        message: 'No authorization',
-        code: 404
-      });
+      logger.warn('Validate token failed! No authorization header');
+      return res.status(401).json({message: "No authorization header"})
     }
     const token = authHeader.substring(7, authHeader.length);
-    jwt.verify(token, 'secret', (err, payload) => {
+    jwt.verify(token, 'token', (err) => {
       if (err) {
         logger.warn('Validate token failed! Not Authorized ');
         next({
           message: 'not authorized',
-          code: 404
+          code: 401
         });
       }
-      //logger.trace('payload', payload);
-      if (payload.user && payload.user.id) {
+      const payload = jwt.decode(token);
+      logger.trace('payload', payload);
+
+      if (payload.user.username && payload.user.id) {
         logger.debug('token is valid', payload);
-        // User heeft toegang. Voeg UserId uit payload toe aan
-        // request, voor ieder volgend endpoint.
+
         req.userId = payload.user.id;
         req.username = payload.user.username;
         req.token = token;
         next();
       } else {
         logger.warn('Validate token failed! No user id');
-        next({message: 'Missing user id',
-        code: 404});
+        next({ message: 'Missing user id', code: 404 });
       }
-    })
+    });
   }
 };

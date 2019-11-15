@@ -1,5 +1,5 @@
 //import axios from "axios";
-import * as auth from '../../services/authService'
+import * as auth from '../../services/authService';
 
 export default {
   namespaced: true,
@@ -7,7 +7,7 @@ export default {
     isLoggedIn: false,
     email: null,
     userId: null,
-    token: localStorage.getItem("token") || null,
+    token: localStorage.getItem('token') || null
   },
   mutations: {
     authenticate(state) {
@@ -23,7 +23,7 @@ export default {
   },
   actions: {
     authenticate(context) {
-      context.commit("authenticate");
+      context.commit('authenticate');
     }
   }
 };

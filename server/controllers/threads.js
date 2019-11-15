@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-const Thread = require("../models/threads");
-const Comment = require("../models/comments");
+const Thread = require('../models/threads');
+const Comment = require('../models/comments');
 
 module.exports = {
   postThread: (req, res, next) => {
@@ -17,7 +17,7 @@ module.exports = {
     thread.author = author;
 
     thread.save().then(() => {
-      res.status(200).json({ result: "OK" });
+      res.status(200).json({ result: 'OK' });
     });
   },
 
@@ -25,19 +25,19 @@ module.exports = {
     const meetingId = req.query.meetingId;
 
     Thread.find({})
-    .where({'meeting': meetingId})
+      .where({ meeting: meetingId })
       .populate({
-        path: "posts",
+        path: 'posts',
         options: { limit: 5, sort: { createdAt: -1 } },
-        populate: { path: "author" }
+        populate: { path: 'author' }
       })
-      .populate("author")
+      .populate('author')
       .then(threads => {
         res.status(200).json(threads);
       })
       .catch(err => {
         next({
-          message: "something went wrong",
+          message: 'something went wrong',
           code: 400
         });
       });

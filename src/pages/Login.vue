@@ -24,19 +24,19 @@
                   <h3 class="uk-card-title uk-text-center">Welcome back!</h3>
                   <form>
                     <div class="uk-margin">
-                      <div v-if="$v.form.email.$error" class="text-left">
-                        <ul>
-                          <li v-if="!$v.form.email.required">
-                            <span class="help text-danger"
-                              >Email is required</span
-                            >
-                          </li>
-                          <li v-if="!$v.form.email.email">
-                            <span class="help text-danger"
-                              >Enter a valid email address</span
-                            >
-                          </li>
-                        </ul>
+                      <div class="text-left">
+                        <div
+                          v-if="$v.form.email.$error"
+                          class="alert alert-danger"
+                          role="alert"
+                        >
+                          <i v-if="!$v.form.email.required"
+                            >Email is required</i
+                          >
+                          <i v-if="!$v.form.email.email"
+                            >Enter a valid email address</i
+                          >
+                        </div>
                       </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
@@ -55,14 +55,16 @@
                       </div>
                     </div>
                     <div class="uk-margin">
-                      <div v-if="$v.form.password.$error" class="text-left">
-                        <ul>
-                          <li>
-                            <span class="help text-danger"
-                              >password is required</span
-                            >
-                          </li>
-                        </ul>
+                      <div class="text-left">
+                        <div
+                          v-if="$v.form.password.$error"
+                          class="alert alert-danger"
+                          role="alert"
+                        >
+                          <i v-if="!$v.form.password.required"
+                            >Password is required</i
+                          >
+                        </div>
                       </div>
                       <div class="uk-inline uk-width-1-1">
                         <span
@@ -117,8 +119,8 @@
 </template>
 
 <script>
-import { required, email } from "vuelidate/lib/validators";
-import * as auth from "../services/authService";
+import { required, email } from 'vuelidate/lib/validators';
+import * as auth from '../services/authService';
 
 export default {
   data() {
@@ -141,16 +143,13 @@ export default {
     }
   },
   methods: {
-    // login() {
-    //   this.$store.dispatch("auth/login", this.form);
-    // }
     onSubmit: async function() {
       const user = {
         email: this.form.email,
         password: this.form.password
       };
       await auth.login(user);
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: 'home' });
     }
   }
 };

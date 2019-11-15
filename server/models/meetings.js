@@ -14,7 +14,7 @@ const meetingSchema = new Schema({
   joinedPeopleCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
-  joinedPeople: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  joinedPeople: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
-module.exports = mongoose.model('Meeting', meetingSchema );
+module.exports = mongoose.model('Meeting', meetingSchema);
