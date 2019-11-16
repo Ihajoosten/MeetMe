@@ -2,7 +2,8 @@ const Meeting = require('../models/meetings');
 
 module.exports = {
   createMeeting: (req, res) => {
-    const body = req.body.meetingToCreate;
+    const body = req.body;
+    console.log(body)
     const author = req.userId;
 
     const meeting = new Meeting(body);
@@ -10,11 +11,11 @@ module.exports = {
     meeting.status = 'active';
 
 
-    meeting.save((errors, createdMeetup) => {
+    meeting.save((errors, created) => {
       if (errors) {
         return res.status(422).send({errors});
       }
-      return res.json({createdMeetup})
+      return res.json(created)
     })
   },
   getAllMeetings: (req, res) => {

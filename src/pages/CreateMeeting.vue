@@ -22,8 +22,9 @@ export default {
     createNewMeeting(meetingToCreate) {
       this.$store
         .dispatch('meetings/createMeeting', meetingToCreate)
-        .then(() => {
-          this.$router.push('/api/meetings');
+        .then((created) => {
+          console.log(created)
+          this.$router.push('/meetings/' + created._id);
         });
     }
   }
