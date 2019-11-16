@@ -24,8 +24,7 @@ export default {
         .dispatch('meetings/createMeeting', meetingToCreate)
         .then(() => {
           this.$router.push('/api/meetings');
-        })
-        .catch(err => console.log(err));
+        });
     }
   }
 };
