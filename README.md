@@ -5,7 +5,7 @@
 npm install
 ```
 
-### Compiles for development and runs back-end
+### Compiles for development and runs back-end 
 ```
 npm run dev
 ```
