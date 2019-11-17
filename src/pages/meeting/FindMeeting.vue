@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import MeetingItem from '../components/meeting/MeetingItem';
+import MeetingItem from '../../components/meeting/MeetingItem';
 import { mapActions, mapState } from 'vuex';
 
 export default {

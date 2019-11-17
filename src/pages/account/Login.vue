@@ -120,7 +120,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
-import * as auth from '../services/authService';
+import * as auth from '../../services/authService';
 
 export default {
   data() {

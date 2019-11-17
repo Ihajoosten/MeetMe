@@ -9,12 +9,12 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/pages/Home.vue')
+      component: () => import('../pages/other/Home')
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('@/pages/About.vue'),
+      component: () => import('../pages/other/About'),
       beforeEnter: (to, from, next) => {
         if (auth.isLoggedIn()) {
           next();
@@ -26,12 +26,12 @@ const router = new Router({
     {
       path: '/not-authorized',
       name: 'not-authorized',
-      component: () => import('../components/shared/NotLoggedInModal.vue')
+      component: () => import('../components/shared/NotLoggedInModal')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/pages/Login.vue'),
+      component: () => import('../pages/account/Login'),
       beforeEnter: (to, from, next) => {
         if (!auth.isLoggedIn()) {
           next();
@@ -43,7 +43,7 @@ const router = new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import('@/pages/Register.vue'),
+      component: () => import('../pages/account/Register'),
       beforeEnter: (to, from, next) => {
         if (!auth.isLoggedIn()) {
           next();
@@ -55,12 +55,12 @@ const router = new Router({
     {
       path: '/change-password',
       name: 'change-password',
-      component: () => import('@/pages/ForgotPassword.vue')
+      component: () => import('../pages/account/ForgotPassword')
     },
     {
       path: '/find',
       name: 'find',
-      component: () => import('@/pages/FindMeeting.vue')
+      component: () => import('../pages/meeting/FindMeeting')
       // beforeEnter: (to, from, next) => {
       //   if (auth.isLoggedIn()) {
       //     next();
@@ -72,12 +72,12 @@ const router = new Router({
     {
       path: '*',
       name: 'not-found',
-      component: () => import('@/pages/NotFound.vue')
+      component: () => import('../pages/other/NotFound')
     },
     {
       path: '/meetings/new',
       name: 'meeting-create',
-      component: () => import('@/pages/CreateMeeting.vue'),
+      component: () => import('../pages/meeting/CreateMeeting'),
       beforeEnter: (to, from, next) => {
         if (auth.isLoggedIn()) {
           next();
@@ -89,7 +89,7 @@ const router = new Router({
     {
       path: '/meetings/:id',
       name: 'meeting-detail',
-      component: () => import('@/pages/MeetingDetail.vue')
+      component: () => import('../pages/meeting/MeetingDetail')
       // beforeEnter: (to, from, next) => {
       //   if (auth.isLoggedIn()) {
       //     next();

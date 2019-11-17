@@ -98,9 +98,9 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { isLoggedIn } from '../services/authService';
-import ThreadCreateModal from '@/components/threads/ThreadCreateModal';
-import ThreadList from '@/components/threads/ThreadList';
+import { isLoggedIn } from '../../services/authService';
+import ThreadCreateModal from '../../components/threads/ThreadCreateModal';
+import ThreadList from '../../components/threads/ThreadList';
 
 export default {
   name: 'meeting-detail',

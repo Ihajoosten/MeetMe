@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import CreateWizard from '@/components/meeting/CreateMeetingWizard';
+import CreateWizard from '../../components/meeting/CreateMeetingWizard';
 
 export default {
   components: {
