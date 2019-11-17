@@ -92,7 +92,7 @@
       <!-- Thread List START -->
       <div class="row col py-5 d-flex justify-content-center">
         <div
-          v-for="thread in threads"
+          v-for="thread in orderThreads()"
           v-bind:key="thread._id"
           class="col shadow mb-3 bg-success rounded ml-3"
         >
@@ -187,8 +187,17 @@ export default {
     },
     createThread({ title, done }) {
       this.postThread({ title, meetingId: this.meeting._id }).then(() => {
-        this.$toast.success('Created new thread!', { duration: 5000, position: 'top' });
+        this.$toast.success('Created new thread!', {
+          duration: 5000,
+          position: 'top'
+        });
         done();
+      });
+    },
+    orderThreads() {
+      const copyThreads = [...this.threads];
+      return copyThreads.sort((thread, nextThread) => {
+        return new Date(nextThread.createdAt) - new Date(thread.createdAt);
       });
     }
   },
