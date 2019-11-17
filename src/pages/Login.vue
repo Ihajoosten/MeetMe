@@ -93,7 +93,7 @@
                     <div class="uk-margin">
                       <button
                         :disabled="notValid"
-                        @click.prevent="onSubmit"
+                        v-on:click.prevent="login"
                         class="btn btn-success uk-width-1-1"
                       >
                         Login
@@ -143,13 +143,25 @@ export default {
     }
   },
   methods: {
-    onSubmit: async function() {
-      const user = {
-        email: this.form.email,
-        password: this.form.password
-      };
-      await auth.login(user);
-      this.$router.push({ name: 'home' });
+    login() {
+      auth
+        .login(this.form)
+        .then(() => {
+          this.$toast.success('Succesfully logged in', {
+            duration: 5000,
+            position: 'top'
+          });
+          this.$router.push('/');
+        })
+        .catch(() => {
+          this.$toast.error(
+            'Login failed! Please check your email & password and try again.',
+            {
+              duration: 5000,
+              position: 'top'
+            }
+          );
+        });
     }
   }
 };

@@ -186,9 +186,10 @@ export default {
       this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);
     },
     createThread({ title, done }) {
-      this.postThread({ title, meetingId: this.meeting._id }).then(() =>
-        done()
-      );
+      this.postThread({ title, meetingId: this.meeting._id }).then(() => {
+        this.$toast.success('Created new thread!', { duration: 5000, position: 'top' });
+        done();
+      });
     }
   },
   created() {
