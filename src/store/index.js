@@ -20,7 +20,28 @@ export default new Vuex.Store({
     username: null,
     email: null,
     userId: null,
+    user: null,
     token: localStorage.getItem('access_token') || null
+  },
+  getters: {
+    isOwner: function(state) {
+      return function(authorId) {
+        if (!state.user) {
+          return false;
+        } else {
+          return state.userId === authorId;
+        }
+      };
+    },
+    isMember: function(state) {
+      return function(meetingId) {
+        return (
+          state.user &&
+          state.user.joinedMeetings &&
+          state.user.joinedMeetings.includes(meetingId)
+        );
+      };
+    }
   },
   // Functions to mutate the state
   mutations: {
@@ -36,16 +57,33 @@ export default new Vuex.Store({
         state.email = auth.getEmail();
         state.userId = auth.getUserId();
         state.username = auth.getUsername();
+        state.user = auth.getUser();
       } else {
         state.email = null;
         state.userId = null;
         state.username = null;
+        state.user = null;
       }
+    },
+    setMeetings(state, meetings) {
+      return Vue.set(state.user, 'joinedMeetings', meetings);
     }
   },
   actions: {
     authenticate(context) {
       context.commit('authenticate');
+    },
+    addMeeting({ commit, state }, meetingId) {
+      const userMeeting = [...state.user['joinedMeetings'], meetingId];
+      commit('setMeetings', userMeeting);
+      return true;
+    },
+    removeMeeting({commit, state}, meetingId) {
+      const userMeetings = [...state.user['joinedMeetings']]
+      const index = userMeetings.findIndex(id => id === meetingId)
+
+      userMeetings.splice(index, 1)
+      commit('setMeetings', userMeetings)
     }
   }
 });

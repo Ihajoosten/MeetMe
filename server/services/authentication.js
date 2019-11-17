@@ -3,8 +3,8 @@ const logger = require('../config/prod').logger;
 
 module.exports = {
   generateJWT: user => {
-    const tokenData = { username: user.username, id: user.id, email: user.email };
-    return jwt.sign({ user: tokenData }, 'token');
+    //const tokenData = { username: user.username, id: user.id, email: user.email };
+    return jwt.sign({ user }, 'token');
   },
   decodeToken: req => {
     const token = req.headers['authorization'].replace(/^JWT\s/, '');
@@ -44,15 +44,23 @@ module.exports = {
     return token.user.id;
   },
 
+  getUser: req => {
+    const token = this.decodeToken(req);
+    if (!token) {
+      return null;
+    }
+    return token.user;
+  },
+
   validateToken: (req, res, next) => {
     logger.info('validateToken aangeroepen');
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       logger.warn('Validate token failed! No authorization header');
-      return res.status(401).json({message: "No authorization header"})
+      return res.status(401).json({ message: 'No authorization header' });
     }
     const token = authHeader.substring(7, authHeader.length);
-    jwt.verify(token, 'token', (err) => {
+    jwt.verify(token, 'token', err => {
       if (err) {
         logger.warn('Validate token failed! Not Authorized ');
         next({
@@ -63,10 +71,10 @@ module.exports = {
       const payload = jwt.decode(token);
       logger.trace('payload', payload);
 
-      if (payload.user.username && payload.user.id) {
+      if (payload.user.username && payload.user._id) {
         logger.debug('token is valid', payload);
 
-        req.userId = payload.user.id;
+        req.userId = payload.user._id;
         req.username = payload.user.username;
         req.token = token;
         next();

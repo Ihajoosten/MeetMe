@@ -60,14 +60,14 @@ const router = new Router({
     {
       path: '/find',
       name: 'find',
-      component: () => import('@/pages/FindMeeting.vue'),
-      beforeEnter: (to, from, next) => {
-        if (auth.isLoggedIn()) {
-          next();
-        } else {
-          next('/not-authorized');
-        }
-      }
+      component: () => import('@/pages/FindMeeting.vue')
+      // beforeEnter: (to, from, next) => {
+      //   if (auth.isLoggedIn()) {
+      //     next();
+      //   } else {
+      //     next('/not-authorized');
+      //   }
+      // }
     },
     {
       path: '*',
@@ -89,14 +89,14 @@ const router = new Router({
     {
       path: '/meetings/:id',
       name: 'meeting-detail',
-      component: () => import('@/pages/MeetingDetail.vue'),
-      beforeEnter: (to, from, next) => {
-        if (auth.isLoggedIn()) {
-          next();
-        } else {
-          next('/not-authorized');
-        }
-      }
+      component: () => import('@/pages/MeetingDetail.vue')
+      // beforeEnter: (to, from, next) => {
+      //   if (auth.isLoggedIn()) {
+      //     next();
+      //   } else {
+      //     next('/not-authorized');
+      //   }
+      // }
     }
   ],
   linkActiveClass: 'active',

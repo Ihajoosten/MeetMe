@@ -1,5 +1,6 @@
 import axios from 'axios';
 import axiosInstance from '../../services/axiosInstance';
+import Vue from 'vue';
 
 export default {
   namespaced: true,
@@ -37,6 +38,34 @@ export default {
       return axiosInstance
         .post('/api/meetings', meetingToCreate)
         .then(res => res.data);
+    },
+    joinMeeting({ state, rootState, commit, dispatch }, meetingId) {
+      const user = rootState.user;
+
+      return axiosInstance.post(`/api/meetings/${meetingId}/join`).then(() => {
+        dispatch('addMeeting', meetingId, { root: true });
+
+        const joinedPeople = state.item.joinedPeople;
+        commit('addUsertoMeeting', [...joinedPeople, user]);
+      });
+    },
+    leaveMeeting ({state, rootState, commit, dispatch}, meetingId) {
+      const user = rootState.user
+
+      return axiosInstance.post(`/api/meetings/${meetingId}/leave`)
+        .then(() => {
+          dispatch('removeMeeting', meetingId, {root: true})
+
+          const joinedPeople = state.item.joinedPeople
+          const index = joinedPeople.findIndex(jUser => jUser._id === user._id)
+          joinedPeople.splice(index, 1)
+          commit('addUsertoMeeting', joinedPeople)
+        })
+    }
+  },
+    mutations: {
+      addUsertoMeeting(state, joinedPeople) {
+        Vue.set(state.item, 'joinedPeople', joinedPeople);
+      }
     }
   }
-};

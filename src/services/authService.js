@@ -50,7 +50,15 @@ export function getUserId() {
   if (!token) {
     return null;
   }
-  return token.user.id;
+  return token.user._id;
+}
+
+export function getUser() {
+  const token = decodeToken();
+  if (!token) {
+    return null;
+  }
+  return token.user;
 }
 
 export function registerUser(user) {
