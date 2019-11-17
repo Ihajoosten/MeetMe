@@ -240,9 +240,6 @@ export default {
     }
   },
   methods: {
-    // register() {
-    //   this.$store.dispatch("auth/register", this.form);
-    // }
     onSubmit: async function() {
       const user = {
         avatar: this.form.avatar,

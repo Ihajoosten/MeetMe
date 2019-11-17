@@ -43,28 +43,35 @@
           <li>Date: {{ meeting.startDate | date }}</li>
           <li>Time: {{ meeting.timeFrom }} - {{ meeting.timeTo }}</li>
           <li>Location: {{ meeting.location }}</li>
-          <li>Joined people: {{ meeting.joinedPeopleCount }}</li>
+          <li></li>
         </ul>
-        <button class="btn btn-success">Join</button>
+        <button v-if="!isLoggedIn" :disabled="true" class="alert alert-warning">
+          You need to login first in order to join
+        </button>
+        <button
+          v-if="canJoin && isLoggedIn"
+          @click="joinMeeting"
+          class="btn btn-outline-success"
+        >
+          Join
+        </button>
+        <button @click="leaveMeeting" v-if="isMember" class="btn btn-outline-danger">Leave</button>
       </div>
     </div>
     <!-- /.row -->
 
-    <!-- Related Projects Row -->
-    <h3 class="my-4">People who joined</h3>
-
-    <div class="row md-2">
-      <div role="alert">
-        <div v-if="count >= 2" class="alert alert-info">
-          <i>{{ count }} persons have joined so far</i>
-        </div>
-        <div v-else-if="count === 1" class="alert alert-info">
-          <i>{{ count }} person has joined so far</i>
-        </div>
-        <div v-else class="alert alert-warning" role="alert">
-          <i>0 persons have joined so far</i>
-        </div>
+    <div class="row mt-5"></div>
+    <div class="col-3" role="alert">
+      <div v-if="count >= 2" class="alert alert-info">
+        <i>{{ count }} persons have joined so far</i>
       </div>
+      <div v-else-if="count === 1" class="alert alert-info">
+        <i>{{ count }} person has joined so far</i>
+      </div>
+      <div v-else class="alert alert-warning" role="alert">
+        <i>0 persons have joined so far</i>
+      </div>
+      <h4>People who have joined</h4>
     </div>
     <!-- /.row -->
 
@@ -123,6 +130,7 @@
 // import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
 // import ThreadList from '@/components/threads/ThreadList'
 import { mapActions, mapState } from 'vuex';
+import { isLoggedIn } from '../services/authService';
 
 export default {
   name: 'meeting-detail',
@@ -141,12 +149,28 @@ export default {
       threads: state => state.threads.items,
       count: state => state.meetings.item.joinedPeopleCount,
       isActive: state => state.meetings.item.status,
-      meetingCreator: state => state.meetings.item.author || {}
-    })
+      meetingCreator: state => state.meetings.item.author || {},
+      isLoggedIn: state => state.isLoggedIn
+    }),
+    isOwner() {
+      return this.$store.getters['isOwner'](this.meetingCreator._id);
+    },
+    isMember() {
+      return this.$store.getters['isMember'](this.meeting._id);
+    },
+    canJoin() {
+      return !this.isOwner && isLoggedIn && !this.isMember;
+    }
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads'])
+    ...mapActions('threads', ['fetchThreads']),
+    joinMeeting() {
+      this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
+    },
+    leaveMeeting() {
+      this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);
+    }
   },
   created() {
     const id = this.$route.params.id;
