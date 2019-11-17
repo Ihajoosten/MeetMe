@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios';
+import axiosInstance from '../../services/axiosInstance';
 
 export default {
   namespaced: true,
@@ -16,6 +18,23 @@ export default {
           { root: true }
         );
         return state.items;
+      });
+    },
+    postThread({ commit, state }, { title, meetingId }) {
+      const thread = {};
+      thread.title = title;
+      thread.meeting = meetingId;
+
+      return axiosInstance.post('/api/threads', thread).then(res => {
+        const created = res.data;
+        const index = state.items.length;
+
+        commit(
+          'addItemToArray',
+          { item: created, index, resource: 'threads' },
+          { root: true }
+        );
+        return created;
       });
     }
   }

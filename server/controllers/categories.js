@@ -26,7 +26,10 @@ module.exports = {
       image: body.image
     });
 
-    category.save().then(() => res.status(200).json({ result: 'OK' }));
+    category.save((err, user) => {
+      if (err) return res.status(422).json({ err });
+      return res.status(201).json(category);
+    });
   },
   updateCategoryById(req, res, next) {
     const id = req.params.id;

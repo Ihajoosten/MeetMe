@@ -67,6 +67,9 @@ export default new Vuex.Store({
     },
     setMeetings(state, meetings) {
       return Vue.set(state.user, 'joinedMeetings', meetings);
+    },
+    addItemToArray(state, { item, index, resource }) {
+      Vue.set(state[resource].items, index, item);
     }
   },
   actions: {
@@ -78,12 +81,12 @@ export default new Vuex.Store({
       commit('setMeetings', userMeeting);
       return true;
     },
-    removeMeeting({commit, state}, meetingId) {
-      const userMeetings = [...state.user['joinedMeetings']]
-      const index = userMeetings.findIndex(id => id === meetingId)
+    removeMeeting({ commit, state }, meetingId) {
+      const userMeetings = [...state.user['joinedMeetings']];
+      const index = userMeetings.findIndex(id => id === meetingId);
 
-      userMeetings.splice(index, 1)
-      commit('setMeetings', userMeetings)
+      userMeetings.splice(index, 1);
+      commit('setMeetings', userMeetings);
     }
   }
 });

@@ -7,17 +7,12 @@ module.exports = {
     const body = req.body;
     const author = req.userId;
 
-    let thread = new Thread(body);
-    console.log(thread);
-
-    if (!thread) {
-      return res.status(422).json();
-    }
-
+    const thread = new Thread(body);
     thread.author = author;
 
-    thread.save().then(() => {
-      res.status(200).json({ result: 'OK' });
+    thread.save((err, createdThread) => {
+      if (err) return res.status(422).json({ err });
+      return res.status(201).json(createdThread);
     });
   },
 

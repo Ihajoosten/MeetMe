@@ -67,12 +67,9 @@ module.exports = {
 
       return Promise.all([
         meeting.save(),
-        User.updateOne(
-          { _id: user },
-          { $push: { joinedMeetings: meeting } }
-        )
+        User.updateOne({ _id: user }, { $push: { joinedMeetings: meeting } })
       ])
-        .then(() => res.status(200).json(id))
+        .then(() => res.status(201).json(id))
         .catch(errors => res.status(422).send({ errors }));
     });
   },

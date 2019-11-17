@@ -55,7 +55,13 @@
         >
           Join
         </button>
-        <button @click="leaveMeeting" v-if="isMember" class="btn btn-outline-danger">Leave</button>
+        <button
+          @click="leaveMeeting"
+          v-if="isMember"
+          class="btn btn-outline-danger"
+        >
+          Leave
+        </button>
       </div>
     </div>
     <!-- /.row -->
@@ -74,6 +80,13 @@
       <h4>People who have joined</h4>
     </div>
     <!-- /.row -->
+
+    <ThreadCreateModal
+      v-if="isMember || isOwner"
+      @threadSubmitted="createThread"
+      :btnTitle="`Welcome ${user.name}, start a new thread`"
+      :title="'Create Thread'"
+    />
 
     <div class="row text-white">
       <!-- Thread List START -->
@@ -127,17 +140,17 @@
 </template>
 
 <script>
-// import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
 // import ThreadList from '@/components/threads/ThreadList'
 import { mapActions, mapState } from 'vuex';
 import { isLoggedIn } from '../services/authService';
+import ThreadCreateModal from '@/components/threads/ThreadCreateModal';
 
 export default {
   name: 'meeting-detail',
-  // components: {
-  //   ThreadCreateModal,
-  //   ThreadList
-  // },
+  components: {
+    ThreadCreateModal
+    // ThreadList
+  },
   data() {
     return {
       amount: null
@@ -150,7 +163,8 @@ export default {
       count: state => state.meetings.item.joinedPeopleCount,
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {},
-      isLoggedIn: state => state.isLoggedIn
+      isLoggedIn: state => state.isLoggedIn,
+      user: state => state.user
     }),
     isOwner() {
       return this.$store.getters['isOwner'](this.meetingCreator._id);
@@ -164,12 +178,17 @@ export default {
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads']),
+    ...mapActions('threads', ['fetchThreads', 'postThread']),
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
     },
     leaveMeeting() {
       this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);
+    },
+    createThread({ title, done }) {
+      this.postThread({ title, meetingId: this.meeting._id }).then(() =>
+        done()
+      );
     }
   },
   created() {

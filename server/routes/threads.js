@@ -6,8 +6,7 @@ module.exports = app => {
   app.post('/api/threads/', auth.validateToken, controller.postThread);
   app.get('/api/threads', controller.getAllThreads);
   app.put('/api/threads/:id', controller.updateThreadById);
-  app.delete('/api/threads/:id', controller.deleteThreadById);
-  app.post('/api/threads/:id/comment', controller.postCommentToThread);
+  app.delete('/api/threads/:id', auth.validateToken, controller.deleteThreadById);
 };
 
 // auth.validateToken -> authentication works, but for development not currently using
