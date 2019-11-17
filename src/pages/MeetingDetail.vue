@@ -88,68 +88,25 @@
       :title="'Create Thread'"
     />
 
-    <div class="row text-white">
+    <div class="row">
       <!-- Thread List START -->
-      <div class="row col py-5 d-flex justify-content-center">
-        <div
-          v-for="thread in orderThreads()"
-          v-bind:key="thread._id"
-          class="col shadow mb-3 bg-success rounded ml-3"
-        >
-          <!-- Thread title -->
-          <h4 class="mb-4 mt-4">
-            <strong class="text-white">{{ thread.title }}</strong>
-          </h4>
-          <!-- Create new post, handle later -->
-          <form>
-            <div class="field">
-              <textarea
-                class="form-control mt-3 mb-4"
-                id="textarea-post"
-                rows="1"
-                placeholder="Write something."
-              ></textarea>
-              <button class="btn btn-sm btn-outline-light mb-5">Post</button>
-            </div>
-          </form>
-          <!-- Create new post END, handle later -->
-          <!-- Posts START -->
-          <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
-            <div class="row ml-3 col-11 bg-light shadow rounded text-muted">
-              <img class="is-rounded-post ml-2" :src="post.author.avatar" />
-              <div class="content is-medium">
-                <div class="post-content">
-                  <!-- Post User Name -->
-                  <strong class="ml-1 person-name">{{
-                    post.author.name
-                  }}</strong>
-                  <!-- Post Updated at -->
-                  <small class="ml-2">{{ post.updatedAt | fromNow }}</small>
-                  <p class="ml-4 post-text">{{ post.text }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Posts END -->
-        </div>
-      </div>
-      <!-- Thread List END -->
+      <ThreadList :threads="orderThreads()" :ableToPost="canPost"/>
     </div>
   </div>
   <!-- /.container -->
 </template>
 
 <script>
-// import ThreadList from '@/components/threads/ThreadList'
 import { mapActions, mapState } from 'vuex';
 import { isLoggedIn } from '../services/authService';
 import ThreadCreateModal from '@/components/threads/ThreadCreateModal';
+import ThreadList from '@/components/threads/ThreadList';
 
 export default {
   name: 'meeting-detail',
   components: {
-    ThreadCreateModal
-    // ThreadList
+    ThreadCreateModal,
+    ThreadList
   },
   data() {
     return {
@@ -174,6 +131,9 @@ export default {
     },
     canJoin() {
       return !this.isOwner && isLoggedIn && !this.isMember;
+    },
+    canPost() {
+      return this.isLoggedIn && (this.isMember || this.isOwner);
     }
   },
   methods: {
