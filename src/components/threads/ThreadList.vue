@@ -8,7 +8,7 @@
       <h4 class="mb-4 mt-4">
         <strong>{{ thread.title }}</strong>
       </h4>
-      <PostCreate v-if="ableToPost" />
+      <PostCreate v-if="ableToPost" :threadId="thread._id" />
       <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
         <div class="row ml-3 col-11 bg-light shadow rounded text-muted">
           <img class="is-rounded-post ml-2" :src="post.author.avatar" />
@@ -43,3 +43,26 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.meeting-image {
+  height: 500px;
+  width: 500px;
+}
+.is-rounded {
+  height: 65px;
+  width: 65px;
+  border-radius: 50% !important;
+}
+.is-rounded-post {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.person-name {
+  font-size: 13px;
+}
+.post-text {
+  font-size: 13px;
+}
+</style>

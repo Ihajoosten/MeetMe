@@ -170,24 +170,5 @@ export default {
 </script>
 
 <style scoped>
-.meeting-image {
-  height: 500px;
-  width: 500px;
-}
-.is-rounded {
-  height: 65px;
-  width: 65px;
-  border-radius: 50% !important;
-}
-.is-rounded-post {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-}
-.person-name {
-  font-size: 13px;
-}
-.post-text {
-  font-size: 13px;
-}
+
 </style>
