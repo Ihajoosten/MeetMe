@@ -16,26 +16,24 @@ module.exports = {
     });
   },
 
-  getAllThreads: (req, res, next) => {
+  getAllThreads: (req, res) => {
     const meetingId = req.query.meetingId;
 
     Thread.find({})
       .where({ meeting: meetingId })
+      .populate('author')
       .populate({
         path: 'posts',
         options: { limit: 5, sort: { createdAt: -1 } },
         populate: { path: 'author' }
       })
-      .populate('author')
-      .then(threads => {
-        res.status(200).json(threads);
+      .exec((errors, threads) => {
+        if (errors) {
+          return res.status(422).json({errors})
+        }
+        return res.status(200).json(threads)
       })
-      .catch(err => {
-        next({
-          message: 'something went wrong',
-          code: 400
-        });
-      });
+
   },
   updateThreadById: (req, res, next) => {
     const id = req.params.id;

@@ -90,7 +90,7 @@
 
     <div class="row">
       <!-- Thread List START -->
-      <ThreadList :threads="orderThreads()" :ableToPost="canPost"/>
+      <ThreadList :threads="orderThreads" :ableToPost="canPost"/>
     </div>
   </div>
   <!-- /.container -->
@@ -134,11 +134,17 @@ export default {
     },
     canPost() {
       return this.isLoggedIn && (this.isMember || this.isOwner);
+    },
+    orderThreads() {
+      const copyThreads = [...this.threads];
+      return copyThreads.sort((thread, nextThread) => {
+        return new Date(nextThread.createdAt) - new Date(thread.createdAt);
+      });
     }
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads', 'postThread']),
+    ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
     },
@@ -152,12 +158,6 @@ export default {
           position: 'top'
         });
         done();
-      });
-    },
-    orderThreads() {
-      const copyThreads = [...this.threads];
-      return copyThreads.sort((thread, nextThread) => {
-        return new Date(nextThread.createdAt) - new Date(thread.createdAt);
       });
     }
   },

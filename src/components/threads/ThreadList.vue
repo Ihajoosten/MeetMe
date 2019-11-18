@@ -27,6 +27,7 @@
 
 <script>
 import PostCreate from '../post/PostCreate';
+
 export default {
   components: {
     PostCreate

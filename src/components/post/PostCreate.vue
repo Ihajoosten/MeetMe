@@ -10,7 +10,7 @@
       ></textarea>
       <button
         :disabled="!text"
-        v-on:click.prevent="sendPost"
+        v-on:click.prevent="savePost"
         class="btn btn-success mt-2 btn-sm"
       >
         Send
@@ -35,11 +35,11 @@ export default {
     };
   },
   methods: {
-    sendPost() {
+    savePost() {
       this.$store.dispatch('threads/sendPost', {
         text: this.text,
         threadId: this.threadId
-      });
+      }).then(this.text = '')
     }
   }
 };

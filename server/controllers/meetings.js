@@ -4,9 +4,7 @@ const User = require('../models/users');
 module.exports = {
   createMeeting: (req, res) => {
     const body = req.body;
-    console.log(body);
     const author = req.userId;
-
     const meeting = new Meeting(body);
     meeting.author = author;
     meeting.status = 'active';
@@ -15,7 +13,7 @@ module.exports = {
       if (errors) {
         return res.status(422).send({ errors });
       }
-      return res.json(created);
+      return res.status(201).json(created);
     });
   },
   getAllMeetings: (req, res) => {
@@ -32,7 +30,7 @@ module.exports = {
           return res.status(422).send({ errors });
         }
 
-        return res.json(meetings);
+        return res.status(200).json(meetings);
       });
   },
   getMeetingById(req, res) {
@@ -50,7 +48,7 @@ module.exports = {
           return res.status(422).send({ errors });
         }
 
-        return res.json(meeting);
+        return res.status(200).json(meeting);
       });
   },
   joinMeeting: (req, res) => {
