@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
+    ...mapActions('threads', ['fetchThreads', 'postThread']),
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
     },
