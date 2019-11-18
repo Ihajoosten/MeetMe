@@ -13,8 +13,11 @@ export default {
       commit('setItems', { resource: 'threads', items: [] }, { root: true });
       return axios.get(`/api/threads?meetingId=${meetingId}`).then(res => {
         const threads = res.data;
-        commit('mergeThreads', threads);
-
+        commit(
+          'setItems',
+          { resource: 'threads', items: threads },
+          { root: true }
+        );
         return state.items;
       });
     },
@@ -37,7 +40,6 @@ export default {
     },
     sendPost({ dispatch }, { text, threadId }) {
       const post = { text, thread: threadId };
-      console.log(post)
 
       return axiosInstance.post('/api/posts', post).then(res => {
         const createdPost = res.data;
@@ -60,9 +62,6 @@ export default {
   mutations: {
     savePostToThread(state, { posts, index }) {
       Vue.set(state.items[index], 'posts', posts);
-    },
-    mergeThreads(state, threads) {
-      state.items = [...state.items, ...threads];
     }
   }
 };
