@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import CategoryItem from '../components/category/CategoryItem';
-import MeetingItem from '../components/meeting/MeetingItem';
+import CategoryItem from '../../components/category/CategoryItem';
+import MeetingItem from '../../components/meeting/MeetingItem';
 import { mapActions, mapState } from 'vuex';
 
 export default {

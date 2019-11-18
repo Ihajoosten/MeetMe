@@ -36,7 +36,7 @@
         <div class="card entity">
           <div class="d-flex justify-content-center">
             <img
-              src="../assets/img/Profielfoto.jpeg"
+              src="../../assets/img/Profielfoto.jpeg"
               class="card-img-top border mt-1 profile-pic"
               alt="..."
             />

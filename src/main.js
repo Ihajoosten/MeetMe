@@ -13,15 +13,16 @@ import Icons from 'uikit/dist/js/uikit-icons';
 import store from './store/index';
 import Spinner from './components/shared/Spinner';
 import vuelidate from 'vuelidate';
-import Toasted from 'vue-toasted';
-
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/index.css';
+ 
 Vue.config.productionTip = false;
 
 Vue.component('HomeTop', Hometop);
 Vue.component('HomeDropdown', HomeDropdown);
 Vue.component('Spinner', Spinner);
 
-Vue.use(Toasted);
+Vue.use(VueToast);
 UIkit.use(Icons);
 Vue.use(vuelidate);
 

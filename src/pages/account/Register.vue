@@ -208,8 +208,8 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
-import { validFileTypes } from '../validators/validators';
-import * as auth from '../services/authService';
+import { validFileTypes } from '../../validators/validators';
+import * as auth from '../../services/authService';
 
 export default {
   data() {

@@ -15,7 +15,10 @@ module.exports = {
       password: body.password
     });
 
-    user.save().then(() => res.status(200).json({ result: 'OK' }));
+    user.save((err, user) => {
+      if (err) return res.status(422).json({ err });
+      return res.status(201).json(user);
+    });
   },
   updateUserByUsername: (req, res, next) => {
     const username = req.params.username;
@@ -46,12 +49,10 @@ module.exports = {
     }
     User.findOne({ email: req.body.email }, (error, user) => {
       if (error) {
-        return res
-          .status(500)
-          .json({
-            message: 'Something went wrong on the server!',
-            status: 500
-          });
+        return res.status(500).json({
+          message: 'Something went wrong on the server!',
+          status: 500
+        });
       }
       if (!user) {
         return res

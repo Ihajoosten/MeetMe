@@ -69,11 +69,8 @@ module.exports = {
         });
       }
       const payload = jwt.decode(token);
-      logger.trace('payload', payload);
 
       if (payload.user.username && payload.user._id) {
-        logger.debug('token is valid', payload);
-
         req.userId = payload.user._id;
         req.username = payload.user.username;
         req.token = token;

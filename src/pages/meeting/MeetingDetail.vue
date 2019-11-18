@@ -55,7 +55,13 @@
         >
           Join
         </button>
-        <button @click="leaveMeeting" v-if="isMember" class="btn btn-outline-danger">Leave</button>
+        <button
+          @click="leaveMeeting"
+          v-if="isMember"
+          class="btn btn-outline-danger"
+        >
+          Leave
+        </button>
       </div>
     </div>
     <!-- /.row -->
@@ -75,69 +81,33 @@
     </div>
     <!-- /.row -->
 
-    <div class="row text-white">
+    <ThreadCreateModal
+      v-if="isMember || isOwner"
+      @threadSubmitted="createThread"
+      :btnTitle="`Welcome ${user.name}, start a new thread`"
+      :title="'Create Thread'"
+    />
+
+    <div class="row">
       <!-- Thread List START -->
-      <div class="row col py-5 d-flex justify-content-center">
-        <div
-          v-for="thread in threads"
-          v-bind:key="thread._id"
-          class="col shadow mb-3 bg-success rounded ml-3"
-        >
-          <!-- Thread title -->
-          <h4 class="mb-4 mt-4">
-            <strong class="text-white">{{ thread.title }}</strong>
-          </h4>
-          <!-- Create new post, handle later -->
-          <form>
-            <div class="field">
-              <textarea
-                class="form-control mt-3 mb-4"
-                id="textarea-post"
-                rows="1"
-                placeholder="Write something."
-              ></textarea>
-              <button class="btn btn-sm btn-outline-light mb-5">Post</button>
-            </div>
-          </form>
-          <!-- Create new post END, handle later -->
-          <!-- Posts START -->
-          <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
-            <div class="row ml-3 col-11 bg-light shadow rounded text-muted">
-              <img class="is-rounded-post ml-2" :src="post.author.avatar" />
-              <div class="content is-medium">
-                <div class="post-content">
-                  <!-- Post User Name -->
-                  <strong class="ml-1 person-name">{{
-                    post.author.name
-                  }}</strong>
-                  <!-- Post Updated at -->
-                  <small class="ml-2">{{ post.updatedAt | fromNow }}</small>
-                  <p class="ml-4 post-text">{{ post.text }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Posts END -->
-        </div>
-      </div>
-      <!-- Thread List END -->
+      <ThreadList :threads="orderThreads" :ableToPost="canPost"/>
     </div>
   </div>
   <!-- /.container -->
 </template>
 
 <script>
-// import ThreadCreateModal from '@/components/threads/ThreadCreateModal'
-// import ThreadList from '@/components/threads/ThreadList'
 import { mapActions, mapState } from 'vuex';
-import { isLoggedIn } from '../services/authService';
+import { isLoggedIn } from '../../services/authService';
+import ThreadCreateModal from '../../components/threads/ThreadCreateModal';
+import ThreadList from '../../components/threads/ThreadList';
 
 export default {
   name: 'meeting-detail',
-  // components: {
-  //   ThreadCreateModal,
-  //   ThreadList
-  // },
+  components: {
+    ThreadCreateModal,
+    ThreadList
+  },
   data() {
     return {
       amount: null
@@ -150,7 +120,8 @@ export default {
       count: state => state.meetings.item.joinedPeopleCount,
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {},
-      isLoggedIn: state => state.isLoggedIn
+      isLoggedIn: state => state.isLoggedIn,
+      user: state => state.user
     }),
     isOwner() {
       return this.$store.getters['isOwner'](this.meetingCreator._id);
@@ -160,16 +131,34 @@ export default {
     },
     canJoin() {
       return !this.isOwner && isLoggedIn && !this.isMember;
+    },
+    canPost() {
+      return this.isLoggedIn && (this.isMember || this.isOwner);
+    },
+    orderThreads() {
+      const copyThreads = [...this.threads];
+      return copyThreads.sort((thread, nextThread) => {
+        return new Date(nextThread.createdAt) - new Date(thread.createdAt);
+      });
     }
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads']),
+    ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
     },
     leaveMeeting() {
       this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);
+    },
+    createThread({ title, done }) {
+      this.postThread({ title, meetingId: this.meeting._id }).then(() => {
+        this.$toast.success('Created new thread!', {
+          duration: 5000,
+          position: 'top'
+        });
+        done();
+      });
     }
   },
   created() {
@@ -181,24 +170,5 @@ export default {
 </script>
 
 <style scoped>
-.meeting-image {
-  height: 500px;
-  width: 500px;
-}
-.is-rounded {
-  height: 65px;
-  width: 65px;
-  border-radius: 50% !important;
-}
-.is-rounded-post {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-}
-.person-name {
-  font-size: 13px;
-}
-.post-text {
-  font-size: 13px;
-}
+
 </style>
