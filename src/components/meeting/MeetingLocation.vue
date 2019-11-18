@@ -1,17 +1,22 @@
 <template>
-  <div>
-    <h1 class="title m-b-sm">What's your new Meetup location?</h1>
-    <div class="m-b-lg">
-      <span class="subtitle">Location</span>
-      <input
-        v-on:input="emitFormData"
-        v-model="form.location"
-        @blur="$v.form.location.$touch()"
-        type="text"
-        class="input"
-      />
-
-      <div class="text-left mt-2">
+  <div id="step-1" class="container">
+    <h2>What is the location of your meeting?</h2>
+    <div class="form-row">
+      <div class="col form-group">
+        <label for="inputAddress">Location</label>
+        <input
+          v-on:input="emitFormData"
+          v-model="form.location"
+          @blur="$v.form.location.$touch()"
+          type="text"
+          class="form-control"
+          id="inputAddress"
+          placeholder="Amsterdam, The Netherlands"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-left">
         <div
           v-if="$v.form.location.$error"
           class="alert alert-danger"
@@ -46,3 +51,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  #step-1 {
+    margin-top: 50px;
+  }
+</style>

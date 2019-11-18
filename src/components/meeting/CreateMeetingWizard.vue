@@ -1,8 +1,6 @@
 <template>
   <div class="meetup-create-form">
-    <div class="current-step is-pulled-right">
-      {{ currentPage }} of {{ stepSize }}
-    </div>
+    <div class="container badge badge-success mt-3">{{ currentPage }} of {{ stepSize }}</div>
     <!-- Form Steps -->
     <keep-alive>
       <component
@@ -12,14 +10,24 @@
         :createMeeting="form"
       />
     </keep-alive>
-    <progress
+    <!-- <progress
       class="progress progress-bar bg-success mt-2"
       :value="currentProgress"
       max="100"
       >{{ currentProgress }}%</progress
-    >
+    > -->
 
-    <div class="controll-btns m-b-md">
+    <div class="progress mt-4">
+      <div
+        class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        :style="'width: ' + currentProgress + '%'"
+      ></div>
+    </div>
+
+    <div class="container mt-3 text-center">
       <button
         class="btn btn-outline-secondary mr-3"
         v-if="currentPage > 1"
@@ -35,7 +43,11 @@
       >
         Next
       </button>
-      <button v-on:click.prevent="emitMeetingConfirm" v-else class="btn btn-outline-success">
+      <button
+        v-on:click.prevent="emitMeetingConfirm"
+        v-else
+        class="btn btn-outline-success"
+      >
         Confirm
       </button>
     </div>
@@ -100,9 +112,9 @@ export default {
       this.currentPage--;
       this.canProceed = true;
     },
-    emitMeetingConfirm () {
-        this.$emit('confirmMeeting', this.form)
-      }
+    emitMeetingConfirm() {
+      this.$emit('confirmMeeting', this.form);
+    }
   }
 };
 </script>

@@ -1,11 +1,11 @@
 <template>
-  <form @input="emitFormData" class="m-b-md">
-    <div class="field">
-      <label class="title">Image</label>
+  <form id="step-3" class="container" @input="emitFormData">
+    <div class="form-group">
+      <label>Image</label>
       <input
         v-model="form.image"
         @blur="$v.form.image.$touch()"
-        class="input"
+        class="form-control"
         type="text"
         placeholder="Image URL"
       />
@@ -19,25 +19,27 @@
         </div>
       </div>
     </div>
-    <div class="field">
-      <label class="title">Description</label>
+
+    <div class="mb-3">
+      <label>Desciption</label>
       <textarea
         v-model="form.description"
         @blur="$v.form.description.$touch()"
-        class="textarea"
-        placeholder="Write description"
-        rows="5"
+        class="form-control"
+        id="validationTextarea"
+        placeholder="Write meeting desciption"
+        required
       ></textarea>
-      <div class="text-left mt-2">
-        <div
-          v-if="$v.form.description.$error"
-          class="alert alert-danger"
-          role="alert"
+    </div>
+    <div class="text-left mt-2">
+      <div
+        v-if="$v.form.description.$error"
+        class="alert alert-danger"
+        role="alert"
+      >
+        <i v-if="!$v.form.description.required"
+          >A short description is required</i
         >
-          <i v-if="!$v.form.description.required"
-            >A short description is required</i
-          >
-        </div>
       </div>
     </div>
   </form>
@@ -72,4 +74,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#step-3 {
+  margin-top: 50px;
+}
+</style>
