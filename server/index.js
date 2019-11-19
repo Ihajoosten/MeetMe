@@ -6,7 +6,6 @@ const logger = config.logger;
 const morgan = require('morgan');
 const cors = require('cors');
 const PORT = process.env.PORT || 5000;
-const app = express();
 const path = require('path');
 
 //const commentRoutes = require('./routes/comments');
@@ -15,6 +14,12 @@ const userRoutes = require('./routes/users');
 const categoryRoutes = require('./routes/categories');
 const meetingRoutes = require('./routes/meetings');
 const postRoutes = require('./routes/posts');
+
+const app = express();
+const server = require('http').createServer(app)
+const io = require('socket.io')(server, {pingTimeout: 60000})
+
+require('./socket/index')(io)
 
 // Database connection
 mongoose
@@ -64,6 +69,6 @@ app.use((error, req, res, next) => {
 });
 
 // Determine on wich port the server is listening to
-app.listen(PORT, function() {
+server.listen(PORT, function() {
   logger.debug('Server is running on port: ' + PORT);
 });

@@ -39,7 +39,10 @@ export default {
       this.$store.dispatch('threads/sendPost', {
         text: this.text,
         threadId: this.threadId
-      }).then(this.text = '')
+      }).then((created) => {
+        this.$root.socket.emit('meeting/postSave', created)
+        this.text = ''
+      })
     }
   }
 };

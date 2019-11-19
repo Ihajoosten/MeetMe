@@ -15,7 +15,8 @@ import Spinner from './components/shared/Spinner';
 import vuelidate from 'vuelidate';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/index.css';
- 
+import io from 'socket.io-client';
+
 Vue.config.productionTip = false;
 
 Vue.component('HomeTop', Hometop);
@@ -66,7 +67,14 @@ Vue.filter('month', value => {
   return moment(value).format('MMMM');
 });
 
+const socket = io('http://localhost:5000')
+
 new Vue({
+  data() {
+    return {
+      socket
+    }
+  },
   router,
   store,
   vuelidate,
