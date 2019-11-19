@@ -16,6 +16,11 @@ import vuelidate from 'vuelidate';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/index.css';
 import SocketPlugin from './plugins/socket';
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false;
 
