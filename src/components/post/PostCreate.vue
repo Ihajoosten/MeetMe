@@ -40,7 +40,7 @@ export default {
         text: this.text,
         threadId: this.threadId
       }).then((created) => {
-        this.$root.socket.emit('meeting/postSave', created)
+        this.$socket.emit('meeting/postSave', created)
         this.text = ''
       })
     }

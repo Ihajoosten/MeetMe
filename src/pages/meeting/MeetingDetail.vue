@@ -166,7 +166,7 @@ export default {
     this.fetchMeeting(id);
     this.fetchThreads(id);
 
-    this.$root.socket.on('meeting/postPublished', (post) => {
+    this.$socket.on('meeting/postPublished', (post) => {
       alert(post.text)
       console.log(post.text)
     })
