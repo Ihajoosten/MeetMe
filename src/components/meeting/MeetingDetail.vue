@@ -1,13 +1,13 @@
 <template>
-  <form @input="emitFormData">
-    <div class="field">
-      <label class="title m-b-sm">Choose Title</label>
+  <form class="container" id="step-2" @input="emitFormData">
+    <div class="form-group">
+      <label>Title</label>
       <input
         v-model="form.title"
         @blur="$v.form.title.$touch()"
-        class="input"
         type="text"
-        placeholder="Enter Title"
+        class="form-control"
+        placeholder="Title"
       />
       <div class="text-left mt-2">
         <div
@@ -19,62 +19,56 @@
         </div>
       </div>
     </div>
-    <div class="field">
-      <label class="title m-b-sm">Start Date</label>
-      <datepicker
-        :disabledDates="disabledDates"
-        @input="setDate"
-        :input-class="'input'"
-        :placeholder="new Date() | date"
-      />
+    <div class="form-row">
+      <div class="form-group">
+        <label>Pick date for meeting</label>
+        <datepicker
+          :disabledDates="disabledDates"
+          @input="setDate"
+          @blur="$v.form.startDate.$touch()"
+          :input-class="'ml-1 col-10'"
+          :placeholder="new Date() | date"
+        />
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Choose Start time</label>
+        <timepicker
+          :minute-interval="10"
+          v-on:change="changeTime($event, 'timeFrom')"
+          class="mr-5"
+        />
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Choose End time</label>
+        <timepicker
+          :minute-interval="10"
+          v-on:change="changeTime($event, 'timeTo')"
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="formGroupExampleInput2">Choose category</label>
+      <select
+        v-on:change="emitFormData"
+        class="form-control"
+        v-model="form.category"
+        @blur="$v.form.category.$touch()"
+      >
+        <option
+          v-for="category of categories"
+          :value="category"
+          :key="category.id"
+          >{{ category.name }}</option
+        >
+      </select>
       <div class="text-left mt-2">
         <div
-          v-if="$v.form.startDate.$error"
+          v-if="$v.form.category.$error"
           class="alert alert-danger"
           role="alert"
         >
-          <i v-if="!$v.form.startDate.required">The start date is required</i>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-      <label class="title m-b-sm">Start time</label>
-      <timepicker
-        :minute-interval="10"
-        v-on:change="changeTime($event, 'timeFrom')"
-      />
-    </div>
-    <div class="field">
-      <label class="title m-b-sm">End time</label>
-      <timepicker
-        :minute-interval="10"
-        v-on:change="changeTime($event, 'timeTo')"
-      />
-    </div>
-    <div class="field">
-      <label class="title m-b-sm">Please Choose the Category.</label>
-      <div class="m-b-lg">
-        <select
-          v-on:change="emitFormData"
-          class="custom-select col-4"
-          v-model="form.category"
-          @blur="$v.form.category.$touch()"
-        >
-          <option
-            v-for="category of categories"
-            :value="category"
-            :key="category.id"
-            >{{ category.name }}</option
-          >
-        </select>
-        <div class="text-left mt-2">
-          <div
-            v-if="$v.form.category.$error"
-            class="alert alert-danger"
-            role="alert"
-          >
-            <i v-if="!$v.form.category.required">Category is required</i>
-          </div>
+          <i v-if="!$v.form.category.required">Category is required</i>
         </div>
       </div>
     </div>
@@ -143,6 +137,9 @@ export default {
 </script>
 
 <style scoped>
+#step-2 {
+  margin-top: 50px;
+}
 .time-picker {
   display: block;
 }

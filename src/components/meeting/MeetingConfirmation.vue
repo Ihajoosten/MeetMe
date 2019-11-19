@@ -1,55 +1,61 @@
 <template>
-  <div>
-    <h1 class="title m-b-sm">Please confirm entered data</h1>
+  <div class="container">
+    <h2 class="text-center mt-4">Please confirm entered data</h2>
 
-    <div class="content">
-      <div>
-        <span class="result-title">
+    <div class="row mt-5">
+      <div class="col">
+        <h1 class="result-title">
           Location
-        </span>
-        <p>{{ createMeeting.location }}</p>
+        </h1>
+        <h3>{{ createMeeting.location }}</h3>
       </div>
-      <div>
-        <span class="result-title">
+      <div class="col">
+        <h1 class="result-title">
           Title
-        </span>
-        <p>{{ createMeeting.title }}</p>
+        </h1>
+        <h3>{{ createMeeting.title }}</h3>
       </div>
-      <div>
-        <span class="result-title">
-          Start Date
-        </span>
-        <p>{{ createMeeting.startDate | date }}</p>
-      </div>
-      <div>
-        <span class="result-title">
-          From
-        </span>
-        <p>{{ createMeeting.timeFrom }}</p>
-      </div>
-      <div>
-        <span class="result-title">
-          To
-        </span>
-        <p>{{ createMeeting.timeTo }}</p>
-      </div>
-      <div>
-        <span class="result-title">
+      <div class="col">
+        <h1 class="result-title">
           Category
-        </span>
-        <p>{{ createMeeting.category.name }}</p>
+        </h1>
+        <h3>{{ createMeeting.category.name }}</h3>
       </div>
-      <div>
-        <span class="result-title">
+    </div>
+
+    <div class="row mt-5">
+      <div class="col">
+        <h1 class="result-title">
+          Start Date
+        </h1>
+        <h3>{{ createMeeting.startDate | date }}</h3>
+      </div>
+      <div class="col">
+        <h1 class="result-title">
+          From
+        </h1>
+        <h3>{{ createMeeting.timeFrom }}</h3>
+      </div>
+      <div class="col">
+        <h1 class="result-title">
+          To
+        </h1>
+        <h3>{{ createMeeting.timeTo }}</h3>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-6">
+        <h1 class="result-title">
           Image
-        </span>
-        <p>{{ createMeeting.image }}</p>
+        </h1>
+        <h3>{{ createMeeting.image }}</h3>
       </div>
-      <div>
-        <span class="result-title">
+      <div class="col-6">
+        <h1 class="result-title">
           Description
-        </span>
-        <p>{{ createMeeting.description }}</p>
+        </h1>
+        <h3>{{ createMeeting.description }}</h3>
       </div>
     </div>
   </div>

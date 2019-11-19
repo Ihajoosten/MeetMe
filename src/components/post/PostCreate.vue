@@ -34,12 +34,25 @@ export default {
       text: null
     };
   },
+  computed: {
+    meeting() {
+      return this.$store.state.meetings.item;
+    }
+  },
   methods: {
     savePost() {
-      this.$store.dispatch('threads/sendPost', {
-        text: this.text,
-        threadId: this.threadId
-      }).then(this.text = '')
+      this.$store
+        .dispatch('threads/sendPost', {
+          text: this.text,
+          threadId: this.threadId
+        })
+        .then(created => {
+          this.$socket.emit('meeting/postSave', {
+            ...created,
+            meeting: this.meeting._id
+          });
+          this.text = '';
+        });
     }
   }
 };
