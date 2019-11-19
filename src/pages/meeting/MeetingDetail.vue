@@ -90,7 +90,7 @@
 
     <div class="row">
       <!-- Thread List START -->
-      <ThreadList :threads="orderThreads" :ableToPost="canPost"/>
+      <ThreadList :threads="orderThreads" :ableToPost="canPost" />
     </div>
   </div>
   <!-- /.container -->
@@ -142,9 +142,24 @@ export default {
       });
     }
   },
+  created() {
+    const id = this.$route.params.id;
+    this.fetchMeeting(id);
+    this.fetchThreads(id);
+
+    if (this.isLoggedIn) {
+      this.$socket.emit('meeting/subscribe', id);
+      this.$socket.on('meeting/postPublished', post =>
+        this.addPostToThread({ post, threadId: post.thread })
+      );
+    }
+  },
+  destroyed() {
+    this.$socket.removeListener('meeting/postPublished', this.addPostToThread);
+  },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads', 'postThread']),
+    ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
     },
@@ -160,20 +175,8 @@ export default {
         done();
       });
     }
-  },
-  created() {
-    const id = this.$route.params.id;
-    this.fetchMeeting(id);
-    this.fetchThreads(id);
-
-    this.$socket.on('meeting/postPublished', (post) => {
-      alert(post.text)
-      console.log(post.text)
-    })
   }
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
