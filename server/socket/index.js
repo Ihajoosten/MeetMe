@@ -16,7 +16,6 @@ module.exports = io => {
 
     socket.on('meeting/postSave', post => {
       logger.info('Emitting to meeting', `meeting-${post.meeting}`);
-      console.log(post);
       socket.to(`meeting-${post.meeting}`).emit('meeting/postPublished', post);
     });
   });
