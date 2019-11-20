@@ -13,11 +13,8 @@ export default {
       commit('setItems', { resource: 'threads', items: [] }, { root: true });
       return axios.get(`/api/threads?meetingId=${meetingId}`).then(res => {
         const threads = res.data;
-        commit(
-          'setItems',
-          { resource: 'threads', items: threads },
-          { root: true }
-        );
+        commit('mergeThreads', threads)
+
         return state.items;
       });
     },
@@ -42,9 +39,8 @@ export default {
       const post = { text, thread: threadId };
 
       return axiosInstance.post('/api/posts', post).then(res => {
-        const createdPost = res.data;
-        dispatch('addPostToThread', { post: createdPost, threadId });
-        return createdPost;
+        console.log(res.data)
+        dispatch('addPostToThread', { post: res.data, threadId });
       });
     },
     addPostToThread({ commit, state }, { post, threadId }) {
@@ -52,16 +48,19 @@ export default {
         item => item._id === threadId
       );
 
-      if (threadIndex > -1) {
-        const posts = state.items[threadIndex].posts;
-        posts.unshift(post);
-        commit('savePostToThread', { posts, index: threadIndex });
+      if (threadIndex >= 0) {
+        const threadPosts = state.items[threadIndex].posts;
+        threadPosts.unshift(post);
+        commit('savePostToThread', { threadPosts, index: threadIndex });
       }
     }
   },
   mutations: {
-    savePostToThread(state, { posts, index }) {
-      Vue.set(state.items[index], 'posts', posts);
+    savePostToThread(state, { threadPosts, index }) {
+      Vue.set(state.items[index], 'posts', threadPosts);
+    },
+    mergeThreads (state, threads) {
+      state.items = [...state.items, ...threads]
     }
   }
 };

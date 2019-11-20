@@ -7,7 +7,6 @@ module.exports = {
 
     Post.find({ thread: threadId })
       .populate('author')
-      .populate('thread')
       .exec((errors, posts) => {
         if (errors) {
           return res.status(422).send({ errors });
@@ -18,8 +17,9 @@ module.exports = {
   },
   createPost: (req, res) => {
     const body = req.body;
+    const author = req.userId
     const post = new Post(body);
-    post.author = req.userId;
+    post.author = author;
 
     post.save((errors, createdPost) => {
       if (errors) {
