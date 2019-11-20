@@ -10,8 +10,6 @@
         centered
         ref="modal"
         title="Create thread"
-        @show="resetModal"
-        @hidden="resetModal"
         @ok="threadSubmitted"
       >
         <form>

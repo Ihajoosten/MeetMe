@@ -1,20 +1,24 @@
 <template>
-  <form class="post-create">
-    <div class="field">
-      <textarea
-        v-auto-expand
-        v-model="text"
-        class="textarea"
-        placeholder="Write a post"
-        rows="1"
-      ></textarea>
-      <button
-        :disabled="!text"
-        v-on:click.prevent="savePost"
-        class="btn btn-success mt-2 btn-sm"
-      >
-        Send
-      </button>
+  <form class="mt-4">
+    <div class="row mb-4">
+      <div class="col">
+        <b-form-textarea
+          id="textarea"
+          v-model="text"
+          placeholder="Enter something..."
+          rows="2"
+          max-rows="3"
+        ></b-form-textarea>
+      </div>
+      <div class="col">
+        <b-button
+          class="mt-2"
+          variant="outline-success"
+          :disabled="!text"
+          v-on:click.prevent="savePost"
+          >Post</b-button
+        >
+      </div>
     </div>
   </form>
 </template>
@@ -57,11 +61,3 @@ export default {
   }
 };
 </script>
-<style>
-.textarea-post {
-  padding-bottom: 30px;
-}
-.post-create {
-  margin-bottom: 15px;
-}
-</style>
