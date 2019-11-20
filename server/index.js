@@ -16,10 +16,15 @@ const meetingRoutes = require('./routes/meetings');
 const postRoutes = require('./routes/posts');
 
 const app = express();
-const server = require('http').createServer(app)
-const io = require('socket.io').listen(server, {pingTimeout: 60000})
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { pingTimeout: 60000 });
 
-require('./socket/index')(io)
+require('./socket/index')(io);
+
+// Determine on wich port the server is listening to
+server.listen(PORT, function() {
+  logger.debug('Server is running on port: ' + PORT);
+});
 
 // Database connection
 mongoose
@@ -66,9 +71,4 @@ app.all('*', function(req, res, next) {
 // eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
   res.status(error.code).json(error);
-});
-
-// Determine on wich port the server is listening to
-server.listen(PORT, function() {
-  logger.debug('Server is running on port: ' + PORT);
 });

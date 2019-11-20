@@ -1,7 +1,7 @@
 <template>
   <form class="mt-4">
     <div class="row mb-4">
-      <div class="col">
+      <div class="col ">
         <b-form-textarea
           id="textarea"
           v-model="text"

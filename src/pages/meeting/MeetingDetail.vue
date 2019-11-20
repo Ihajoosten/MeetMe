@@ -150,17 +150,19 @@ export default {
 
     if (this.isLoggedIn) {
       this.$socket.emit('meeting/subscribe', id);
-      this.$socket.on('meeting/postPublished', post =>
-        this.addPostToThread({ post, threadId: post.thread })
-      );
+      this.$socket.on('meeting/postPublished', this.addPostHandler);
     }
   },
   destroyed() {
-    this.$socket.removeListener('meeting/postPublished', this.addPostToThread);
+    this.$socket.removeListener('meeting/postPublished', this.addPostHandler);
+    this.$socket.emit('meeting/unsubscribe', this.meeting._id)
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
     ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
+    addPostHandler(post) {
+      this.addPostToThread({ post, threadId: post.thread });
+    },
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
     },
