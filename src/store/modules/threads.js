@@ -39,7 +39,6 @@ export default {
       const post = { text, thread: threadId };
 
       return axiosInstance.post('/api/posts', post).then(res => {
-        console.log(res.data)
         dispatch('addPostToThread', { post: res.data, threadId });
       });
     },
