@@ -17,7 +17,7 @@ const postRoutes = require('./routes/posts');
 
 const app = express();
 const server = require('http').createServer(app)
-const io = require('socket.io')(server, {pingTimeout: 60000})
+const io = require('socket.io').listen(server, {pingTimeout: 60000})
 
 require('./socket/index')(io)
 
