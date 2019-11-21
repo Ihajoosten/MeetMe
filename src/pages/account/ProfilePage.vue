@@ -3,45 +3,56 @@
     <div class="row">
       <div class="col-sm text-center">
         <img class="profile-pic" :src="user.avatar" />
-          <span class="title"
-            ><h4>
-              <b>{{ user.name }}</b>
-            </h4></span
-          >
-          <p class="tagline">Username: {{ user.username }}</p>
-          <p class="tagline">
-            Joined meetings: {{ user.joinedMeetings.length }}
-          </p>
-          <button class="btn btn-sm btn-outline-primary">
-            Update Info
-          </button>
+        <span class="title"
+          ><h4>
+            <b>{{ user.name }}</b>
+          </h4></span
+        >
+        <p class="tagline">Username: {{ user.username }}</p>
+        <p class="tagline">Joined meetings: {{ user.joinedMeetings.length }}</p>
+        <b-button
+          class="btn-sm"
+          variant="outline-primary"
+          v-b-modal.modal-center
+          >Update account</b-button
+        >
+        <UpdateModal />
       </div>
-        <div class="stats-tab col-sm text-center">
-          <p class="stat-val">{{ meetingCount }}</p>
-          <p class="stat-key">Meetups</p>
-        </div>
 
-        <div class="stats-tab col-sm text-center">
-          <p class="stat-val">{{ threadCount }}</p>
-          <p class="stat-key">Threads</p>
-        </div>
+      <div
+        v-on:click.prevent="activeTab = 'meetings'"
+        :class="{ isActive: activeTab === 'meetings' }"
+        class="stats-tab col-sm text-center"
+      >
+        <p class="stat-val">{{ meetingCount }}</p>
+        <p class="stat-key">Meetups</p>
+      </div>
 
-        <div class="stats-tab col-sm text-center">
-          <p class="stat-val">{{ postCount }}</p>
-          <p class="stat-key">Posts</p>
-        </div>
+      <div
+        v-on:click.prevent="activeTab = 'threads'"
+        :class="{ isActive: activeTab === 'threads' }"
+        class="stats-tab col-sm text-center"
+      >
+        <p class="stat-val">{{ threadCount }}</p>
+        <p class="stat-key">Threads</p>
+      </div>
+
+      <div
+        v-on:click.prevent="activeTab = 'posts'"
+        :class="{ isActive: activeTab === 'posts' }"
+        class="stats-tab col-sm text-center"
+      >
+        <p class="stat-val">{{ postCount }}</p>
+        <p class="stat-key">Posts</p>
+      </div>
     </div>
 
-    <div class="row mt-5">
-      <div
-        v-for="meeting in meetings"
-        v-bind:key="meeting._id"
-        class="col"
-      >
+    <div v-if="activeTab === 'meetings'" class="row mt-5">
+      <div v-for="meeting in meetings" v-bind:key="meeting._id" class="col">
         <div class="card" style="width: auto;">
           <img
             :src="meeting.image"
-            style="width: 100%; height: 10rem;"
+            style="width: 100%; height: 15rem;"
             class="card-img-top"
             alt="..."
           />
@@ -65,7 +76,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div v-if="activeTab === 'threads'" class="row mt-5">
       <div v-for="thread in threads" v-bind:key="thread._id" class="col-md-4">
         <div class="card" style="width: auto; height: 10rem">
           <div class="card-body">
@@ -83,7 +94,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div v-if="activeTab === 'posts'" class="row mt-5">
       <div v-for="post in posts" v-bind:key="post._id" class="col-md-4">
         <div class="card" style="width: auto; height: 10rem">
           <div class="card-body">
@@ -105,7 +116,17 @@
 
 <script>
 import { mapState } from 'vuex';
+import UpdateModal from '../../components/account/UpdateAccountModal';
+
 export default {
+  data() {
+    return {
+      activeTab: 'meetings'
+    };
+  },
+  components: {
+    UpdateModal
+  },
   computed: {
     ...mapState({
       user: state => state.user,
