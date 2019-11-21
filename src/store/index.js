@@ -21,7 +21,7 @@ export default new Vuex.Store({
     email: null,
     userId: null,
     user: null,
-    token: localStorage.getItem('access_token') || null
+    token: null
   },
   getters: {
     isOwner: function(state) {

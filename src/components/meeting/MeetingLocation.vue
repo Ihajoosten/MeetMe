@@ -32,6 +32,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 export default {
+  name: 'meeting-location',
   data() {
     return {
       form: {
