@@ -321,6 +321,230 @@
               </tbody>
             </table>
           </div>
+           <div class="table-responsive-sm">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Naam</th>
+                  <th scope="col">
+                    UC-04 Nieuwe meeting aanmaken
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Beschrijving</th>
+                  <td>
+                    Gebruiker klikt op de button 'new meeting' om een nieuwe meeting aan te maken
+                    het process bestaat uit 4 stappen met als laatste stap de bevestiging. wanneer een gebruiker op 'confirm klikt', dan 
+                    is er een nieuwe meeting aangemaakt en wordt de gebruiker daar de detail pagina doorgestuurd die net is aangemaakt
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Actor</th>
+                  <td>Algemene gebruiker</td>
+                </tr>
+                <tr>
+                  <th scope="row">Pre-conditie</th>
+                  <td colspan="2">Ingelogd zijn</td>
+                </tr>
+                <tr>
+                  <th scope="row">Scenario</th>
+                  <td colspan="2">
+                    <ol>
+                      <li>
+                        Gebruiker klikt op 'New meeting' op de hoofdpagina
+                      </li>
+                      <li>
+                        De applicatie verwijst de gebruiker door naar het
+                        aanmaakt scherm om een meeting aan te maken
+                      </li>
+                      <li>
+                        Gebruiker vult de gegevens in voor de meeting
+                      </li>
+                      <li>
+                        Gebruiker klikt op 'confirm' om de aanmaak te bevestigen
+                      </li>
+                      <li>
+                        Gebruiker wordt naar de detail pagina van de nieuwe meeting doorverwezen
+                      </li>
+                    </ol>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Post-conditie</th>
+                  <td colspan="2">
+                    Gebruiker heeft een nieuwe meeting aangemaakt
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+           <div class="table-responsive-sm">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Naam</th>
+                  <th scope="col">
+                    UC-05 Meeting joinen
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Beschrijving</th>
+                  <td>
+                    Gebruiker klikt op 'join' onderaan de meeting beschrijving 
+                    op de detail pagina om de meeting te joinen
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Actor</th>
+                  <td>Algemene gebruiker</td>
+                </tr>
+                <tr>
+                  <th scope="row">Pre-conditie</th>
+                  <td colspan="2">Ingelogd zijn</td>
+                </tr>
+                <tr>
+                  <th scope="row">Scenario</th>
+                  <td colspan="2">
+                    <ol>
+                      <li>
+                        Gebruiker klikt op 'join' op de detail pagina
+                      </li>
+                      <li>
+                        De applicatie checkt na of de gebruiker daadwerkelijk is gejoint
+                      </li>
+                      <li>
+                        De gebruiker kan nu een nieuwe thread aanmaken en posts aanmaaken
+                      </li>
+                      <li>
+                        De applicatie laat de 'leave' button zien
+                      </li>
+                    </ol>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Post-conditie</th>
+                  <td colspan="2">
+                    Gebruiker is een meeting gejoint en kan nu posts en threads aanmaken
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+            <div class="table-responsive-sm">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Naam</th>
+                  <th scope="col">
+                    UC-06 Meeting leaven
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Beschrijving</th>
+                  <td>
+                    Gebruiker klikt op 'leave' onderaan de meeting beschrijving 
+                    op de detail pagina om de meeting te leaven
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Actor</th>
+                  <td>Algemene gebruiker</td>
+                </tr>
+                <tr>
+                  <th scope="row">Pre-conditie</th>
+                  <td colspan="2">Ingelogd zijn & lid zijn van de meeting</td>
+                </tr>
+                <tr>
+                  <th scope="row">Scenario</th>
+                  <td colspan="2">
+                    <ol>
+                      <li>
+                        Gebruiker klikt op 'leave' op de detail pagina
+                      </li>
+                      <li>
+                        De applicatie checkt na of de gebruiker daadwerkelijk is geleaved
+                      </li>
+                      <li>
+                        De gebruiker kan nu geen nieuwe threads en posts aanmaaken
+                      </li>
+                      <li>
+                        De applicatie laat de 'join' button zien
+                      </li>
+                    </ol>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Post-conditie</th>
+                  <td colspan="2">
+                    Gebruiker is een meeting geleaved
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+           <div class="table-responsive-sm">
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Naam</th>
+                  <th scope="col">
+                    UC-07 Thread aanmaken
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Beschrijving</th>
+                  <td>
+                    Gebruiker klikt op de user friendly button bovenaan de detailpagina om een nieuwe thread aan te maken,
+                    vervolgens wordt er een model geactiveert die te voorschijnkomt met daar in een input waar je je vraag kan typen.
+                    als de gebruiker op 'ok' klikt is de nieuwe thread aangemaakt en is meteen te zien op de detail pagina
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Actor</th>
+                  <td>Algemene gebruiker</td>
+                </tr>
+                <tr>
+                  <th scope="row">Pre-conditie</th>
+                  <td colspan="2">Is ingelogd & is lid van de meeting</td>
+                </tr>
+                <tr>
+                  <th scope="row">Scenario</th>
+                  <td colspan="2">
+                    <ol>
+                      <li>
+                        Gebruiker klikt op 'Welcome .... start a new thread' boven aan de detail pagina van de meeting
+                      </li>
+                      <li>
+                        De applicatie haalt een modal te voorschijn waardoor de gebruiker zijn/haar vraag kan stellen
+                      <li>
+                        De gebruiker typt zijn/haar vraag in in het invoerveld en klikt op 'ok' om de thread aan te maken
+                      </li>
+                      <li>
+                        De applicatie laat de nieuwe thread meteen <b>bovenaan</b> de pagina zien
+                      </li>
+                    </ol>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Post-conditie</th>
+                  <td colspan="2">
+                    Gebruiker heeft een nieuwe thread aangemaakt
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
