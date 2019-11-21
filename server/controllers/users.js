@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const User = require('../models/users');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const auth = require('../services/authentication');
 
 module.exports = {

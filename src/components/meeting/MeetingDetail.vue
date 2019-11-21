@@ -82,6 +82,7 @@ import datepicker from 'vuejs-datepicker';
 import timepicker from 'vue2-timepicker';
 
 export default {
+  name: 'meeting-detail',
   components: {
     datepicker,
     timepicker
