@@ -2,51 +2,52 @@
   <div class="container profile">
     <div class="row">
       <div class="col-5">
-        <figure class="image  header-icon user-profile-image">
-          <img class="is-rounded" src="" />
-        </figure>
-        <p>
-          <span class="title"
-            ><h4><b>Luc Joosten</b></h4></span
-          >
-          <br />
-          <button class="btn btn-sm btn-outline-primary">Update Info</button>
-          <br />
-        </p>
+          <img class="profile-pic" :src="user.avatar" />
 
-        <p class="tagline">
-          User information right here
-        </p>
+        <br />
+        <br />
+
+        <span class="title"
+          ><h4>
+            <b>{{ user.name }}</b>
+          </h4></span
+        >
+        <p class="tagline">Email: {{ user.email }}</p>
+        <p class="tagline">Username: {{ user.username }}</p>
+        <p class="tagline">Joined meetings: {{user.joinedMeetings.length}}</p>
+        <button class="btn btn-sm btn-outline-primary mt-2 mb-4">Update Info</button>
+
+
+        
       </div>
 
       <div class="stats-tab col-2 text-center">
-        <p class="stat-val">2</p>
+        <p class="stat-val">{{ meetingCount }}</p>
         <p class="stat-key">Meetups</p>
       </div>
 
       <div class="stats-tab col-2 text-center">
-        <p class="stat-val">4</p>
+        <p class="stat-val">{{ threadCount }}</p>
         <p class="stat-key">Threads</p>
       </div>
 
       <div class="stats-tab col-2 text-center">
-        <p class="stat-val">3</p>
+        <p class="stat-val">{{ postCount }}</p>
         <p class="stat-key">Posts</p>
       </div>
     </div>
 
     <div class="row mt-2">
-      <div class="col-3">
+      <div v-for="meeting in meetings" v-bind:key="meeting._id" class="col-md-4">
         <div class="card" style="width: 18rem;">
-          <img src="" class="card-img-top" alt="..." />
+          <img :src="meeting.image" style="width: 100%; height: 10rem;" class="card-img-top" alt="..." />
           <div class="card-body">
             <h5 class="card-title">
-              1000 Palm -
-              <div class="badge badge-success">Active</div>
+              {{meeting.title}}
             </h5>
-            <div class="badge badge-primary">Sociaal</div>
+              <div class="badge badge-success">{{meeting.status | capitalize}}</div>
             <p class="card-text mt-2">
-              De meeting beschrijving
+              {{meeting.description}}
             </p>
           </div>
           <div class="card-footer">
@@ -59,11 +60,11 @@
     </div>
 
     <div class="row">
-      <div class="col-3">
+      <div v-for="thread in threads" v-bind:key="thread._id" class="col-md-4">
         <div class="card" style="width: 18rem; height: 10rem">
           <div class="card-body">
-            <h5 class="card-title">Thread title</h5>
-            <div class="badge badge-success">posted by ... at ..</div>
+            <h5 class="card-title">{{thread.title}}</h5>
+            <div>Posted <b>{{thread.createdAt | fromNow}}</b></div>
           </div>
           <div class="card-footer">
             <button class="btn btn-sm btn-outline-success mr-2">Share</button>
@@ -75,11 +76,11 @@
     </div>
 
     <div class="row">
-      <div class="col-3">
+      <div v-for="post in posts" v-bind:key="post._id" class="col-md-4">
         <div class="card" style="width: 18rem; height: 10rem">
           <div class="card-body">
-            <h5 class="card-title">Post text</h5>
-            <div class="badge badge-success">posted by ... at ...</div>
+            <h5 class="card-title">{{post.text}}</h5>
+            <div>Posted <b>{{post.createdAt | fromNow}}</b></div>
           </div>
           <div class="card-footer">
             <button class="btn btn-sm btn-outline-success mr-2">Share</button>
@@ -93,17 +94,34 @@
 </template>
 
 <script>
-  export default {
-    created () {
-      this.$store.dispatch('stats/fetchUserStats')
-        .then(stats => console.log(stats))
-    }
+import { mapState } from 'vuex';
+export default {
+  computed: {
+    ...mapState({
+      user: state => state.user,
+      meetings: state => state.stats.meetings.data,
+      threads: state => state.stats.threads.data,
+      posts: state => state.stats.posts.data,
+      meetingCount: state => state.stats.meetings.count,
+      threadCount: state => state.stats.threads.count,
+      postCount: state => state.stats.posts.count
+    })
+  },
+  created() {
+    this.$store
+      .dispatch('stats/fetchUserStats')
+      .then(stats => console.log(stats));
   }
+};
 </script>
 
 <style scoped>
 body {
   background: #f5f7fa;
+}
+.profile-pic {
+    height: 75px;
+    width: 75px;
 }
 .stats-tab {
   border-bottom: 2px solid transparent;
@@ -111,10 +129,10 @@ body {
 }
 .stats-tab:hover {
   cursor: pointer;
-  border-bottom: 2px solid #28A745;
+  border-bottom: 2px solid #28a745;
 }
 .stats-tab.isActive {
-  border-bottom: 2px solid #28A745;
+  border-bottom: 2px solid #28a745;
 }
 .stat-val {
   font-size: 3em;
