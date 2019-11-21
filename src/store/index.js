@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import meetings from './modules/meetings';
 import threads from './modules/threads';
 import categories from './modules/categories';
+import stats from './modules/stats';
 import * as auth from '../services/authService';
 
 Vue.use(Vuex);
@@ -12,8 +13,8 @@ export default new Vuex.Store({
   modules: {
     meetings,
     threads,
-    categories
-    //auth
+    categories,
+    stats
   },
   state: {
     isLoggedIn: false,
