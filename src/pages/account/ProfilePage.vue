@@ -92,6 +92,15 @@
   </div>
 </template>
 
+<script>
+  export default {
+    created () {
+      this.$store.dispatch('stats/fetchUserStats')
+        .then(stats => console.log(stats))
+    }
+  }
+</script>
+
 <style scoped>
 body {
   background: #f5f7fa;

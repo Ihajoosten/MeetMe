@@ -1,28 +1,33 @@
-/* eslint-disable no-unused-vars */
 import axiosInstance from '../../services/axiosInstance';
-import Vue from 'vue';
 
 export default {
-  namespaced: true,
-  state: {
-    meetings: {
-      data: [],
-      count: null
+    namespaced: true,
+  
+    state: {
+      meetings: {
+        data: [],
+        count: null,
+      },
+      threads: {
+        data: [],
+        count: null,
+      },
+      posts: {
+        data: [],
+        count: null,
+      }
     },
-    threads: {
-      data: [],
-      count: null
+    actions: {
+      async fetchUserStats ({commit}) {
+        const res = await axiosInstance.get('/api/users/account');
+            const stats = res.data;
+            commit('setStats', stats);
+            return stats;
+      }
     },
-    posts: {
-      data: [],
-      count: null
-    }
-  },
-  actions: {
-    fetchUserStats({ commit }) {
-      return axiosInstance.get('/api/users/account').then(res => {
-        const stats = res.data;
-        });
+    mutations: {
+      setStats (state, stats) {
+        return Object.assign(state, {}, stats)
+      }
     }
   }
-};

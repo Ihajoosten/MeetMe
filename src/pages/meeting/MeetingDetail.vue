@@ -156,7 +156,6 @@ export default {
     },
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
-      this.count++
     },
     leaveMeeting() {
       this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);

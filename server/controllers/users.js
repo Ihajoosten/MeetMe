@@ -78,25 +78,27 @@ module.exports = {
     });
   },
   getUserActivity: (req, res) => {
-    const userId = req.user._id;
-  
+    const userId = req.userId;
+
     Promise.all([
-      fetchMeetingsByUserQuery(userId),
+      fetchMeetupsByUserQuery(userId),
       fetchThreadsByUserQuery(userId),
       fetchPostByUserQuery(userId)
     ])
       // Writing [] to get data from the array
-      .then(([meetings, threads, posts]) => res.json({ meetings, threads, posts }))
+      .then(([meetings, threads, posts]) =>
+        res.json({ meetings, threads, posts })
+      )
       .catch(err => {
         console.log(err);
         res.status(422).send({ err });
       });
   },
   updateUser: (req, res) => {
-    const userId = req.params.id;
+    const userId = req.userId;
     const userData = req.body;
     const user = req.user;
-  
+
     if (user.id === userId) {
       // new: bool - true to return the modified document rather than the original. defaults to false
       User.findByIdAndUpdate(
@@ -114,31 +116,18 @@ module.exports = {
   }
 };
 
-function fetchMeetingsByUserQuery(userId) {
-  return Meeting.aggregate([
-    {
-      $facet: {
-        meetings: [
-          { $match: { author: userId } },
-          { $limit: 5 },
-          { $sort: { createdAt: -1 } }
-        ],
-        meetingsCount: [
-          { $match: { author: userId } },
-          { $count: 'count' }
-        ]
-      }
-    }
-  ])
+function fetchMeetupsByUserQuery(userId) {
+  return Meeting.find({author: userId})
     .exec()
     .then(results => {
+      console.log(results)
       return new Promise((resolve, reject) => {
-        Category.populate(results[0].meetings, { path: 'category' }).then(
-          pMeetings => {
-            if (pMeetings && pMeetings.length > 0) {
+        Category.populate(results, { path: 'Category' }).then(
+          pMeetups => {
+            if (pMeetups && pMeetups.length > 0) {
               resolve({
-                data: pMeetings,
-                count: results[0].meetingsCount[0].count
+                data: pMeetups,
+                count: results.length
               });
             } else {
               resolve({ data: results[0].meetings, count: 0 });
@@ -150,52 +139,31 @@ function fetchMeetingsByUserQuery(userId) {
 }
 
 function fetchThreadsByUserQuery(userId) {
-  return Thread.aggregate([
-    {
-      $facet: {
-        threads: [
-          { $match: { user: userId } },
-          { $limit: 5 },
-          { $sort: { createdAt: -1 } }
-        ],
-        threadsCount: [{ $match: { user: userId } }, { $count: 'count' }]
-      }
-    }
-  ])
+  return Thread.find({author: userId})
     .exec()
     .then(results => {
-      const threads = results[0].threads;
+      const threads = results
       if (threads && threads.length > 0) {
-        return { data: threads, count: results[0].threadsCount[0].count };
+        return {
+          data: results,
+          count: results.length
+        };
       }
-
-      return { data: threads, count: 0 };
+      return { data: [], count: 0 };
     });
 }
 
 function fetchPostByUserQuery(userId) {
-  return Post.aggregate([
-    {
-      $facet: {
-        posts: [
-          { $match: { user: userId } },
-          { $limit: 5 },
-          { $sort: { createdAt: -1 } }
-        ],
-        postsCount: [{ $match: { user: userId } }, { $count: 'count' }]
-      }
-    }
-  ])
+  return Post.find({author: userId})
     .exec()
     .then(results => {
-      const posts = results[0].posts;
+      const posts = results
       if (posts && posts.length > 0) {
         return {
-          data: results[0].posts,
-          count: results[0].postsCount[0].count
+          data: results,
+          count: results.length
         };
       }
-
-      return { data: results[0].posts, count: 0 };
+      return { data: [], count: 0 };
     });
 }
