@@ -59,16 +59,34 @@
             </button></router-link
           >
         </li>
-        <li v-if="$store.state.isLoggedIn" class="nav-item mt-2 mr-3">
-          <i>Welcome {{ user }}!</i>
-        </li>
         <li v-if="$store.state.isLoggedIn" class="nav-item">
-          <button
-            v-on:click.prevent="logout()"
-            class="btn btn-sm btn-outline-danger mt-2"
-          >
-            Logout
-          </button>
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-success dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Account
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <router-link :to="{ name: 'account' }" class="dropdown-item">
+                <a>Profile</a>
+              </router-link>
+              <div class="dropdown-divider"></div>
+              <a
+                v-on:click.prevent="logout()"
+                class="dropdown-item btn btn-outline-danger"
+                href="#"
+                >Logout</a
+              >
+            </div>
+          </div>
+        </li>
+        <li v-if="$store.state.isLoggedIn" class="nav-item mt-2 mr-1 ml-3">
+          <i>Welcome {{ user }}!</i>
         </li>
       </ul>
     </div>
@@ -104,7 +122,5 @@ li a {
   text-decoration: none !important;
   font-size: 20px;
 }
-.dropdown:hover > .dropdown-menu {
-  display: block;
-}
+
 </style>

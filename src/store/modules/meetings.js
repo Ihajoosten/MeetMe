@@ -49,23 +49,22 @@ export default {
         commit('addUsertoMeeting', [...joinedPeople, user]);
       });
     },
-    leaveMeeting ({state, rootState, commit, dispatch}, meetingId) {
-      const user = rootState.user
+    leaveMeeting({ state, rootState, commit, dispatch }, meetingId) {
+      const user = rootState.user;
 
-      return axiosInstance.post(`/api/meetings/${meetingId}/leave`)
-        .then(() => {
-          dispatch('removeMeeting', meetingId, {root: true})
+      return axiosInstance.post(`/api/meetings/${meetingId}/leave`).then(() => {
+        dispatch('removeMeeting', meetingId, { root: true });
 
-          const joinedPeople = state.item.joinedPeople
-          const index = joinedPeople.findIndex(jUser => jUser._id === user._id)
-          joinedPeople.splice(index, 1)
-          commit('addUsertoMeeting', joinedPeople)
-        })
+        const joinedPeople = state.item.joinedPeople;
+        const index = joinedPeople.findIndex(jUser => jUser._id === user._id);
+        joinedPeople.splice(index, 1);
+        commit('addUsertoMeeting', joinedPeople);
+      });
     }
   },
-    mutations: {
-      addUsertoMeeting(state, joinedPeople) {
-        Vue.set(state.item, 'joinedPeople', joinedPeople);
-      }
+  mutations: {
+    addUsertoMeeting(state, joinedPeople) {
+      Vue.set(state.item, 'joinedPeople', joinedPeople);
     }
   }
+};

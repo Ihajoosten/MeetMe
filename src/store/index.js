@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import meetings from './modules/meetings';
 import threads from './modules/threads';
 import categories from './modules/categories';
+import stats from './modules/stats';
 import * as auth from '../services/authService';
 
 Vue.use(Vuex);
@@ -12,8 +13,8 @@ export default new Vuex.Store({
   modules: {
     meetings,
     threads,
-    categories
-    //auth
+    categories,
+    stats
   },
   state: {
     isLoggedIn: false,
@@ -24,8 +25,8 @@ export default new Vuex.Store({
     token: null
   },
   getters: {
-    isOwner: function(state) {
-      return function(authorId) {
+    isOwner: state => {
+      return authorId => {
         if (!state.user) {
           return false;
         } else {
@@ -33,8 +34,8 @@ export default new Vuex.Store({
         }
       };
     },
-    isMember: function(state) {
-      return function(meetingId) {
+    isMember: state => {
+      return meetingId => {
         return (
           state.user &&
           state.user.joinedMeetings &&

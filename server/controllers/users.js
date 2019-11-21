@@ -2,6 +2,10 @@
 const User = require('../models/users');
 const bcrypt = require('bcryptjs');
 const auth = require('../services/authentication');
+const Meeting = require('../models/meetings');
+const Thread = require('../models/threads');
+const Post = require('../models/posts');
+const Category = require('../models/categories');
 
 module.exports = {
   createUser: (req, res, next) => {
@@ -72,5 +76,93 @@ module.exports = {
       const token = auth.generateJWT(user);
       return res.status(200).json({ token: token });
     });
+  },
+  getUserActivity: (req, res) => {
+    const userId = req.userId;
+
+    Promise.all([
+      fetchMeetingsByUserQuery(userId),
+      fetchThreadsByUserQuery(userId),
+      fetchPostByUserQuery(userId)
+    ])
+      // Writing [] to get data from the array
+      .then(([meetings, threads, posts]) =>
+        res.json({ meetings, threads, posts })
+      )
+      .catch(err => {
+        console.log(err);
+        res.status(422).send({ err });
+      });
+  },
+  updateUser: (req, res) => {
+    const userId = req.userId;
+    const userData = req.body;
+    const user = req.user;
+
+    if (user.id === userId) {
+      // new: bool - true to return the modified document rather than the original. defaults to false
+      User.findByIdAndUpdate(
+        userId,
+        { $set: userData },
+        { new: true },
+        (errors, updatedUser) => {
+          if (errors) return res.status(422).send({ errors });
+          return res.json(updatedUser);
+        }
+      );
+    } else {
+      return res.status(422).send({ errors: 'Authorization Error!' });
+    }
   }
 };
+
+function fetchMeetingsByUserQuery(userId) {
+  return Meeting.find({author: userId})
+    .exec()
+    .then(results => {
+      return new Promise((resolve, reject) => {
+        Category.populate(results, { path: 'Category' }).then(
+          meetings => {
+            if (meetings && meetings.length > 0) {
+              resolve({
+                data: meetings,
+                count: results.length
+              });
+            } else {
+              resolve({ data: results[0].meetings, count: 0 });
+            }
+          }
+        );
+      });
+    });
+}
+
+function fetchThreadsByUserQuery(userId) {
+  return Thread.find({author: userId})
+    .exec()
+    .then(results => {
+      const threads = results
+      if (threads && threads.length > 0) {
+        return {
+          data: results,
+          count: results.length
+        };
+      }
+      return { data: [], count: 0 };
+    });
+}
+
+function fetchPostByUserQuery(userId) {
+  return Post.find({author: userId})
+    .exec()
+    .then(results => {
+      const posts = results
+      if (posts && posts.length > 0) {
+        return {
+          data: results,
+          count: results.length
+        };
+      }
+      return { data: [], count: 0 };
+    });
+}
