@@ -15,7 +15,6 @@ import Spinner from './components/shared/Spinner';
 import vuelidate from 'vuelidate';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/index.css';
-import SocketPlugin from './plugins/socket';
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -31,7 +30,6 @@ Vue.component('Spinner', Spinner);
 Vue.use(VueToast);
 UIkit.use(Icons);
 Vue.use(vuelidate);
-Vue.use(SocketPlugin, { connection: 'http://localhost:5000' });
 
 // const conn = process.env.VUE_APP_URI
 

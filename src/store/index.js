@@ -24,8 +24,8 @@ export default new Vuex.Store({
     token: null
   },
   getters: {
-    isOwner: function(state) {
-      return function(authorId) {
+    isOwner: state => {
+      return authorId => {
         if (!state.user) {
           return false;
         } else {
@@ -33,8 +33,8 @@ export default new Vuex.Store({
         }
       };
     },
-    isMember: function(state) {
-      return function(meetingId) {
+    isMember: state => {
+      return meetingId => {
         return (
           state.user &&
           state.user.joinedMeetings &&

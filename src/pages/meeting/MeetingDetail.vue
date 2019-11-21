@@ -147,15 +147,6 @@ export default {
     const id = this.$route.params.id;
     this.fetchMeeting(id);
     this.fetchThreads(id);
-
-    if (this.isLoggedIn) {
-      this.$socket.emit('meeting/subscribe', id);
-      this.$socket.on('meeting/postPublished', this.addPostHandler);
-    }
-  },
-  destroyed() {
-    this.$socket.removeListener('meeting/postPublished', this.addPostHandler);
-    this.$socket.emit('meeting/unsubscribe', this.meeting._id)
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
@@ -165,6 +156,7 @@ export default {
     },
     joinMeeting() {
       this.$store.dispatch('meetings/joinMeeting', this.meeting._id);
+      this.count++
     },
     leaveMeeting() {
       this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);

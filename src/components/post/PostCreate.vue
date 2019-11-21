@@ -51,11 +51,7 @@ export default {
           text: this.text,
           threadId: this.threadId
         })
-        .then(created => {
-          this.$socket.emit('meeting/postSave', {
-            ...created,
-            meeting: this.meeting._id
-          });
+        .then(() => {
           this.text = '';
         });
     }
