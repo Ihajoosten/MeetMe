@@ -81,7 +81,7 @@ module.exports = {
     const userId = req.userId;
 
     Promise.all([
-      fetchMeetupsByUserQuery(userId),
+      fetchMeetingsByUserQuery(userId),
       fetchThreadsByUserQuery(userId),
       fetchPostByUserQuery(userId)
     ])
@@ -116,17 +116,16 @@ module.exports = {
   }
 };
 
-function fetchMeetupsByUserQuery(userId) {
+function fetchMeetingsByUserQuery(userId) {
   return Meeting.find({author: userId})
     .exec()
     .then(results => {
-      console.log(results)
       return new Promise((resolve, reject) => {
         Category.populate(results, { path: 'Category' }).then(
-          pMeetups => {
-            if (pMeetups && pMeetups.length > 0) {
+          meetings => {
+            if (meetings && meetings.length > 0) {
               resolve({
-                data: pMeetups,
+                data: meetings,
                 count: results.length
               });
             } else {
