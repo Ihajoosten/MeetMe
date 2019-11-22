@@ -94,7 +94,6 @@ export default new Vuex.Store({
       commit('setMeetings', userMeetings);
     },
     async updateUser({commit}, user) {
-      console.log(user)
       return await axiosInstance.patch(`/api/users/account/${user._id}`, user)
          .then(res => {
              const updatedUser = res.data
