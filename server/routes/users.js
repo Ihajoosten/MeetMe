@@ -8,5 +8,5 @@ module.exports = app => {
   app.post('/api/users/login', controller.loginUser);
   app.post('/api/users/register', controller.createUser);
   app.get('/api/users/account', auth.validateToken, controller.getUserActivity);
-  app.patch('api/user/account/:id', auth.validateToken, controller.updateUser);
+  app.patch('/api/users/account/:id', auth.validateToken, controller.updateUser);
 };

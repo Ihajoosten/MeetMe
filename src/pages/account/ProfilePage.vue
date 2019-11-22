@@ -16,7 +16,7 @@
           v-b-modal.modal-center
           >Update account</b-button
         >
-        <UpdateModal />
+        <UpdateModal :updateUser="user" @submitUser="updateUser" />
       </div>
 
       <div
@@ -138,9 +138,27 @@ export default {
       postCount: state => state.stats.posts.count
     })
   },
+  methods: {
+    updateUser({ user }) {
+      this.$store
+        .dispatch('updateUser', user)
+        .then(() => {
+          this.$toast.success('Succesfully updated your account!', {
+            duration: 5000,
+            position: 'top'
+          });
+        })
+        .catch((err) => {
+          this.$toast.error('Failed to update your account!.', {
+            duration: 5000,
+            position: 'top'
+          });
+          console.log(err)
+        });
+    }
+  },
   created() {
-    this.$store
-      .dispatch('stats/fetchUserStats')
+    this.$store.dispatch('stats/fetchUserStats');
   }
 };
 </script>
