@@ -14,14 +14,7 @@ const router = new Router({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../pages/other/About'),
-      beforeEnter: (to, from, next) => {
-        if (auth.isLoggedIn()) {
-          next();
-        } else {
-          next('/not-authorized');
-        }
-      }
+      component: () => import('../pages/other/About')
     },
     {
       path: '/not-authorized',
@@ -66,13 +59,6 @@ const router = new Router({
       path: '/find',
       name: 'find',
       component: () => import('../pages/meeting/FindMeeting')
-      // beforeEnter: (to, from, next) => {
-      //   if (auth.isLoggedIn()) {
-      //     next();
-      //   } else {
-      //     next('/not-authorized');
-      //   }
-      // }
     },
     {
       path: '*',
@@ -95,13 +81,18 @@ const router = new Router({
       path: '/meetings/:id',
       name: 'meeting-detail',
       component: () => import('../pages/meeting/MeetingDetail')
-      // beforeEnter: (to, from, next) => {
-      //   if (auth.isLoggedIn()) {
-      //     next();
-      //   } else {
-      //     next('/not-authorized');
-      //   }
-      // }
+    },
+    {
+      path: '/meetings/:id/edit',
+      name: 'meeting-update',
+      component: () => import('../components/meeting/UpdateModal'),
+      beforeEnter: (to, from, next) => {
+        if (auth.isLoggedIn()) {
+          next();
+        } else {
+          next('/not-authorized');
+        }
+      }
     }
   ],
   linkActiveClass: 'active',

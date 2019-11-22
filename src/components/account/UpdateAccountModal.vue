@@ -13,7 +13,7 @@
       >
         <b class="my-2">Please fill in the form to update your account</b>
 
-        <form ref="form" @submit.stop.prevent="handleSubmit">
+        <form ref="form">
           <b-form-group label="Name">
             <b-form-input
               id="name-input"

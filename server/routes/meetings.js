@@ -6,9 +6,9 @@ module.exports = app => {
   app.post('/api/meetings', auth.validateToken, controller.createMeeting);
   app.get('/api/meetings', controller.getAllMeetings);
   app.get('/api/meetings/:id', controller.getMeetingById);
+  app.patch('/api/meetings/:id', auth.validateToken, controller.updateMeeting);
 
   app.post('/api/meetings/:id/join', auth.validateToken, controller.joinMeeting);
   app.post('/api/meetings/:id/leave', auth.validateToken, controller.leaveMeeting);
-};
 
-// auth.validateToken -> authentication works, but for development not currently using
+};
