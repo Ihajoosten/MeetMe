@@ -74,7 +74,7 @@ export default new Vuex.Store({
       Vue.set(state[resource].items, index, item);
     },
     setUser(state, user) {
-      return state.user = user
+      return Vue.set(state.user, user)
     }
   },
   actions: {
