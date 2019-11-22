@@ -24,15 +24,6 @@ module.exports = {
       return res.status(201).json(user);
     });
   },
-  updateUserByUsername: (req, res, next) => {
-    const username = req.params.username;
-    const body = req.body;
-    User.findOneAndUpdate({ name: username }, body)
-      .then(() => User.find({ name: username }))
-      .then(user => {
-        res.status(200).json({ result: user });
-      });
-  },
   deleteUserByUsername: (req, res, next) => {
     const username = req.params.username;
     let u;

@@ -3,7 +3,6 @@ const auth = require('../services/authentication');
 
 module.exports = app => {
   // User endpoints
-  app.post('/api/users', controller.createUser);
   app.delete('/api/users/:id', auth.validateToken, controller.deleteUserByUsername);
   app.post('/api/users/login', controller.loginUser);
   app.post('/api/users/register', controller.createUser);
