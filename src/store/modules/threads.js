@@ -9,38 +9,29 @@ export default {
     items: []
   },
   actions: {
-    fetchThreads({ state, commit }, meetingId) {
+    async fetchThreads({ state, commit }, meetingId) {
       commit('setItems', { resource: 'threads', items: [] }, { root: true });
-      return axios.get(`/api/threads?meetingId=${meetingId}`).then(res => {
-        const threads = res.data;
-        commit('mergeThreads', threads)
-
-        return state.items;
-      });
+      const res = await axios.get(`/api/threads?meetingId=${meetingId}`);
+      const threads = res.data;
+      commit('mergeThreads', threads);
+      return state.items;
     },
-    postThread({ commit, state }, { title, meetingId }) {
+    async postThread({ commit, state }, { title, meetingId }) {
       const thread = {};
       thread.title = title;
       thread.meeting = meetingId;
 
-      return axiosInstance.post('/api/threads', thread).then(res => {
-        const created = res.data;
-        const index = state.items.length;
-
-        commit(
-          'addItemToArray',
-          { item: created, index, resource: 'threads' },
-           { root: true }
-        );
-        return created;
-      });
+      const res = await axiosInstance.post('/api/threads', thread);
+      const created = res.data;
+      const index = state.items.length;
+      commit('addItemToArray', { item: created, index, resource: 'threads' }, { root: true });
+      return created;
     },
-    sendPost({ dispatch }, { text, threadId }) {
+    async sendPost({ dispatch }, { text, threadId }) {
       const post = { text, thread: threadId };
 
-      return axiosInstance.post('/api/posts', post).then(res => {
-        dispatch('addPostToThread', { post: res.data, threadId });
-      });
+      const res = await axiosInstance.post('/api/posts', post);
+      dispatch('addPostToThread', { post: res.data, threadId });
     },
     addPostToThread({ commit, state }, { post, threadId }) {
       const threadIndex = state.items.findIndex(

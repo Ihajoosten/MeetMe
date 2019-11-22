@@ -51,6 +51,29 @@ module.exports = {
         return res.status(200).json(meeting);
       });
   },
+  updateMeeting: (req, res) => {
+    const meeting = req.body;
+    const { id } = req.params;
+    const user = req.user;
+
+    if (user.id === meeting.author._id) {
+      Meeting.findByIdAndUpdate(
+        id,
+        { $set: meeting },
+        { new: true },
+        (err, updatedMeeting) => {
+          if (err) {
+            return res.status(422).json({ err });
+          }
+          return res.status(200).json(updatedMeeting);
+        }
+      );
+    } else {
+      return res
+        .status(401)
+        .json({ message: 'Not authorized to update meeting!' });
+    }
+  },
   joinMeeting: (req, res) => {
     const user = req.userId;
     const { id } = req.params;

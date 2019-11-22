@@ -5,6 +5,7 @@ import meetings from './modules/meetings';
 import threads from './modules/threads';
 import categories from './modules/categories';
 import stats from './modules/stats';
+import axiosInstance from '../services/axiosInstance'
 import * as auth from '../services/authService';
 
 Vue.use(Vuex);
@@ -71,6 +72,9 @@ export default new Vuex.Store({
     },
     addItemToArray(state, { item, index, resource }) {
       Vue.set(state[resource].items, index, item);
+    },
+    setUser(state, user) {
+      return Vue.set(state.user, user)
     }
   },
   actions: {
@@ -88,6 +92,14 @@ export default new Vuex.Store({
 
       userMeetings.splice(index, 1);
       commit('setMeetings', userMeetings);
-    }
+    },
+    async updateUser({commit}, user) {
+      return await axiosInstance.patch(`/api/users/account/${user._id}`, user)
+         .then(res => {
+             const updatedUser = res.data
+             commit('setUser', updatedUser)
+             return updatedUser
+         })
+     }
   }
 });

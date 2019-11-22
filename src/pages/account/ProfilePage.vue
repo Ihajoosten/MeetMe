@@ -16,7 +16,7 @@
           v-b-modal.modal-center
           >Update account</b-button
         >
-        <UpdateModal />
+        <UpdateModal :updateUser="user" @submitUser="updateUser" />
       </div>
 
       <div
@@ -67,12 +67,22 @@
               {{ meeting.description }}
             </p>
           </div>
-          <div class="card-footer">
+          <div class="card-footer text-center">
             <button class="btn btn-sm btn-outline-success mr-2">Share</button>
+            <b-button
+              class="btn-sm mr-2"
+              variant="outline-primary"
+              v-b-modal.modal-multi-1
+              >Update</b-button
+            >
             <button class="btn btn-sm btn-outline-danger">Delete</button>
           </div>
         </div>
         <br />
+        <UpdateMeeting
+          :updateMeeting="meeting"
+          @submitMeeting="updateMeeting"
+        />
       </div>
     </div>
 
@@ -117,6 +127,7 @@
 <script>
 import { mapState } from 'vuex';
 import UpdateModal from '../../components/account/UpdateAccountModal';
+import UpdateMeeting from '../../components/meeting/UpdateModal';
 
 export default {
   data() {
@@ -125,7 +136,8 @@ export default {
     };
   },
   components: {
-    UpdateModal
+    UpdateModal,
+    UpdateMeeting
   },
   computed: {
     ...mapState({
@@ -138,9 +150,46 @@ export default {
       postCount: state => state.stats.posts.count
     })
   },
+  methods: {
+    updateUser({ user }) {
+      this.$store
+        .dispatch('updateUser', user)
+        .then(() => {
+          this.$toast.success('Succesfully updated your account!', {
+            duration: 5000,
+            position: 'top'
+          });
+        })
+        .catch(err => {
+          if (err) {
+            this.$toast.error('Failed to update your account!.', {
+              duration: 5000,
+              position: 'top'
+            });
+          }
+        });
+    },
+    updateMeeting({ meeting }) {
+      this.$store
+        .dispatch('meetings/updateMeeting', meeting)
+        .then(() => {
+          this.$toast.success('Succesfully updated meeting!', {
+            duration: 5000,
+            position: 'top'
+          });
+        })
+        .catch(err => {
+          if (err) {
+            this.$toast.error('Failed to update meeting!.', {
+              duration: 5000,
+              position: 'top'
+            });
+          }
+        });
+    }
+  },
   created() {
-    this.$store
-      .dispatch('stats/fetchUserStats')
+    this.$store.dispatch('stats/fetchUserStats');
   }
 };
 </script>
@@ -148,6 +197,10 @@ export default {
 <style scoped>
 body {
   background: #f5f7fa;
+}
+li a {
+  text-decoration: none;
+  background-color: white;
 }
 .profile-pic {
   height: 100px;

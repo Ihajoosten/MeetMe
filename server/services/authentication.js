@@ -72,6 +72,7 @@ module.exports = {
 
       if (payload.user.username && payload.user._id) {
         req.userId = payload.user._id;
+        req.user = payload.user;
         req.username = payload.user.username;
         req.token = token;
         next();

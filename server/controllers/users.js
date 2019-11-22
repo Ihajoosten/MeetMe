@@ -24,15 +24,6 @@ module.exports = {
       return res.status(201).json(user);
     });
   },
-  updateUserByUsername: (req, res, next) => {
-    const username = req.params.username;
-    const body = req.body;
-    User.findOneAndUpdate({ name: username }, body)
-      .then(() => User.find({ name: username }))
-      .then(user => {
-        res.status(200).json({ result: user });
-      });
-  },
   deleteUserByUsername: (req, res, next) => {
     const username = req.params.username;
     let u;
@@ -99,7 +90,7 @@ module.exports = {
     const userData = req.body;
     const user = req.user;
 
-    if (user.id === userId) {
+    if (user._id === userId) {
       // new: bool - true to return the modified document rather than the original. defaults to false
       User.findByIdAndUpdate(
         userId,
@@ -107,62 +98,61 @@ module.exports = {
         { new: true },
         (errors, updatedUser) => {
           if (errors) return res.status(422).send({ errors });
-          return res.json(updatedUser);
+          return res.status(200).json(updatedUser);
         }
-      );
+      ).catch(err => {
+        if (err) {
+          return res.status(404).json({err})
+        } else {
+          return res.status(500).json({res})
+        }
+      })
     } else {
-      return res.status(422).send({ errors: 'Authorization Error!' });
+      return res.status(401).send({ errors: 'Authorization Error!' });
     }
   }
 };
 
-function fetchMeetingsByUserQuery(userId) {
-  return Meeting.find({author: userId})
-    .exec()
-    .then(results => {
-      return new Promise((resolve, reject) => {
-        Category.populate(results, { path: 'Category' }).then(
-          meetings => {
-            if (meetings && meetings.length > 0) {
-              resolve({
-                data: meetings,
-                count: results.length
-              });
-            } else {
-              resolve({ data: results[0].meetings, count: 0 });
-            }
-          }
-        );
-      });
+async function fetchMeetingsByUserQuery(userId) {
+  const results = await Meeting.find({ author: userId })
+    .exec();
+  return new Promise((resolve, reject) => {
+    Category.populate(results, { path: 'Category' }).then(meetings => {
+      if (meetings && meetings.length > 0) {
+        resolve({
+          data: meetings,
+          count: results.length
+        });
+      }
+      else {
+        resolve({ data: [ ], count: 0 });
+      }
     });
+  });
 }
 
-function fetchThreadsByUserQuery(userId) {
-  return Thread.find({author: userId})
-    .exec()
-    .then(results => {
-      const threads = results
-      if (threads && threads.length > 0) {
-        return {
-          data: results,
-          count: results.length
-        };
-      }
-      return { data: [], count: 0 };
-    });
+async function fetchThreadsByUserQuery(userId) {
+  let results = await Thread.find({ author: userId })
+    .exec();
+  const threads = results;
+  if (threads && threads.length > 0) {
+    return {
+      data: results,
+      count: results.length
+    };
+  }
+  return { data: [], count: 0 };
 }
 
-function fetchPostByUserQuery(userId) {
-  return Post.find({author: userId})
-    .exec()
-    .then(results => {
-      const posts = results
-      if (posts && posts.length > 0) {
-        return {
-          data: results,
-          count: results.length
-        };
-      }
-      return { data: [], count: 0 };
-    });
+async function fetchPostByUserQuery(userId) {
+  let results = await Post.find({ author: userId })
+    .exec();
+  const posts = results;
+  if (posts && posts.length > 0) {
+    return {
+      data: results,
+      count: results.length
+    };
+  }
+  return { data: [], count: 0 };
 }
