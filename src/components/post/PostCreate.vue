@@ -24,10 +24,8 @@
 </template>
 
 <script>
-import autoExpand from '../../directives/autoExpand';
 export default {
   name: 'post-create',  
-  directives: { autoExpand },
   props: {
     threadId: {
       type: String,

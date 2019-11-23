@@ -53,15 +53,6 @@ export default {
       const index = joinedPeople.findIndex(jUser => jUser._id === user._id);
       joinedPeople.splice(index, 1);
       commit('addUsertoMeeting', joinedPeople);
-    },
-    async updateMeeting({ commit }, meeting) {
-      return await axiosInstance
-        .patch(`/api/meetings/${meeting._id}`, meeting)
-        .then(res => {
-          const updatedMeeting = res.data;
-          commit('setMeeting', updatedMeeting);
-          return updatedMeeting;
-        });
     }
   },
   mutations: {
