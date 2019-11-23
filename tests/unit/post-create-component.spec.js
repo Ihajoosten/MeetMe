@@ -16,11 +16,7 @@ describe('PostCreate.vue', () => {
   it('Computed has function meeting', () => {
     expect(typeof PostCreate.computed.meeting).to.equal('function');
   });
-
-  it('has a directives object', () => {
-    expect(typeof PostCreate.directives).to.equal('object');
-  });
-
+  
   it('has a props object', () => {
     expect(typeof PostCreate.props).to.equal('object');
   });
