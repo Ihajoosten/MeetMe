@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-form @reset="onReset" v-if="show">
       <b-form-group id="input-group-1" label="Title:" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -79,7 +79,10 @@
       </b-form-group>
 
       <b-button type="reset" variant="outline-danger">Reset</b-button>
-      <b-button class="ml-2" type="submit" variant="outline-success"
+      <b-button
+        class="ml-2"
+        v-on:click.prevent="updateMeetingHandler"
+        variant="outline-success"
         >Update</b-button
       >
     </b-form>
@@ -103,12 +106,8 @@ export default {
     })
   },
   methods: {
-    ...mapActions('meetings', ['fetchMeeting']),
+    ...mapActions('meetings', ['fetchMeeting', 'updateMeeting']),
     ...mapActions('categories', ['fetchCategories']),
-    onSubmit(evt) {
-      evt.preventDefault();
-      alert(JSON.stringify(this.meeting));
-    },
     onReset(evt) {
       evt.preventDefault();
       // Reset our form values
@@ -125,6 +124,24 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
+    },
+    updateMeetingHandler() {
+      this.updateMeeting(this.meeting)
+        .then(() => {
+          this.$router.push('/account');
+          this.$toast.success('Succesfully updated the meeting!', {
+            duration: 5000,
+            position: 'top'
+          });
+        })
+        .catch(err => {
+          if (err) {
+            this.$toast.error('Failed to update the meeting!.', {
+              duration: 5000,
+              position: 'top'
+            });
+          }
+        });
     }
   },
   created() {
