@@ -85,7 +85,8 @@ const router = new Router({
     {
       path: '/meetings/:id/edit',
       name: 'meeting-update',
-      component: () => import('../components/meeting/UpdateModal'),
+      component: () => import('../components/meeting/UpdateMeeting'),
+      props: true,
       beforeEnter: (to, from, next) => {
         if (auth.isLoggedIn()) {
           next();

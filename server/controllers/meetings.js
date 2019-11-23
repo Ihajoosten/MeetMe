@@ -56,7 +56,7 @@ module.exports = {
     const { id } = req.params;
     const user = req.user;
 
-    if (user.id === meeting.author._id) {
+    if (user._id === meeting.author._id) {
       Meeting.findByIdAndUpdate(
         id,
         { $set: meeting },

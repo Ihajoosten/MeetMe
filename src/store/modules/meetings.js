@@ -54,14 +54,12 @@ export default {
       joinedPeople.splice(index, 1);
       commit('addUsertoMeeting', joinedPeople);
     },
-    async updateMeeting({ commit }, meeting) {
-      return await axiosInstance
-        .patch(`/api/meetings/${meeting._id}`, meeting)
-        .then(res => {
-          const updatedMeeting = res.data;
-          commit('setMeeting', updatedMeeting);
-          return updatedMeeting;
-        });
+    async updateMeeting({commit}, meeting) {
+      const res = await axiosInstance.patch(`/api/meetings/${meeting._id}`, meeting);
+      const updatedMeeting = res.data;
+      commit('mergeMeetings', updatedMeeting);
+      return updatedMeeting;
+
     }
   },
   mutations: {
@@ -70,6 +68,9 @@ export default {
     },
     setMeeting(state, meeting) {
       return Vue.set(state.item, meeting);
+    },
+    mergeMeetings(state, meeting) {
+      state.item = {...state.item, ...meeting}
     }
   }
 };

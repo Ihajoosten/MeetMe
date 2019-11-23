@@ -69,20 +69,17 @@
           </div>
           <div class="card-footer text-center">
             <button class="btn btn-sm btn-outline-success mr-2">Share</button>
-            <b-button
-              class="btn-sm mr-2"
-              variant="outline-primary"
-              v-b-modal.modal-multi-1
-              >Update</b-button
+            <router-link
+              class="text-muted"
+              :to="{ name: 'meeting-update', params: { id: meeting._id } }"
+              ><button class="btn btn-sm btn-outline-primary mr-2">
+                Update
+              </button></router-link
             >
             <button class="btn btn-sm btn-outline-danger">Delete</button>
           </div>
         </div>
         <br />
-        <UpdateMeeting
-          :updateMeeting="meeting"
-          @submitMeeting="updateMeeting"
-        />
       </div>
     </div>
 
@@ -127,7 +124,6 @@
 <script>
 import { mapState } from 'vuex';
 import UpdateModal from '../../components/account/UpdateAccountModal';
-import UpdateMeeting from '../../components/meeting/UpdateModal';
 
 export default {
   data() {
@@ -136,8 +132,7 @@ export default {
     };
   },
   components: {
-    UpdateModal,
-    UpdateMeeting
+    UpdateModal
   },
   computed: {
     ...mapState({
@@ -163,24 +158,6 @@ export default {
         .catch(err => {
           if (err) {
             this.$toast.error('Failed to update your account!.', {
-              duration: 5000,
-              position: 'top'
-            });
-          }
-        });
-    },
-    updateMeeting({ meeting }) {
-      this.$store
-        .dispatch('meetings/updateMeeting', meeting)
-        .then(() => {
-          this.$toast.success('Succesfully updated meeting!', {
-            duration: 5000,
-            position: 'top'
-          });
-        })
-        .catch(err => {
-          if (err) {
-            this.$toast.error('Failed to update meeting!.', {
               duration: 5000,
               position: 'top'
             });
