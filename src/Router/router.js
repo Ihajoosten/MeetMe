@@ -61,6 +61,12 @@ const router = new Router({
       component: () => import('../pages/meeting/FindMeeting')
     },
     {
+      path: '/find/:category',
+      name: 'find-category-meetings',
+      component: () => import('../pages/meeting/FindMeeting'),
+      props: true
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('../pages/other/NotFound')

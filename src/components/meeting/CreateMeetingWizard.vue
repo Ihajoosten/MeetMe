@@ -10,22 +10,7 @@
         :createMeeting="form"
       />
     </keep-alive>
-    <!-- <progress
-      class="progress progress-bar bg-success mt-2"
-      :value="currentProgress"
-      max="100"
-      >{{ currentProgress }}%</progress
-    > -->
-
-    <div class="progress mt-4">
-      <div
-        class="progress-bar bg-success progress-bar-striped progress-bar-animated"
-        role="progressbar"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        :style="'width: ' + currentProgress + '%'"
-      ></div>
-    </div>
+       
 
     <div class="container mt-3 text-center">
       <button
@@ -51,6 +36,7 @@
         Confirm
       </button>
     </div>
+    <pre><code>{{form}}</code></pre>
   </div>
 </template>
 

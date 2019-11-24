@@ -17,7 +17,14 @@ module.exports = {
     });
   },
   getAllMeetings: (req, res) => {
-    Meeting.find({})
+    const { category } = req.query || {};
+    const { location } = req.query || {};
+
+    const findQuery = location
+      ? Meeting.find({ processedLocation: { $regex: '.*' + location + '.*' } })
+      : Meeting.find({});
+
+    findQuery
       .populate('author', 'name id avatar')
       .populate('category')
       .populate('joinedPeople')
@@ -25,9 +32,17 @@ module.exports = {
         path: 'threads',
         populate: { path: 'posts' }
       })
+      .limit(5)
+      .sort({ createdAt: -1 })
       .exec((errors, meetings) => {
         if (errors) {
           return res.status(422).send({ errors });
+        }
+
+        if (category) {
+          meetings = meetings.filter(meetup => {
+            return meetup.category.name === category;
+          });
         }
 
         return res.status(200).json(meetings);

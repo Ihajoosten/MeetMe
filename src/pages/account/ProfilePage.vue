@@ -156,7 +156,7 @@ export default {
           });
         })
         .catch(err => {
-          if (err) {
+          if (err) {  
             this.$toast.error('Failed to update your account!.', {
               duration: 5000,
               position: 'top'

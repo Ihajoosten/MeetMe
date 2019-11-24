@@ -29,9 +29,6 @@ describe('MeetingDetail.vue', () => {
     expect(typeof MeetingDetail.methods.setDate).to.equal('function');
   });
   
-  it('the methods object should contain function changeTime()', () => {
-    expect(typeof MeetingDetail.methods.changeTime).to.equal('function');
-  });
 
   it('has a data function', () => {
     expect(typeof MeetingDetail.data).to.equal('function');
@@ -39,14 +36,6 @@ describe('MeetingDetail.vue', () => {
 
   it('data() is object', () => {
     expect(typeof MeetingDetail.data()).to.equal('object');
-  });
-
-  it('data function returns disabledDates object', () => {
-    expect(typeof MeetingDetail.data().disabledDates).to.equal('object');
-  });
-
-  it('disabledDates object has function customPredictor', () => {
-    expect(typeof MeetingDetail.data().disabledDates.customPredictor).to.equal('function');
   });
 
   it('data function returns form object', () => {

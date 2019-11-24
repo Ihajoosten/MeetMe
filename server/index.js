@@ -14,6 +14,7 @@ const userRoutes = require('./routes/users');
 const categoryRoutes = require('./routes/categories');
 const meetingRoutes = require('./routes/meetings');
 const postRoutes = require('./routes/posts');
+const locationRoute = require('./routes/location');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(morgan('dev'));
 app.use(cors());
 
 //commentRoutes(app);
+locationRoute(app);
 threadRoutes(app);
 userRoutes(app);
 categoryRoutes(app);

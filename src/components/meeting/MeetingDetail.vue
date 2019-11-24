@@ -20,31 +20,65 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Pick date for meeting</label>
-        <datepicker
-          :disabledDates="disabledDates"
+      <b-form-group class="col-4" label="Date">
+        <b-form-input
           @input="setDate"
           @blur="$v.form.startDate.$touch()"
-          :input-class="'ml-1 col-10'"
-          :placeholder="new Date() | date"
-        />
-      </div>
-      <div class="form-group">
-        <label for="formGroupExampleInput2">Choose Start time</label>
-        <timepicker
-          :minute-interval="10"
-          v-on:change="changeTime($event, 'timeFrom')"
-          class="mr-5"
-        />
-      </div>
-      <div class="form-group">
-        <label for="formGroupExampleInput2">Choose End time</label>
-        <timepicker
-          :minute-interval="10"
-          v-on:change="changeTime($event, 'timeTo')"
-        />
-      </div>
+          type="date"
+          required
+        ></b-form-input>
+        <div class="text-left mt-4">
+          <div
+            v-if="$v.form.startDate.$error"
+            class="alert alert-danger"
+            role="alert"
+          >
+            <i v-if="!$v.form.startDate.required">Date is required</i>
+          </div>
+        </div>
+      </b-form-group>
+
+      <b-form-group
+        class="col-4"
+        id="input-group-2"
+        label="Start time"
+        label-for="input-2"
+      >
+        <b-form-input
+          v-model="form.timeFrom"
+          @blur="$v.form.timeFrom.$touch()"
+          type="time"
+          required
+        ></b-form-input>
+        <div class="text-left mt-4">
+          <div
+            v-if="$v.form.timeFrom.$error"
+            class="alert alert-danger"
+            role="alert"
+          >
+            <i v-if="!$v.form.timeFrom.required">Start time is required</i>
+          </div>
+        </div>
+      </b-form-group>
+
+      <b-form-group class="col-4" label="End time">
+        <b-form-input
+          v-model="form.timeTo"
+          @blur="$v.form.timeTo.$touch()"
+          type="time"
+          required
+          class="col"
+        ></b-form-input>
+        <div class="text-left mt-4">
+          <div
+            v-if="$v.form.timeTo.$error"
+            class="alert alert-danger"
+            role="alert"
+          >
+            <i v-if="!$v.form.timeTo.required">End time is required</i>
+          </div>
+        </div>
+      </b-form-group>
     </div>
 
     <div class="form-group">
@@ -78,24 +112,11 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import moment from 'moment';
-import datepicker from 'vuejs-datepicker';
-import timepicker from 'vue2-timepicker';
 
 export default {
   name: 'meeting-detail',
-  components: {
-    datepicker,
-    timepicker
-  },
   data() {
     return {
-      disabledDates: {
-        customPredictor: function(date) {
-          const today = new Date();
-          const yesterday = today.setDate(today.getDate() - 1);
-          return date < yesterday;
-        }
-      },
       form: {
         title: null,
         startDate: null,
@@ -124,13 +145,7 @@ export default {
       this.$emit('nextStep', { data: this.form, isValid: !this.$v.$invalid });
     },
     setDate(date) {
-      this.form.startDate = moment(date).format();
-      this.emitFormData();
-    },
-    changeTime({ data }, field) {
-      const minutes = data.mm || '00';
-      const hours = data.HH || '00';
-      this.form[field] = hours + ':' + minutes;
+      this.form.startDate = moment(date).format('DD MMM YYYY');
       this.emitFormData();
     }
   }

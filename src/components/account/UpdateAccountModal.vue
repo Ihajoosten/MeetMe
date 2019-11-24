@@ -78,6 +78,7 @@
 
 <script>
 export default {
+  name: 'update-account-modal',
   props: {
     updateUser: {
       required: true,

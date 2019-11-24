@@ -4,18 +4,40 @@
       <div class="meeting-lookup-wrap mb-2">
         <div class="meeting-lookup row bg-light shadow p-3 mb-5 rounded">
           <div class="form-inline">
-            <input type="text" class="mr-3 ml-4" placeholder=" New York" />
-            <span class="text-muted mr-3">Meetings in New York, USA</span>
-            <button class="btn btn-outline-success mr-2 ml-5">Meetings</button>
-            <button class="btn btn-outline-primary">Calendar</button>
+            <input
+              v-model="searchedLocation"
+              v-on:keyup.enter="fetchMeetings"
+              type="text"
+              class="mr-3 ml-4"
+              placeholder=" New York"
+            />
+            <!-- <span
+              v-if="searchedLocation && meetings && meetings.length > 0"
+              class="text-muted mr-3"
+              >Meetings in {{ meetings[0].location }}</span
+            > -->
+            <button
+              v-if="searchedLocation && meetings && meetings.length > 0"
+              class="btn btn-danger mr-2"
+            >
+              {{ meetings[0].location }}
+            </button>
+
+            <button
+              v-on:click.prevent="cancelCategory"
+              v-if="category && meetings"
+              class="btn btn-danger"
+            >
+              {{ category }} X
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container mt-5">
+    <div v-if="pageLoader_isDataLoaded" class="container mt-5">
       <div
-        v-if="amount === 0"
+        v-if="meetings.length === 0"
         class="alert alert-warning text-center"
         role="alert"
       >
@@ -34,23 +56,69 @@
 
 <script>
 import MeetingItem from '../../components/meeting/MeetingItem';
-import { mapActions, mapState } from 'vuex';
+import pageLoader from '../../mixins/pageloader';
 
 export default {
+  props: {
+    category: {
+      required: false,
+      type: String
+    }
+  },
+  mixins: [pageLoader],
+  data() {
+    return {
+      searchedLocation: this.$store.getters['meta/location'],
+      filter: {}
+    };
+  },
   components: {
     MeetingItem
   },
   computed: {
-    ...mapState({
-      meetings: state => state.meetings.items,
-      amount: state => state.meetings.items.length
-    })
+    meetings() {
+      return this.$store.state.meetings.items;
+    }
   },
   created() {
     this.fetchMeetings();
   },
   methods: {
-    ...mapActions('meetings', ['fetchMeetings'])
+    fetchMeetings() {
+      if (this.searchedLocation) {
+        this.filter['location'] = this.searchedLocation
+          .toLowerCase()
+          .replace(/[\s,]+/g, '')
+          .trim();
+      }
+
+      if (this.category) {
+        this.filter['category'] = this.category;
+      }
+      this.pageLoader_isDataLoaded = false;
+
+      this.$store
+        .dispatch('meetings/fetchMeetings', { filter: this.filter })
+        .then(() => {
+          this.pageLoader_resolveData();
+          this.$toast.success('Data is loaded!', {
+            duration: 5000,
+            position: 'top'
+          });
+        })
+        .catch(err => {
+          if (err) {
+            this.pageLoader_resolveData();
+            this.$toast.danger('Failed to load the data!', {
+              duration: 5000,
+              position: 'top'
+            });
+          }
+        });
+    },
+    cancelCategory() {
+      this.$router.push({ name: 'find' });
+    }
   }
 };
 </script>
@@ -60,7 +128,7 @@ export default {
   margin-bottom: 100px;
 }
 .meeting-lookup {
-  width: 800px;
+  width: auto;
   margin: 0 auto;
   padding: 20px;
 }

@@ -1,13 +1,15 @@
 <template>
   <div class="col-4">
-    <div class="image">
-      <img
-        class="image-container"
-        :src="category.image"
-        style="width: 350px; height: 250px"
-      />
-      <div class="category-name">{{ category.name | capitalize }}</div>
-    </div>
+    <router-link :to="{name: 'find-category-meetings', params: {category: category.name}}">
+      <div class="image">
+        <img
+          class="image-container"
+          :src="category.image"
+          style="width: 350px; height: 250px"
+        />
+        <div class="category-name">{{ category.name | capitalize }}</div>
+      </div>
+    </router-link>
   </div>
 </template>
 

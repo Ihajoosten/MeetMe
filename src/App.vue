@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div v-if="isLocationResolved" id="app">
     <TheNavbar />
-    <router-view />
+    <router-view v-bind:key="$route.path" />
     <TheFooter />
   </div>
 </template>
@@ -18,6 +18,14 @@ export default {
   components: {
     TheNavbar,
     TheFooter
+  },
+  computed: {
+    isLocationResolved() {
+      return this.$store.state.meta.isLocationResolved 
+    } 
+  },
+  created() {
+    this.$store.dispatch('meta/fetchMetaData');
   },
   beforeCreate() {
     this.$store.dispatch('authenticate');

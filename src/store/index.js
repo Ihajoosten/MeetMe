@@ -5,6 +5,7 @@ import meetings from './modules/meetings';
 import threads from './modules/threads';
 import categories from './modules/categories';
 import stats from './modules/stats';
+import meta from './modules/metaData';
 import axiosInstance from '../services/axiosInstance'
 import * as auth from '../services/authService';
 
@@ -15,9 +16,10 @@ export default new Vuex.Store({
     meetings,
     threads,
     categories,
-    stats
+    stats,
+    meta
   },
-  state: {
+  state: {  
     isLoggedIn: false,
     username: null,
     email: null,
