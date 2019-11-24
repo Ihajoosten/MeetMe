@@ -18,23 +18,34 @@ module.exports = {
 
   getAllThreads: (req, res, next) => {
     const meetingId = req.query.meetingId;
+    const pageSize = req.query.pageSize || 5;
+    const pageNum = req.query.pageNum || 1;
 
-    Thread.find({})
+    const skips = pageSize * (pageNum - 1)
+
+    Thread.find()
       .where({ meeting: meetingId })
+      .skip(parseInt(skips))
+      .limit(parseInt(pageSize) + 1)
+      .sort({'createdAt': -1})
       .populate({
         path: 'posts',
         options: { limit: 5, sort: { createdAt: -1 } },
         populate: { path: 'author' }
       })
       .populate('author')
-      .then(threads => {
-        res.status(200).json(threads);
-      })
-      .catch(err => {
-        next({
-          message: 'something went wrong',
-          code: 400
-        });
+      .exec((errors, threads) => {
+
+        if (errors) {
+            return res.status(422).send({errors});
+        }
+    
+        let isAllDataLoaded = false;
+        if (threads.length <= 5 ) {
+          isAllDataLoaded = true
+        }
+    
+        return res.status(200).json({threads: threads.splice(0, 5), isAllDataLoaded});
       });
   },
   updateThreadById: (req, res, next) => {

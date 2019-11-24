@@ -36,7 +36,6 @@
         Confirm
       </button>
     </div>
-    <pre><code>{{form}}</code></pre>
   </div>
 </template>
 

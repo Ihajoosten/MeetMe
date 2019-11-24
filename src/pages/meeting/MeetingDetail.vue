@@ -53,29 +53,28 @@
                 </div>
               </div>
             </li>
-          <button
-            v-if="!isLoggedIn"
-            :disabled="true"
-            class="alert alert-warning"
-          >
-            Login to join this meeting
-          </button>
-          <button
-            v-if="canJoin && isLoggedIn"
-            @click="joinMeeting"
-            class="btn btn-outline-success"
-          >
-            Join
-          </button>
-          <button
-            @click="leaveMeeting"
-            v-if="isMember"
-            class="btn btn-outline-danger"
-          >
-            Leave
-          </button>
+            <button
+              v-if="!isLoggedIn"
+              :disabled="true"
+              class="alert alert-warning"
+            >
+              Login to join this meeting
+            </button>
+            <button
+              v-if="canJoin && isLoggedIn"
+              @click="joinMeeting"
+              class="btn btn-outline-success"
+            >
+              Join
+            </button>
+            <button
+              @click="leaveMeeting"
+              v-if="isMember"
+              class="btn btn-outline-danger"
+            >
+              Leave
+            </button>
           </ul>
-
         </div>
       </div>
       <div class="col-md-8">
@@ -89,7 +88,10 @@
         <div v-else class="alert alert-info text-center m-5 col-8 mt-4">
           <b>You need to login first to post a new thread</b>
         </div>
-          <ThreadList :threads="orderThreads" :ableToPost="canPost" />
+        <ThreadList :threads="orderThreads" :ableToPost="canPost" />
+        <button v-if="!isAllThreadsLoaded"
+                    @click="fetchThreadsHandler"
+                    class="btn btn-outline-primary">Load More Threads</button>
       </div>
     </div>
   </div>
@@ -111,7 +113,8 @@ export default {
   },
   data() {
     return {
-      amount: null
+      threadPageNum: 1,
+      threadPageSize: 5
     };
   },
   computed: {
@@ -122,7 +125,8 @@ export default {
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {},
       isLoggedIn: state => state.isLoggedIn,
-      user: state => state.user
+      user: state => state.user,
+      isAllThreadsLoaded: state => state.threads.isAllThreadsLoaded
     }),
     isOwner() {
       return this.$store.getters['isOwner'](this.meetingCreator._id);
@@ -146,11 +150,21 @@ export default {
   created() {
     const id = this.$route.params.id;
     this.fetchMeeting(id);
-    this.fetchThreads(id);
+    this.fetchThreadsHandler(id);
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
     ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
+    fetchThreadsHandler (meetingId) {
+        const filter = {
+          pageNum: this.threadPageNum,
+          pageSize: this.threadPageSize
+        }
+        this.fetchThreads({meetingId, filter})
+          .then(() => {
+            this.threadPageNum++
+          })
+    },
     addPostHandler(post) {
       this.addPostToThread({ post, threadId: post.thread });
     },
