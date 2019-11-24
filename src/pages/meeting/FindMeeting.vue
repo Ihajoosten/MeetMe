@@ -25,7 +25,7 @@
 
     <div class="container mt-5">
       <div
-        v-if="amount === 0"
+        v-if="meetings.length === 0"
         class="alert alert-warning text-center"
         role="alert"
       >
@@ -58,9 +58,6 @@ export default {
   computed: {
     meetings() {
       return this.$store.state.meetings.items;
-    },
-    amount() {
-      return this.$store.state.meetings.length;
     }
   },
   created() {
