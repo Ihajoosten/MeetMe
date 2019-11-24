@@ -11,19 +11,31 @@
               class="mr-3 ml-4"
               placeholder=" New York"
             />
-            <span
+            <!-- <span
               v-if="searchedLocation && meetings && meetings.length > 0"
               class="text-muted mr-3"
               >Meetings in {{ meetings[0].location }}</span
+            > -->
+            <button
+              v-if="searchedLocation && meetings && meetings.length > 0"
+              class="btn btn-danger mr-2"
             >
-            <button class="btn btn-outline-success mr-2 ml-5">Meetings</button>
-            <button class="btn btn-outline-primary">Calendar</button>
+              {{ meetings[0].location }}
+            </button>
+
+            <button
+              v-on:click.prevent="cancelCategory"
+              v-if="category && meetings"
+              class="btn btn-danger"
+            >
+              {{ category }} X
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container mt-5">
+    <div v-if="pageLoader_isDataLoaded" class="container mt-5">
       <div
         v-if="meetings.length === 0"
         class="alert alert-warning text-center"
@@ -44,8 +56,16 @@
 
 <script>
 import MeetingItem from '../../components/meeting/MeetingItem';
+import pageLoader from '../../mixins/pageloader';
 
 export default {
+  props: {
+    category: {
+      required: false,
+      type: String
+    }
+  },
+  mixins: [pageLoader],
   data() {
     return {
       searchedLocation: this.$store.getters['meta/location'],
@@ -72,7 +92,32 @@ export default {
           .trim();
       }
 
-      this.$store.dispatch('meetings/fetchMeetings', { filter: this.filter });
+      if (this.category) {
+        this.filter['category'] = this.category;
+      }
+      this.pageLoader_isDataLoaded = false;
+
+      this.$store
+        .dispatch('meetings/fetchMeetings', { filter: this.filter })
+        .then(() => {
+          this.pageLoader_resolveData();
+          this.$toast.success('Data is loaded!', {
+            duration: 5000,
+            position: 'top'
+          });
+        })
+        .catch(err => {
+          if (err) {
+            this.pageLoader_resolveData();
+            this.$toast.danger('Failed to load the data!', {
+              duration: 5000,
+              position: 'top'
+            });
+          }
+        });
+    },
+    cancelCategory() {
+      this.$router.push({ name: 'find' });
     }
   }
 };
@@ -83,7 +128,7 @@ export default {
   margin-bottom: 100px;
 }
 .meeting-lookup {
-  width: 800px;
+  width: auto;
   margin: 0 auto;
   padding: 20px;
 }
