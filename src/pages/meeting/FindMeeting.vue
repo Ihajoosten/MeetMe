@@ -4,8 +4,18 @@
       <div class="meeting-lookup-wrap mb-2">
         <div class="meeting-lookup row bg-light shadow p-3 mb-5 rounded">
           <div class="form-inline">
-            <input type="text" class="mr-3 ml-4" placeholder=" New York" />
-            <span class="text-muted mr-3">Meetings in New York, USA</span>
+            <input
+              v-model="searchedLocation"
+              v-on:keyup.enter="fetchMeetings"
+              type="text"
+              class="mr-3 ml-4"
+              placeholder=" New York"
+            />
+            <span
+              v-if="searchedLocation && meetings && meetings.length > 0"
+              class="text-muted mr-3"
+              >Meetings in {{ meetings[0].location }}</span
+            >
             <button class="btn btn-outline-success mr-2 ml-5">Meetings</button>
             <button class="btn btn-outline-primary">Calendar</button>
           </div>
@@ -34,23 +44,39 @@
 
 <script>
 import MeetingItem from '../../components/meeting/MeetingItem';
-import { mapActions, mapState } from 'vuex';
 
 export default {
+  data() {
+    return {
+      searchedLocation: this.$store.getters['meta/location'],
+      filter: {}
+    };
+  },
   components: {
     MeetingItem
   },
   computed: {
-    ...mapState({
-      meetings: state => state.meetings.items,
-      amount: state => state.meetings.items.length
-    })
+    meetings() {
+      return this.$store.state.meetings.items;
+    },
+    amount() {
+      return this.$store.state.meetings.length;
+    }
   },
   created() {
     this.fetchMeetings();
   },
   methods: {
-    ...mapActions('meetings', ['fetchMeetings'])
+    fetchMeetings() {
+      if (this.searchedLocation) {
+        this.filter['location'] = this.searchedLocation
+          .toLowerCase()
+          .replace(/[\s,]+/g, '')
+          .trim();
+      }
+
+      this.$store.dispatch('meetings/fetchMeetings', { filter: this.filter });
+    }
   }
 };
 </script>

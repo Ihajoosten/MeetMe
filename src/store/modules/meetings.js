@@ -1,6 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../../services/axiosInstance';
 import Vue from 'vue';
+import { applyFilters } from '../../services/filter'
 
 export default {
   namespaced: true,
@@ -9,16 +10,13 @@ export default {
     item: {}
   },
   actions: {
-    async fetchMeetings({ state, commit }) {
-      const res = await axios.get('/api/meetings');
+    async fetchMeetings({ state, commit }, options = {}) {
       commit('setItems', { resource: 'meetings', items: [] }, { root: true });
-      const meetings = res.data;
-      commit(
-        'setItems',
-        { resource: 'meetings', items: meetings },
-        { root: true }
-      );
+      const url = applyFilters('/api/meetings', options.filter)
+      const res = await axios.get(url);
+      commit('setItems', { resource: 'meetings', items: res.data }, { root: true });
       return state.items;
+      
     },
     async fetchMeeting({ state, commit }, meetingId) {
       commit('setItem', { resource: 'meetings', item: {} }, { root: true });
@@ -33,6 +31,8 @@ export default {
     },
     async createMeeting({ rootState }, meetingToCreate) {
       meetingToCreate.author = rootState.userId;
+      meetingToCreate.processedLocation = meetingToCreate.location.toLowerCase().replace(/[\s,]+/g,'').trim()
+
       const res = await axiosInstance.post('/api/meetings', meetingToCreate);
       return res.data;
     },

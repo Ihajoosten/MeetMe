@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div v-if="isLocationResolved" id="app">
     <TheNavbar />
     <router-view />
     <TheFooter />
@@ -18,6 +18,14 @@ export default {
   components: {
     TheNavbar,
     TheFooter
+  },
+  computed: {
+    isLocationResolved() {
+      return this.$store.state.meta.isLocationResolved 
+    } 
+  },
+  created() {
+    this.$store.dispatch('meta/fetchMetaData');
   },
   beforeCreate() {
     this.$store.dispatch('authenticate');
