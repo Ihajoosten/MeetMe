@@ -1,5 +1,5 @@
 <template>
-  <div class="meetup-create-page">
+  <div class="meeting-create-page">
     <section class="section">
       <div class="container">
         <CreateWizard @confirmMeeting="createNewMeeting" />
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.meetup-create-page {
+.meeting-create-page {
   min-height: 100vh;
 }
 </style>

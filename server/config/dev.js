@@ -9,7 +9,7 @@ module.exports = {
       }
     ],
     dateformat: 'HH:MM:ss.L',
-    preprocess: function(data) {
+    preprocess: (data) => {
       data.title = data.title.toUpperCase();
     },
     level: process.env.LOG_LEVEL || 'trace'

@@ -240,7 +240,7 @@ export default {
     }
   },
   methods: {
-    onSubmit: async function() {
+    onSubmit: function() {
       const user = {
         avatar: this.form.avatar,
         name: this.form.name,
@@ -248,7 +248,7 @@ export default {
         username: this.form.username,
         password: this.form.password
       };
-      await auth.registerUser(user);
+      auth.registerUser(user);
       this.$router.push({ name: 'login' });
     }
   }

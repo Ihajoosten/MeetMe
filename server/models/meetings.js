@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Thread = require('./threads');
+const User = require('./users');
 
 const meetingSchema = new Schema({
   location: { type: String, required: true },
@@ -17,5 +19,25 @@ const meetingSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   joinedPeople: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
+
+meetingSchema.post('remove', removeThreads);
+
+async function removeThreads(meeting, next) {
+  try {
+    await Thread.find({ meeting: { $in: meeting._id } }, (errors, threads) => {
+      if (errors) {
+        return next(errors);
+      }
+      return Promise.all(threads.map(t => t.remove()));
+    });
+    await User.updateMany(
+      { _id: { $in: meeting.joinedPeople } },
+      { $pull: { joinedMeetups: meeting._id } }
+    );
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
 
 module.exports = mongoose.model('Meeting', meetingSchema);
