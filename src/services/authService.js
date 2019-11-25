@@ -8,12 +8,11 @@ export function isLoggedIn() {
   return token != null;
 }
 
-export function login(user) {
-  return axios.post('/api/users/login', user).then(res => {
-    if (res) {
-      setToken(res.data.token);
-    }
-  });
+export async function login(user) {
+  const res = await axios.post('/api/users/login', user);
+  if (res) {
+    setToken(res.data.token);
+  }
 }
 
 export function logout() {
@@ -61,8 +60,8 @@ export function getUser() {
   return token.user;
 }
 
-export function registerUser(user) {
-  return axios.post('/api/users/register', user);
+export async function registerUser(user) {
+  return await axios.post('/api/users/register', user);
 }
 
 export function getToken() {
