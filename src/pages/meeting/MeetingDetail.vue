@@ -80,13 +80,13 @@
       <div class="col-md-8">
         <ThreadCreateModal
           class="m-5"
-          v-if="isMember || isOwner"
+          v-if="isMember || isOwner & isLoggedIn"
           @threadSubmitted="createThread"
           :btnTitle="`Welcome ${user.name}, start a new thread`"
           :title="'Create Thread'"
         />
-        <div v-else class="alert alert-info text-center m-5 col-8 mt-4">
-          <b>You need to login first to post a new thread</b>
+        <div v-else-if="isLoggedIn" class="alert alert-info text-center m-5 col-8 mt-4">
+          <b>You need to join the meeting to interact with others!</b>
         </div>
         <ThreadList :threads="orderThreads" :ableToPost="canPost" />
         <button v-if="!isAllThreadsLoaded"

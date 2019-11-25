@@ -23,7 +23,7 @@ export function logout() {
 function setToken(token) {
   setTimeout(function() {
     localStorage.removeItem('token');
-  }, 1000 * 60 * 3);
+  }, 1000 * 60 * 30);
   localStorage.setItem('token', token);
   store.dispatch('authenticate');
 }
