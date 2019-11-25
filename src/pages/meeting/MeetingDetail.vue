@@ -91,7 +91,7 @@
         <ThreadList :threads="orderThreads" :ableToPost="canPost" />
         <button v-if="!isAllThreadsLoaded"
                     @click="fetchThreadsHandler"
-                    class="btn btn-outline-primary">Load More Threads</button>
+                    class="btn btn-outline-primary m-5">Load More Threads</button>
       </div>
     </div>
   </div>
@@ -150,17 +150,17 @@ export default {
   created() {
     const id = this.$route.params.id;
     this.fetchMeeting(id);
-    this.fetchThreadsHandler(id);
+      this.fetchThreadsHandler({id, init: true})
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
     ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
-    fetchThreadsHandler (meetingId) {
+      fetchThreadsHandler ({id, init}) {
         const filter = {
           pageNum: this.threadPageNum,
           pageSize: this.threadPageSize
         }
-        this.fetchThreads({meetingId, filter})
+        this.fetchThreads({meetingId: id || this.meeting._id, filter, init})
           .then(() => {
             this.threadPageNum++
           })

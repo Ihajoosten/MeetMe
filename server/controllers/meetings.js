@@ -40,8 +40,8 @@ module.exports = {
         }
 
         if (category) {
-          meetings = meetings.filter(meetup => {
-            return meetup.category.name === category;
+          meetings = meetings.filter(meeting => {
+            return meeting.category.name === category;
           });
         }
 
@@ -88,6 +88,28 @@ module.exports = {
         .status(401)
         .json({ message: 'Not authorized to update meeting!' });
     }
+  },
+  deleteMeeting: (req, res) => {
+    const {id} = req.params;
+    const user = req.user;
+  
+    Meeting.findById(id, (errors, meeting) => {
+      if (errors) {
+        return res.status(422).send({errors})
+      }
+  
+      if (meeting.author != user._id) {
+        return res.status(401).send({errors: {message: 'Not Authorized!'}})
+      }
+  
+      meeting.remove((errors, meeting) => {
+        if (errors) {
+          return res.status(422).send({errors})
+        }
+  
+        return res.status(200).json({message: 'Deleted meeting with id: ' + meeting._id});
+      })
+    })
   },
   joinMeeting: (req, res) => {
     const user = req.userId;

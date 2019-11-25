@@ -11,13 +11,16 @@ export default {
     items: []
   },
   actions: {
-    async fetchThreads({ state, commit }, { meetingId, filter = {} }) {
-      const url = applyFilters(`/api/threads?meetingId=${meetingId}`, filter);
+    async fetchThreads ({state, commit}, {meetingId, filter = {}, init}) {
+      if (init) {
+        commit('setItems', {resource: 'threads', items: []}, {root: true})
+      }
 
+      const url = applyFilters(`/api/threads?meetingId=${meetingId}`, filter)
       const res = await axios.get(url);
       const { threads, isAllDataLoaded } = res.data;
       commit('setAllDataLoaded', isAllDataLoaded);
-      commit('mergeThreads', threads)
+      commit('mergeThreads', threads);
       return state.items;
     },
     async postThread({ commit, state }, { title, meetingId }) {

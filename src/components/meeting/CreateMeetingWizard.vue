@@ -1,5 +1,5 @@
 <template>
-  <div class="meetup-create-form">
+  <div class="meeting-create-form">
     <div class="container badge badge-success mt-3">{{ currentPage }} of {{ stepSize }}</div>
     <!-- Form Steps -->
     <keep-alive>
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style scoped>
-.meetup-create-form {
+.meeting-create-form {
   box-sizing: border-box;
   margin-left: auto;
   margin-right: auto;

@@ -25,7 +25,7 @@
         class="stats-tab col-sm text-center"
       >
         <p class="stat-val">{{ meetingCount }}</p>
-        <p class="stat-key">Meetups</p>
+        <p class="stat-key">Meetings</p>
       </div>
 
       <div

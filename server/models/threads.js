@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Post = require('./posts');
+
 
 const threadSchema = new Schema({
   title: {
@@ -13,5 +15,16 @@ const threadSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }]
 });
+
+threadSchema.post('remove', removePosts);
+
+async function removePosts(thread, next) {
+  try {
+    await Post.remove({_id: { $in: thread.posts }})
+    return next()
+  } catch (e) {
+    next(e)
+  }
+}
 
 module.exports = mongoose.model('Thread', threadSchema);
