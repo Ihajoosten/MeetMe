@@ -52,7 +52,7 @@ module.exports = {
       if (!user) {
         return res
           .status(401)
-          .json({ message: 'Email does not match!', status: 401 });
+          .json({ message: 'Login failed - invalid email !', status: 401 });
       }
 
       const passwordMatch = User.passwordMatches(
@@ -62,7 +62,7 @@ module.exports = {
       if (!passwordMatch) {
         return res
           .status(401)
-          .json({ message: 'Password does not match!', status: 401 });
+          .json({ message: 'Login failed - invalid password !', status: 401 });
       }
       const token = auth.generateJWT(user);
       return res.status(200).json({ token: token });
