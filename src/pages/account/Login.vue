@@ -153,9 +153,9 @@ export default {
           });
           this.$router.push('/');
         })
-        .catch(() => {
+        .catch((err) => {
           this.$toast.error(
-            'Login failed! Please check your email & password and try again.',
+            err.response.data.message,
             {
               duration: 5000,
               position: 'top'
