@@ -43,11 +43,12 @@ export default {
 
       const res = await axiosInstance.post('/api/posts', post);
       dispatch('addPostToThread', { post: res.data, threadId });
+      return res.data
     },
     addPostToThread({ commit, state }, { post, threadId }) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
 
-      if (threadIndex >= 0) {
+      if (threadIndex > -1) {
         const threadPosts = state.items[threadIndex].posts;
         threadPosts.unshift(post);
         commit('savePostToThread', { threadPosts, index: threadIndex });
