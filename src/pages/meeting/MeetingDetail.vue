@@ -121,7 +121,7 @@ export default {
     ...mapState({
       meeting: state => state.meetings.item,
       threads: state => state.threads.items,
-      count: state => state.meetings.item.joinedPeopleCount,
+      count: state => state.meetings.item.joinedPeople.length,
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {},
       isLoggedIn: state => state.isLoggedIn,
