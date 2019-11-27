@@ -6,21 +6,21 @@
       class="timeline-comment"
     >
       <div class="timeline-comment-wrapper">
-        <div class="card">
-          <div class="card-header d-flex align-items-center">
+        <div class="card shadow">
+          <div class="card-header d-flex bg-success align-items-center">
             <div class="ribbon" v-if="meeting.author._id === thread.author._id">
               <span>admin</span>
             </div>
-            <a href="#" class="d-flex align-items-center">
+            <b class="d-flex align-items-center">
               <img
                 class="rounded-circle"
                 :src="thread.author.avatar"
                 alt="avatar"
               />
-              <h5>{{ thread.author.name }}</h5>
-            </a>
+              <h5 class="text-white">{{ thread.author.name }}</h5>
+            </b>
             <div
-              class="comment-date text-muted"
+              class="comment-date text-white-50"
               data-toggle="tooltip"
               title="Feb 5, 2018 8:21 pm"
               data-placement="top"
@@ -45,8 +45,8 @@
           class="timeline-comment"
         >
           <div class="timeline-comment-wrapper">
-            <div class="card">
-              <div class="card-header d-flex align-items-center">
+            <div class="card shadow">
+              <div class="card-header bg-success d-flex align-items-center">
                 <div
                   class="ribbon"
                   v-if="meeting.author._id === post.author._id"
@@ -59,10 +59,10 @@
                     :src="post.author.avatar"
                     alt="avatar"
                   />
-                  <h5>{{ post.author.name }}</h5>
+                  <h5 class="text-white">{{ post.author.name }}</h5>
                 </b>
                 <div
-                  class="comment-date text-muted"
+                  class="comment-date text-white-50"
                   data-toggle="tooltip"
                   data-placement="top"
                 >
