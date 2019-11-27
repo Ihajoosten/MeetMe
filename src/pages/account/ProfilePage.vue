@@ -69,7 +69,6 @@
               </p>
             </div>
             <div class="card-footer text-center">
-              <button class="btn btn-sm btn-outline-success mr-2">Share</button>
               <router-link
                 class="text-muted"
                 :to="{ name: 'meeting-update', params: { id: meeting._id } }"
@@ -79,7 +78,7 @@
               >
               <button
                 v-on:click.prevent="
-                  $event => showDeleteWarning($event, meeting._id)
+                  $event => deleteMeetingWarning($event, meeting._id)
                 "
                 class="btn btn-sm btn-outline-danger"
               >
@@ -90,7 +89,7 @@
           <br />
         </div>
       </div>
-      <div v-else class="badge alert alert-warning">
+      <div v-else class="badge alert alert-warning ml-5 mt-5">
         <b>You have not created any meetings yet</b>
       </div>
     </div>
@@ -106,14 +105,20 @@
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-sm btn-outline-success mr-2">Share</button>
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                v-on:click.prevent="
+                  $event => deleteThreadWarning($event, thread._id)
+                "
+              >
+                Delete
+              </button>
             </div>
           </div>
           <br />
         </div>
       </div>
-      <div v-else class="badge alert alert-warning">
+      <div v-else class="badge alert alert-warning ml-5 mt-5">
         <b>You have not created any threads yet</b>
       </div>
     </div>
@@ -129,14 +134,20 @@
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-sm btn-outline-success mr-2">Share</button>
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                v-on:click.prevent="
+                  $event => deletePostWarning($event, post._id)
+                "
+              >
+                Delete
+              </button>
             </div>
           </div>
           <br />
         </div>
       </div>
-      <div v-else class="badge alert alert-warning">
+      <div v-else class="badge alert alert-warning ml-5 mt-5">
         <b>You have not created any posts yet</b>
       </div>
     </div>
@@ -186,13 +197,14 @@ export default {
           }
         });
     },
-    showDeleteWarning(e, meetingId) {
-      e.stopPropagation();
+    deleteMeetingWarning(event, meetingId) {
+      event.stopPropagation();
       const isConfirm = confirm(
         'Are you sure you want to delete this meeting?'
       );
       if (isConfirm) {
-        this.$store.dispatch('meetings/deleteMeeting', meetingId)
+        this.$store
+          .dispatch('meetings/deleteMeeting', meetingId)
           .then(() => {
             this.$store.dispatch('stats/updateStats', meetingId);
             this.$toast.success('Succesfully deleted your meeting!', {
@@ -203,6 +215,54 @@ export default {
           .catch(err => {
             if (err) {
               this.$toast.error('Failed to delete your meeting!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }
+    },
+    deleteThreadWarning(event, threadId) {
+      event.stopPropagation();
+      const isConfirm = confirm('Are you sure you want to delete this thread?');
+      if (isConfirm) {
+        this.$store
+          .dispatch('threads/deleteThread', threadId)
+          .then(() => {
+            this.$store.dispatch('stats/updateThreadsAndPosts', threadId);
+            this.$toast.success('Succesfully deleted your thread!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your thread!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }
+    },
+    deletePostWarning(event, postId) {
+      event.stopPropagation();
+      const isConfirm = confirm(
+        'Are you sure you want to delete this post?'
+      );
+      if (isConfirm) {
+        this.$store
+          .dispatch('meetings/deletePost', postId)
+          .then(() => {
+            this.$store.dispatch('stats/updatePost', postId);
+            this.$toast.success('Succesfully deleted your post!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your post!.', {
                 duration: 5000,
                 position: 'top'
               });

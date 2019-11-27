@@ -34,6 +34,18 @@ export default {
         }).map(postId => {
           commit('deleteResource', { resource: 'posts', itemId: postId });
         });
+    },
+    updateThreadsAndPosts({ state, commit }, threadId) {
+      commit('deleteResource', { resource: 'threads', itemId: threadId });
+
+      state.posts.data.filter(post => {
+          return post.thread === threadId;
+        }).flatMap(post => {
+          commit('deleteResource', { resource: 'posts', itemId: post._id });
+        })
+    },
+    updatePost({ commit }, postId) {
+      commit('deleteResource', { resource: 'posts', itemId: postId });
     }
   },
   mutations: {

@@ -60,16 +60,26 @@ module.exports = {
       });
   },
   deleteThreadById: (req, res, next) => {
-    const id = req.params.id;
-    let t;
-    Thread.findOne({ _id: id })
-      .then(thread => {
-        t = thread;
+    const {id} = req.params;
+    const user = req.user;
+
+    Thread.findById(id, (errors, thread) => {
+      if (errors) {
+        return res.status(422).send({errors})
+      }
+  
+      if (thread.author != user._id) {
+        return res.status(401).send({errors: {message: 'Not Authorized!'}})
+      }
+  
+      thread.remove((errors, meeting) => {
+        if (errors) {
+          return res.status(422).send({errors})
+        }
+  
+        return res.status(200).json({message: 'Deleted thread with id: ' + meeting._id});
       })
-      .then(() => Thread.findOneAndDelete({ _id: id }))
-      .then(() => {
-        res.status(200).json({ result: t });
-      });
+    })
   },
 
   postCommentToThread: (req, res, next) => {

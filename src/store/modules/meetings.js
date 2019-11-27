@@ -1,7 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../../services/axiosInstance';
 import Vue from 'vue';
-import { applyFilters } from '../../services/filter'
+import { applyFilters } from '../../services/filter';
 
 export default {
   namespaced: true,
@@ -12,11 +12,14 @@ export default {
   actions: {
     async fetchMeetings({ state, commit }, options = {}) {
       commit('setItems', { resource: 'meetings', items: [] }, { root: true });
-      const url = applyFilters('/api/meetings', options.filter)
+      const url = applyFilters('/api/meetings', options.filter);
       const res = await axios.get(url);
-      commit('setItems', { resource: 'meetings', items: res.data }, { root: true });
+      commit(
+        'setItems',
+        { resource: 'meetings', items: res.data },
+        { root: true }
+      );
       return state.items;
-      
     },
     async fetchMeeting({ state, commit }, meetingId) {
       commit('setItem', { resource: 'meetings', item: {} }, { root: true });
@@ -31,7 +34,10 @@ export default {
     },
     async createMeeting({ rootState }, meetingToCreate) {
       meetingToCreate.author = rootState.userId;
-      meetingToCreate.processedLocation = meetingToCreate.location.toLowerCase().replace(/[\s,]+/g,'').trim()
+      meetingToCreate.processedLocation = meetingToCreate.location
+        .toLowerCase()
+        .replace(/[\s,]+/g, '')
+        .trim();
 
       const res = await axiosInstance.post('/api/meetings', meetingToCreate);
       return res.data;
@@ -54,18 +60,20 @@ export default {
       joinedPeople.splice(index, 1);
       commit('addUsertoMeeting', joinedPeople);
     },
-    async updateMeeting({commit}, meeting) {
-      const res = await axiosInstance.patch(`/api/meetings/${meeting._id}`, meeting);
+    async updateMeeting({ commit }, meeting) {
+      const res = await axiosInstance.patch(
+        `/api/meetings/${meeting._id}`,
+        meeting
+      );
       const updatedMeeting = res.data;
       commit('mergeMeetings', updatedMeeting);
       return updatedMeeting;
     },
-    // eslint-disable-next-line no-empty-pattern
-    async deleteMeeting( _ , meetingId) {
+    async deleteMeeting(_, meetingId) {
       const res = await axiosInstance.delete(`/api/meetings/${meetingId}`);
       const id = res.data;
       return id;
-      }
+    }
   },
   mutations: {
     addUsertoMeeting(state, joinedPeople) {
@@ -75,7 +83,7 @@ export default {
       return Vue.set(state.item, meeting);
     },
     mergeMeetings(state, meeting) {
-      state.item = {...state.item, ...meeting}
+      state.item = { ...state.item, ...meeting };
     }
   }
 };
