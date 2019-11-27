@@ -19,7 +19,7 @@
 export default {
   name: 'post-create',
   props: {
-    threadId: {
+    postId: {
       type: String,
       required: true
     }
@@ -29,17 +29,12 @@ export default {
       text: null
     };
   },
-  computed: {
-    meeting() {
-      return this.$store.state.meetings.item;
-    }
-  },
   methods: {
-    savePost() {
+    saveComment() {
       this.$store
-        .dispatch('threads/sendPost', {
+        .dispatch('threads/sendComment', {
           text: this.text,
-          threadId: this.threadId
+          postId: this.postId
         })
         .then(() => {
           this.text = '';

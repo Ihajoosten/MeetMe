@@ -15,7 +15,6 @@
           <button class="btn btn-outline-success m-2">See all</button>
         </router-link>
 
-        <!-- <HomeDropdown /> -->
       </div>
 
       <div class="row mb-5">

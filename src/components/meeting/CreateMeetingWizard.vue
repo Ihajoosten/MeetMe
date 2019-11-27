@@ -1,8 +1,7 @@
 <template>
   <div class="meeting-create-form">
     <div class="container badge badge-success mt-3">{{ currentPage }} of {{ stepSize }}</div>
-    <!-- Form Steps -->
-    <keep-alive>
+]    <keep-alive>
       <component
         :is="formSteps[currentPage - 1]"
         v-on:nextStep="mergeData"

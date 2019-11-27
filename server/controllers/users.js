@@ -8,21 +8,26 @@ const Post = require('../models/posts');
 const Category = require('../models/categories');
 
 module.exports = {
-  createUser: (req, res, next) => {
-    const body = req.body;
+  createUser: async (req, res) => {
+    const user = await User.findOne({ username: req.body.username });
+    const body = await req.body;
 
-    let user = new User({
-      avatar: body.avatar,
-      email: body.email,
-      name: body.name,
-      username: body.username,
-      password: body.password
-    });
+    if (user !== null)
+      return res.status(409).json({ message: 'Username already taken' });
+    if (body === null)
+      return res.status(400).json({ message: 'Bad request - empty body' });
 
-    user.save((err, user) => {
-      if (err) return res.status(422).json({ err });
-      return res.status(201).json(user);
-    });
+    const newUser = new User(body);
+
+    try {
+      await newUser.save((err, user) => {
+        if (err) return res.status(422).json({ err });
+        else return res.status(201).json(user);
+      });
+    } catch (error) {
+      if (error)
+        return res.status(400).json({ message: 'Could not save user' });
+    }
   },
   deleteUserByUsername: (req, res, next) => {
     const username = req.params.username;
@@ -37,36 +42,40 @@ module.exports = {
         res.status(200).json({ result: u });
       });
   },
-  loginUser: (req, res) => {
-    const body = req.body;
-    if (!body) {
-      return res.status(400).json({ message: body.message });
-    }
-    User.findOne({ email: req.body.email }, (error, user) => {
-      if (error) {
-        return res.status(500).json({
-          message: 'Something went wrong on the server!',
-          status: 500
-        });
-      }
-      if (!user) {
-        return res
-          .status(401)
-          .json({ message: 'Login failed - invalid email !', status: 401 });
-      }
+  loginUser: async (req, res) => {
+    const body = await req.body;
 
-      const passwordMatch = User.passwordMatches(
-        req.body.password,
-        user.password
-      );
-      if (!passwordMatch) {
-        return res
-          .status(401)
-          .json({ message: 'Login failed - invalid password !', status: 401 });
-      }
-      const token = auth.generateJWT(user);
-      return res.status(200).json({ token: token });
-    });
+    if (body === null)
+      return res.status(400).json({ message: 'Bad request - empty body' });
+    if (body.email === null)
+      return res.status(400).json({ message: 'Bad request - empty email' });
+    if (body.password === null)
+      return res.status(400).json({ message: 'Bad request - empty password' });
+
+    try {
+      await User.findOne({ email: req.body.email }, async (err, user) => {
+        if (err) return res.status(422).json({ err });
+        if (user === null)
+          return res
+            .status(401)
+            .json({ message: 'Login failed - invalid email !', status: 401 });
+
+        const passwordMatch = await User.passwordMatches(
+          req.body.password,
+          user.password
+        );
+        if (!passwordMatch)
+          return res.status(401).json({
+            message: 'Login failed - invalid password !',
+            status: 401
+          });
+
+        const token = await auth.generateJWT(user);
+        return res.status(200).json({ token: token });
+      });
+    } catch (error) {
+      if (error) return res.status(500).json({ error });
+    }
   },
   getUserActivity: (req, res) => {
     const userId = req.userId;
@@ -85,37 +94,38 @@ module.exports = {
         res.status(422).send({ err });
       });
   },
-  updateUser: (req, res) => {
-    const userId = req.userId;
-    const userData = req.body;
-    const user = req.user;
+  updateUser: async (req, res) => {
+    const userId = await req.userId;
+    const userData = await req.body;
+    const user = await req.user;
+
+    if (userId === null)
+      return res.status(401).json({ message: 'Not Authorized' });
+    if (userData === null)
+      return res.status(400).json({ message: 'Bad request - empty body' });
+    if (user === null)
+      return res.status(400).json({ message: 'Bad request - no user' });
 
     if (user._id === userId) {
-      // new: bool - true to return the modified document rather than the original. defaults to false
-      User.findByIdAndUpdate(
-        userId,
-        { $set: userData },
-        { new: true },
-        (errors, updatedUser) => {
-          if (errors) return res.status(422).send({ errors });
-          return res.status(200).json(updatedUser);
-        }
-      ).catch(err => {
-        if (err) {
-          return res.status(404).json({err})
-        } else {
-          return res.status(500).json({res})
-        }
-      })
-    } else {
-      return res.status(401).send({ errors: 'Authorization Error!' });
-    }
+      try {
+        await User.findByIdAndUpdate(
+          userId,
+          { $set: userData },
+          { new: true },
+          (err, updatedUser) => {
+            if (err) return res.status(422).send({ err });
+            else return res.status(200).json(updatedUser);
+          }
+        );
+      } catch (error) {
+        if (error) return res.status(500).json({ error });
+      }
+    } else return res.status(401).json({ message: 'Not authorized' });
   }
 };
 
 async function fetchMeetingsByUserQuery(userId) {
-  const results = await Meeting.find({ author: userId })
-    .exec();
+  const results = await Meeting.find({ author: userId }).exec();
   return new Promise((resolve, reject) => {
     Category.populate(results, { path: 'Category' }).then(meetings => {
       if (meetings && meetings.length > 0) {
@@ -123,17 +133,15 @@ async function fetchMeetingsByUserQuery(userId) {
           data: meetings,
           count: results.length
         });
-      }
-      else {
-        resolve({ data: [ ], count: 0 });
+      } else {
+        resolve({ data: [], count: 0 });
       }
     });
   });
 }
 
 async function fetchThreadsByUserQuery(userId) {
-  let results = await Thread.find({ author: userId })
-    .exec();
+  let results = await Thread.find({ author: userId }).exec();
   const threads = results;
   if (threads && threads.length > 0) {
     return {
@@ -145,8 +153,7 @@ async function fetchThreadsByUserQuery(userId) {
 }
 
 async function fetchPostByUserQuery(userId) {
-  let results = await Post.find({ author: userId })
-    .exec();
+  let results = await Post.find({ author: userId }).exec();
   const posts = results;
   if (posts && posts.length > 0) {
     return {

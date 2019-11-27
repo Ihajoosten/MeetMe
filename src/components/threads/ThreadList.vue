@@ -1,90 +1,106 @@
 <template>
-  <div>
-    <div v-for="thread in threads" v-bind:key="thread._id" class="shadow m-5">
-      <!-- <h4 class="mb-4 mt-4">
-        <strong>{{ thread.title }}</strong>
-      </h4>
-      <PostCreate v-if="ableToPost" :threadId="thread._id" />
-      <div v-for="post in thread.posts" v-bind:key="post._id" class="mb-3">
-        <div class="row ml-3 col-11 bg-light shadow rounded text-muted">
-          <img class="is-rounded-post ml-2" :src="post.author.avatar" />
-          <div class="content is-medium">
-            <div class="post-content">
-              <strong class="ml-1 person-name">{{ post.author.name }}</strong>
-              <small class="ml-2">{{ post.updatedAt | fromNow }}</small>
-              <p class="ml-4 post-text">{{ post.text }}</p>
+  <ul class="timeline-comments">
+    <li
+      v-for="thread in threads"
+      v-bind:key="thread._id"
+      class="timeline-comment"
+    >
+      <div class="timeline-comment-wrapper">
+        <div class="card shadow">
+          <div class="card-header d-flex bg-success align-items-center">
+            <div class="ribbon" v-if="meeting.author._id === thread.author._id">
+              <span>admin</span>
+            </div>
+            <b class="d-flex align-items-center">
+              <img
+                class="rounded-circle"
+                :src="thread.author.avatar"
+                alt="avatar"
+              />
+              <h5 class="text-white">{{ thread.author.name }}</h5>
+            </b>
+            <div
+              class="comment-date text-white-50"
+              data-toggle="tooltip"
+              title="Feb 5, 2018 8:21 pm"
+              data-placement="top"
+            >
+              Last update {{ thread.createdAt | fromNow }}
             </div>
           </div>
-        </div>
-      </div> -->
-
-      <div class="container">
-        <h5 class="pl-5 pt-5">{{ thread.title }} </h5>
-
-        <div class="row">
-          <div class="col" id="comments">
-            <PostCreate class="pl-5" v-if="ableToPost" :threadId="thread._id" />
-
-            <div
-              v-for="post in thread.posts"
-              v-bind:key="post._id"
-              class="pl-5 ml-5 mb-2 row"
-            >
-              <div class="col-md-11 col-sm-10">
-                <h6 class="small comment-meta">
-                  <b
-                    >{{ post.author.name }}
-                    {{ post.updatedAt | fromNow }}
-                  </b>
-                </h6>
-                <div class="comment-body">
-                  <p>
-                    {{ post.text }}
-                    <br />
-                    <a href="" class="text-right small"
-                      ><i class="ion-reply"></i> Reply</a
-                    >
-                  </p>
-                </div>
-              </div>
-
-              <!-- reply is indented -->
-              <!-- <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2">
-                    <div class="row">
-                        <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                            <a href=""><img class="mx-auto rounded-circle img-fluid" src="http://demos.themes.guide/bodeo/assets/images/users/m101.jpg" alt="avatar"></a>
-                        </div>
-                        <div class="comment-content col-md-11 col-sm-10 col-12">
-                            <h6 class="small comment-meta"><a href="#">phildownney</a> Today, 12:31</h6>
-                            <div class="comment-body">
-                                <p>Really?? Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
-                                    <br>
-                                    <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-               </div> -->
-              <!-- /reply is indented -->
-            </div>
-            <!-- /comment -->
+          <div class="card-body">
+            <p class="card-text">
+              {{ thread.title }}
+            </p>
+          </div>
+          <div class="card-footer bg-white p-2">
+            <PostCreate v-if="ableToPost" :threadId="thread._id" />
           </div>
         </div>
       </div>
-    </div>
-  </div>
+      <ul class="timeline-comments">
+        <li
+          v-for="post in thread.posts"
+          v-bind:key="post._id"
+          class="timeline-comment"
+        >
+          <div class="timeline-comment-wrapper">
+            <div class="card shadow">
+              <div class="card-header bg-success d-flex align-items-center">
+                <div
+                  class="ribbon"
+                  v-if="meeting.author._id === post.author._id"
+                >
+                  <span>admin</span>
+                </div>
+                <b class="d-flex align-items-center">
+                  <img
+                    class="rounded-circle"
+                    :src="post.author.avatar"
+                    alt="avatar"
+                  />
+                  <h5 class="text-white">{{ post.author.name }}</h5>
+                </b>
+                <div
+                  class="comment-date text-white-50"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                >
+                  Last update {{ post.createdAt | fromNow }}
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  {{ post.text }}
+                </p>
+              </div>
+              <div class="card-footer bg-white p-2">
+                <CommentCreate v-if="ableToPost" :postId="post._id" />
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </template>
 
 <script>
 import PostCreate from '../post/PostCreate';
+import CommentCreate from '../comment/CommentCreate';
 
 export default {
   components: {
-    PostCreate
+    PostCreate,
+    CommentCreate
   },
   props: {
     threads: {
       type: Array,
+      required: true
+    },
+    meeting: {
+      type: Object,
       required: true
     },
     ableToPost: {
@@ -96,10 +112,6 @@ export default {
 </script>
 
 <style scoped>
-.meeting-image {
-  height: 500px;
-  width: 500px;
-}
 .person-name {
   font-size: 13px;
 }
