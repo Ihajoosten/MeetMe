@@ -76,7 +76,14 @@
                 Update
               </button></router-link
             >
-            <button class="btn btn-sm btn-outline-danger">Delete</button>
+            <button
+              v-on:click.prevent="
+                $event => showDeleteWarning($event, meeting._id)
+              "
+              class="btn btn-sm btn-outline-danger"
+            >
+              Delete
+            </button>
           </div>
         </div>
         <br />
@@ -156,13 +163,37 @@ export default {
           });
         })
         .catch(err => {
-          if (err) {  
+          if (err) {
             this.$toast.error('Failed to update your account!.', {
               duration: 5000,
               position: 'top'
             });
           }
         });
+    },
+    showDeleteWarning(e, meetingId) {
+      e.stopPropagation();
+      const isConfirm = confirm(
+        'Are you sure you want to delete this meeting?'
+      );
+      if (isConfirm) {
+        this.$store
+          .dispatch('meetings/deleteMeeting', meetingId)
+          .then(() => {
+            this.$toast.success('Succesfully deleted your meeting!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your meeting!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }
     }
   },
   created() {

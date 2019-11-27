@@ -59,8 +59,13 @@ export default {
       const updatedMeeting = res.data;
       commit('mergeMeetings', updatedMeeting);
       return updatedMeeting;
-
-    }
+    },
+    // eslint-disable-next-line no-empty-pattern
+    async deleteMeeting ({}, meetingId) {
+      const res = await axiosInstance.delete(`/api/meetings/${meetingId}`);
+      const id = res.data;
+      return id;
+      }
   },
   mutations: {
     addUsertoMeeting(state, joinedPeople) {
