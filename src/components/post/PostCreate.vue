@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'comment-create',
+  name: 'post-create',
   props: {
     threadId: {
       type: String,
@@ -28,6 +28,11 @@ export default {
     return {
       text: null
     };
+  },
+  computed: {
+    meeeting() {
+      return this.meeting;
+    }
   },
   methods: {
     savePost() {
