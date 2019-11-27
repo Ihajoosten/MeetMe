@@ -252,7 +252,7 @@ export default {
       );
       if (isConfirm) {
         this.$store
-          .dispatch('meetings/deletePost', postId)
+          .dispatch('threads/deletePost', postId)
           .then(() => {
             this.$store.dispatch('stats/updatePost', postId);
             this.$toast.success('Succesfully deleted your post!', {

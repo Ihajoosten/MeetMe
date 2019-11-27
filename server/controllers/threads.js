@@ -72,12 +72,12 @@ module.exports = {
         return res.status(401).send({errors: {message: 'Not Authorized!'}})
       }
   
-      thread.remove((errors, meeting) => {
+      thread.remove((errors, thread) => {
         if (errors) {
           return res.status(422).send({errors})
         }
   
-        return res.status(200).json({message: 'Deleted thread with id: ' + meeting._id});
+        return res.status(200).json({message: 'Deleted thread with id: ' + thread._id});
       })
     })
   },
