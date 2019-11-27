@@ -30,8 +30,8 @@ export default {
     };
   },
   computed: {
-    meeeting() {
-      return this.meeting;
+    meeting() {
+      return this.$store.state.meetings.item;
     }
   },
   methods: {
