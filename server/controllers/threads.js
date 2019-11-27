@@ -86,8 +86,8 @@ module.exports = {
     }
   },
   deleteThreadById: async (req, res, next) => {
-    const { id } = req.params;
-    const user = req.user;
+    const { id } = await req.params;
+    const user = await req.user;
 
     if (user === null)
       return res.status(401).json({ message: 'Not Authorized' });
