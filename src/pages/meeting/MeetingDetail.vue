@@ -35,19 +35,6 @@
           <li>Date: {{ meeting.startDate | date }}</li>
           <li>Time: {{ meeting.timeFrom }} - {{ meeting.timeTo }}</li>
           <li class="mb-3">Location: {{ meeting.location }}</li>
-          <!-- <li>
-              <div class="mt-2" role="alert">
-                <div v-if="meeting.joinedPeople.length >= 2" class="alert alert-dark">
-                  <b>{{ meeting.joinedPeople.length }} persons have joined so far</b>
-                </div>
-                <div v-else-if="meeting.joinedPeople.length > 0" class="alert alert-dark">
-                  <b>{{ meeting.joinedPeople.length }} person has joined so far</b>
-                </div>
-                <div v-else class="alert alert-dark" role="alert">
-                  <b>0 persons have joined so far</b>
-                </div>
-              </div>
-            </li> -->
           <i class="col">Persons who joined</i>
           <div class="row mt-2">
             <div v-for="person in meeting.joinedPeople" v-bind:key="person._id">

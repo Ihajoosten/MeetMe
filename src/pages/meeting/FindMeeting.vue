@@ -11,11 +11,6 @@
               class="mr-3 ml-4"
               placeholder=" New York"
             />
-            <!-- <span
-              v-if="searchedLocation && meetings && meetings.length > 0"
-              class="text-muted mr-3"
-              >Meetings in {{ meetings[0].location }}</span
-            > -->
             <button
               v-if="searchedLocation && meetings && meetings.length > 0"
               class="btn btn-danger mr-2"
