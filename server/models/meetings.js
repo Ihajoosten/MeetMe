@@ -32,7 +32,7 @@ async function removeThreads(meeting, next) {
     });
     await User.updateMany(
       { _id: { $in: meeting.joinedPeople } },
-      { $pull: { joinedMeetups: meeting._id } }
+      { $pull: { joinedMeetings: meeting._id } }
     );
     next();
   } catch (e) {

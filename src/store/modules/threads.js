@@ -53,6 +53,16 @@ export default {
         threadPosts.unshift(post);
         commit('savePostToThread', { threadPosts, index: threadIndex });
       }
+    },
+    async deleteThread(_, threadId) {
+      const res = await axiosInstance.delete(`/api/threads/${threadId}`);
+      const id = res.data;
+      return id;
+    },
+    async deletePost(_, postId) {
+      const res = await axiosInstance.delete(`/api/posts/${postId}`);
+      const id = res.data;
+      return id;
     }
   },
   mutations: {

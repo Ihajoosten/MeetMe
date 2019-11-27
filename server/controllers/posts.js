@@ -32,5 +32,27 @@ module.exports = {
       );
       return res.status(201).json(createdPost);
     });
+  },
+  deletePostById: (req, res) => {
+    const {id} = req.params;
+    const user = req.user;
+  
+    Post.findById(id, (errors, post) => {
+      if (errors) {
+        return res.status(422).send({errors})
+      }
+  
+      if (post.author != user._id) {
+        return res.status(401).send({errors: {message: 'Not Authorized!'}})
+      }
+  
+      post.remove((errors, post) => {
+        if (errors) {
+          return res.status(422).send({errors})
+        }
+  
+        return res.status(200).json({message: 'Deleted post with id: ' + post._id});
+      })
+    })
   }
 };
