@@ -47,82 +47,97 @@
       </div>
     </div>
 
-    <div v-if="activeTab === 'meetings'" class="row mt-5">
-      <div v-for="meeting in meetings" v-bind:key="meeting._id" class="col">
-        <div class="card" style="width: auto;">
-          <img
-            :src="meeting.image"
-            style="width: 100%; height: 15rem;"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h6 class="card-title">
-              {{ meeting.title }}
-            </h6>
-            <div class="badge badge-success">
-              {{ meeting.status | capitalize }}
+    <div v-if="activeTab === 'meetings'">
+      <div v-if="meetings && meetings.length > 0" class="row mt-5">
+        <div v-for="meeting in meetings" v-bind:key="meeting._id" class="col">
+          <div class="card" style="width: auto;">
+            <img
+              :src="meeting.image"
+              style="width: 100%; height: 15rem;"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h6 class="card-title">
+                {{ meeting.title }}
+              </h6>
+              <div class="badge badge-success">
+                {{ meeting.status | capitalize }}
+              </div>
+              <p class="card-text mt-2">
+                {{ meeting.description }}
+              </p>
             </div>
-            <p class="card-text mt-2">
-              {{ meeting.description }}
-            </p>
+            <div class="card-footer text-center">
+              <button class="btn btn-sm btn-outline-success mr-2">Share</button>
+              <router-link
+                class="text-muted"
+                :to="{ name: 'meeting-update', params: { id: meeting._id } }"
+                ><button class="btn btn-sm btn-outline-primary mr-2">
+                  Update
+                </button></router-link
+              >
+              <button
+                v-on:click.prevent="
+                  $event => showDeleteWarning($event, meeting._id)
+                "
+                class="btn btn-sm btn-outline-danger"
+              >
+                Delete
+              </button>
+            </div>
           </div>
-          <div class="card-footer text-center">
-            <button class="btn btn-sm btn-outline-success mr-2">Share</button>
-            <router-link
-              class="text-muted"
-              :to="{ name: 'meeting-update', params: { id: meeting._id } }"
-              ><button class="btn btn-sm btn-outline-primary mr-2">
-                Update
-              </button></router-link
-            >
-            <button
-              v-on:click.prevent="
-                $event => showDeleteWarning($event, meeting._id)
-              "
-              class="btn btn-sm btn-outline-danger"
-            >
-              Delete
-            </button>
-          </div>
+          <br />
         </div>
-        <br />
+      </div>
+      <div v-else class="badge alert alert-warning">
+        <b>You have not created any meetings yet</b>
       </div>
     </div>
 
-    <div v-if="activeTab === 'threads'" class="row mt-5">
-      <div v-for="thread in threads" v-bind:key="thread._id" class="col-md-4">
-        <div class="card" style="width: auto; height: 10rem">
-          <div class="card-body">
-            <h5 class="card-title">{{ thread.title }}</h5>
-            <div>
-              Posted <b>{{ thread.createdAt | fromNow }}</b>
+    <div v-if="activeTab === 'threads'">
+      <div v-if="threads && threads.length > 0" class="row mt-5">
+        <div v-for="thread in threads" v-bind:key="thread._id" class="col-md-4">
+          <div class="card" style="width: auto; height: 10rem">
+            <div class="card-body">
+              <h5 class="card-title">{{ thread.title }}</h5>
+              <div>
+                Posted <b>{{ thread.createdAt | fromNow }}</b>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-outline-success mr-2">Share</button>
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
             </div>
           </div>
-          <div class="card-footer">
-            <button class="btn btn-sm btn-outline-success mr-2">Share</button>
-            <button class="btn btn-sm btn-outline-danger">Delete</button>
-          </div>
+          <br />
         </div>
-        <br />
+      </div>
+      <div v-else class="badge alert alert-warning">
+        <b>You have not created any threads yet</b>
       </div>
     </div>
 
-    <div v-if="activeTab === 'posts'" class="row mt-5">
-      <div v-for="post in posts" v-bind:key="post._id" class="col-md-4">
-        <div class="card" style="width: auto; height: 10rem">
-          <div class="card-body">
-            <h5 class="card-title">{{ post.text }}</h5>
-            <div>
-              Posted <b>{{ post.createdAt | fromNow }}</b>
+    <div v-if="activeTab === 'posts'">
+      <div v-if="posts && posts.length > 0" class="row mt-5">
+        <div v-for="post in posts" v-bind:key="post._id" class="col-md-4">
+          <div class="card" style="width: auto; height: 10rem">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.text }}</h5>
+              <div>
+                Posted <b>{{ post.createdAt | fromNow }}</b>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-outline-success mr-2">Share</button>
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
             </div>
           </div>
-          <div class="card-footer">
-            <button class="btn btn-sm btn-outline-success mr-2">Share</button>
-            <button class="btn btn-sm btn-outline-danger">Delete</button>
-          </div>
+          <br />
         </div>
-        <br />
+      </div>
+      <div v-else class="badge alert alert-warning">
+        <b>You have not created any posts yet</b>
       </div>
     </div>
   </div>
@@ -177,9 +192,9 @@ export default {
         'Are you sure you want to delete this meeting?'
       );
       if (isConfirm) {
-        this.$store
-          .dispatch('meetings/deleteMeeting', meetingId)
+        this.$store.dispatch('meetings/deleteMeeting', meetingId)
           .then(() => {
+            this.$store.dispatch('stats/updateStats', meetingId);
             this.$toast.success('Succesfully deleted your meeting!', {
               duration: 5000,
               position: 'top'

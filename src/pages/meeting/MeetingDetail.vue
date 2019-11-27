@@ -40,19 +40,19 @@
             <li>Date: {{ meeting.startDate | date }}</li>
             <li>Time: {{ meeting.timeFrom }} - {{ meeting.timeTo }}</li>
             <li>Location: {{ meeting.location }}</li>
-            <li>
+            <!-- <li>
               <div class="mt-2" role="alert">
-                <div v-if="count >= 2" class="alert alert-dark">
-                  <b>{{ count }} persons have joined so far</b>
+                <div v-if="meeting.joinedPeople.length >= 2" class="alert alert-dark">
+                  <b>{{ meeting.joinedPeople.length }} persons have joined so far</b>
                 </div>
-                <div v-else-if="count === 1" class="alert alert-dark">
-                  <b>{{ count }} person has joined so far</b>
+                <div v-else-if="meeting.joinedPeople.length > 0" class="alert alert-dark">
+                  <b>{{ meeting.joinedPeople.length }} person has joined so far</b>
                 </div>
                 <div v-else class="alert alert-dark" role="alert">
                   <b>0 persons have joined so far</b>
                 </div>
               </div>
-            </li>
+            </li> -->
             <button
               v-if="!isLoggedIn"
               :disabled="true"
@@ -121,7 +121,6 @@ export default {
     ...mapState({
       meeting: state => state.meetings.item,
       threads: state => state.threads.items,
-      count: state => state.meetings.item.joinedPeople.length,
       isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {},
       isLoggedIn: state => state.isLoggedIn,

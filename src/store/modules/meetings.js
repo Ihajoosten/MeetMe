@@ -61,7 +61,7 @@ export default {
       return updatedMeeting;
     },
     // eslint-disable-next-line no-empty-pattern
-    async deleteMeeting ({}, meetingId) {
+    async deleteMeeting( _ , meetingId) {
       const res = await axiosInstance.delete(`/api/meetings/${meetingId}`);
       const id = res.data;
       return id;
