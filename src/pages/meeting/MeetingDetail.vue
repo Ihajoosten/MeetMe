@@ -22,20 +22,20 @@
         </div>
         <div class="col">
           <img class="img-fluid" :src="meeting.image" alt />
-       
-            <h2 class="my-3">Meeting Info</h2>
-            <span
-              >Created by {{ meetingCreator.name }} on
-              {{ meeting.createdAt | date }}</span
-            >
-            <br />
-            <br />
-            <p>{{ meeting.description }}</p>
 
-            <li>Date: {{ meeting.startDate | date }}</li>
-            <li>Time: {{ meeting.timeFrom }} - {{ meeting.timeTo }}</li>
-            <li>Location: {{ meeting.location }}</li>
-            <!-- <li>
+          <h2 class="my-3">Meeting Info</h2>
+          <span
+            >Created by {{ meetingCreator.name }} on
+            {{ meeting.createdAt | date }}</span
+          >
+          <br />
+          <br />
+          <p>{{ meeting.description }}</p>
+
+          <li>Date: {{ meeting.startDate | date }}</li>
+          <li>Time: {{ meeting.timeFrom }} - {{ meeting.timeTo }}</li>
+          <li class="mb-3">Location: {{ meeting.location }}</li>
+          <!-- <li>
               <div class="mt-2" role="alert">
                 <div v-if="meeting.joinedPeople.length >= 2" class="alert alert-dark">
                   <b>{{ meeting.joinedPeople.length }} persons have joined so far</b>
@@ -48,27 +48,40 @@
                 </div>
               </div>
             </li> -->
-            <button
-              v-if="!isLoggedIn"
-              :disabled="true"
-              class="alert alert-warning"
-            >
-              Login to join this meeting
-            </button>
-            <button
-              v-if="canJoin && isLoggedIn"
-              @click="joinMeeting"
-              class="btn btn-outline-success mt-3"
-            >
-              Join
-            </button>
-            <button
-              @click="leaveMeeting"
-              v-if="isMember"
-              class="btn btn-outline-danger mt-3"
-            >
-              Leave
-            </button>
+          <i class="col">Persons who joined</i>
+          <div class="row mt-2">
+            <div v-for="person in meeting.joinedPeople" v-bind:key="person._id">
+              <div class="col">
+                <img
+                  class="rounded-circle img-fluid person"
+                  :src="person.avatar"
+                  alt="avatar"
+                />
+                <i>{{ person.name }}</i>
+              </div>
+            </div>
+          </div>
+          <button
+            v-if="!isLoggedIn"
+            :disabled="true"
+            class="alert alert-warning"
+          >
+            Login to join this meeting
+          </button>
+          <button
+            v-if="canJoin && isLoggedIn"
+            @click="joinMeeting"
+            class="btn btn-outline-success mt-3"
+          >
+            Join
+          </button>
+          <button
+            @click="leaveMeeting"
+            v-if="isMember"
+            class="btn btn-outline-danger mt-3"
+          >
+            Leave
+          </button>
         </div>
       </div>
       <div class="col-md-8">
@@ -85,8 +98,12 @@
         >
           <b>You need to join the meeting to interact with others!</b>
         </div>
-        
-        <ThreadList :meeting="meeting" :threads="orderThreads" :ableToPost="canPost" />
+
+        <ThreadList
+          :meeting="meeting"
+          :threads="orderThreads"
+          :ableToPost="canPost"
+        />
 
         <button
           v-if="!isAllThreadsLoaded"
@@ -95,8 +112,6 @@
         >
           Load More Threads
         </button>
-
-        
       </div>
     </div>
   </div>
@@ -198,5 +213,9 @@ export default {
 @import url('../../assets/css/threads.css');
 ul li {
   list-style: none;
+}
+
+img.person {
+  width: 42px;
 }
 </style>
