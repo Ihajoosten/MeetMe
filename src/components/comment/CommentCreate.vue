@@ -17,9 +17,9 @@
 
 <script>
 export default {
-  name: 'comment-create',
+  name: 'post-create',
   props: {
-    threadId: {
+    postId: {
       type: String,
       required: true
     }
@@ -30,11 +30,11 @@ export default {
     };
   },
   methods: {
-    savePost() {
+    saveComment() {
       this.$store
-        .dispatch('threads/sendPost', {
+        .dispatch('threads/sendComment', {
           text: this.text,
-          threadId: this.threadId
+          postId: this.postId
         })
         .then(() => {
           this.text = '';

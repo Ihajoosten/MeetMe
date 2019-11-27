@@ -22,13 +22,8 @@
         </div>
         <div class="col">
           <img class="img-fluid" :src="meeting.image" alt />
-        </div>
-
-        <div class="col">
-          <ul>
+       
             <h2 class="my-3">Meeting Info</h2>
-            <br />
-            <br />
             <span
               >Created by {{ meetingCreator.name }} on
               {{ meeting.createdAt | date }}</span
@@ -63,18 +58,17 @@
             <button
               v-if="canJoin && isLoggedIn"
               @click="joinMeeting"
-              class="btn btn-outline-success"
+              class="btn btn-outline-success mt-3"
             >
               Join
             </button>
             <button
               @click="leaveMeeting"
               v-if="isMember"
-              class="btn btn-outline-danger"
+              class="btn btn-outline-danger mt-3"
             >
               Leave
             </button>
-          </ul>
         </div>
       </div>
       <div class="col-md-8">
@@ -85,13 +79,24 @@
           :btnTitle="`Welcome ${user.name}, start a new thread`"
           :title="'Create Thread'"
         />
-        <div v-else-if="isLoggedIn" class="alert alert-info text-center m-5 col-8 mt-4">
+        <div
+          v-else-if="isLoggedIn"
+          class="alert alert-info text-center m-5 col-8 mt-4"
+        >
           <b>You need to join the meeting to interact with others!</b>
         </div>
-        <ThreadList :threads="orderThreads" :ableToPost="canPost" />
-        <button v-if="!isAllThreadsLoaded"
-                    @click="fetchThreadsHandler"
-                    class="btn btn-outline-primary m-5">Load More Threads</button>
+        
+        <ThreadList :meeting="meeting" :threads="orderThreads" :ableToPost="canPost" />
+
+        <button
+          v-if="!isAllThreadsLoaded"
+          @click="fetchThreadsHandler"
+          class="btn btn-outline-primary m-5"
+        >
+          Load More Threads
+        </button>
+
+        
       </div>
     </div>
   </div>
@@ -149,20 +154,23 @@ export default {
   created() {
     const id = this.$route.params.id;
     this.fetchMeeting(id);
-      this.fetchThreadsHandler({id, init: true})
+    this.fetchThreadsHandler({ id, init: true });
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),
     ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
-      fetchThreadsHandler ({id, init}) {
-        const filter = {
-          pageNum: this.threadPageNum,
-          pageSize: this.threadPageSize
-        }
-        this.fetchThreads({meetingId: id || this.meeting._id, filter, init})
-          .then(() => {
-            this.threadPageNum++
-          })
+    fetchThreadsHandler({ id, init }) {
+      const filter = {
+        pageNum: this.threadPageNum,
+        pageSize: this.threadPageSize
+      };
+      this.fetchThreads({
+        meetingId: id || this.meeting._id,
+        filter,
+        init
+      }).then(() => {
+        this.threadPageNum++;
+      });
     },
     addPostHandler(post) {
       this.addPostToThread({ post, threadId: post.thread });
@@ -187,6 +195,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('../../assets/css/threads.css');
 ul li {
   list-style: none;
 }
