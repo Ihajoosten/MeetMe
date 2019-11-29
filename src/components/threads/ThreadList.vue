@@ -75,7 +75,7 @@
                 </p>
               </div>
               <div class="card-footer bg-white p-2">
-                <CommentCreate v-if="ableToPost" :postId="post._id" />
+                <CommentCreate v-if="ableToPost" :postId="post._id" :threadId="thread._id" />
               </div>
             </div>
           </div>

@@ -47,7 +47,11 @@ module.exports = {
           path: 'posts',
           options: { limit: 5, sort: { createdAt: -1 } },
           populate: [
-            { path: 'comments', populate: { path: 'author' } },
+            {
+              path: 'comments',
+              options: { sort: { createdAt: -1 } },
+              populate: { path: 'author' }
+            },
             { path: 'author' }
           ]
         })

@@ -22,6 +22,10 @@ export default {
     postId: {
       type: String,
       required: true
+    },
+    threadId: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -34,7 +38,8 @@ export default {
       this.$store
         .dispatch('threads/sendComment', {
           content: this.content,
-          postId: this.postId
+          postId: this.postId,
+          threadId: this.threadId
         })
         .then(() => {
           this.content = '';
