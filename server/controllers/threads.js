@@ -42,12 +42,12 @@ module.exports = {
         .skip(parseInt(skips))
         .limit(parseInt(pageSize) + 1)
         .sort({ createdAt: -1 })
+        .populate('author')
         .populate({
           path: 'posts',
           options: { limit: 5, sort: { createdAt: -1 } },
-          populate: { path: 'author' }
+          populate: [{ path: 'comments' }, { path: 'author' }]
         })
-        .populate('author')
         .exec((err, threads) => {
           if (err) return res.status(422).json({ err });
           let isAllDataLoaded = false;
