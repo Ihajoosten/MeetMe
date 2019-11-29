@@ -35,10 +35,10 @@ module.exports = {
     post.author = author;
 
     try {
-      await post.save(async (err, post) => {
+      await post.save((err, post) => {
         if (err) return res.status(422).json({ err });
 
-        await Thread.updateOne(
+          Thread.updateOne(
           { _id: post.thread },
           { $push: { posts: post } },
           () => {}
