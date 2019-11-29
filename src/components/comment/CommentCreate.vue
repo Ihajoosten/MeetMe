@@ -1,14 +1,14 @@
 <template>
   <form class="mt-4">
     <b-form-input
-      v-model="text"
+      v-model="content"
       placeholder="Enter something..."
     ></b-form-input>
     <button
       type="button"
       class="btn btn-outline-success btn-sm mt-2"
-      :disabled="!text"
-      v-on:click.prevent="savePost"
+      :disabled="!content"
+      v-on:click.prevent="saveComment"
     >
       Reply
     </button>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'post-create',
+  name: 'comment-create',
   props: {
     postId: {
       type: String,
@@ -26,18 +26,18 @@ export default {
   },
   data() {
     return {
-      text: null
+      content: null
     };
   },
   methods: {
     saveComment() {
       this.$store
         .dispatch('threads/sendComment', {
-          text: this.text,
+          content: this.content,
           postId: this.postId
         })
         .then(() => {
-          this.text = '';
+          this.content = '';
         });
     }
   }

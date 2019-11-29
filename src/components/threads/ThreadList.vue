@@ -79,49 +79,46 @@
               </div>
             </div>
           </div>
-           <ul class="timeline-comments">
-        <li
-          v-for="comment in post.comments"
-          v-bind:key="comment._id"
-          class="timeline-comment"
-        >
-          <div class="timeline-comment-wrapper">
-            <div class="card shadow">
-              <div class="card-header bg-success d-flex align-items-center">
-                <div
-                  class="ribbon"
-                  v-if="meeting.author._id === comment.author._id"
-                >
-                  <span>admin</span>
+          <ul class="timeline-comments">
+            <li
+              v-for="comment in post.comments"
+              v-bind:key="comment._id"
+              class="timeline-comment"
+            >
+              <div class="timeline-comment-wrapper">
+                <div class="card shadow">
+                  <div class="card-header bg-success d-flex align-items-center">
+                    <div
+                      class="ribbon"
+                      v-if="meeting.author._id === comment.author._id"
+                    >
+                      <span>admin</span>
+                    </div>
+                    <b class="d-flex align-items-center">
+                      <img
+                        class="rounded-circle"
+                        :src="comment.author.avatar"
+                        alt="avatar"
+                      />
+                      <h5 class="text-white">{{ comment.author.name }}</h5>
+                    </b>
+                    <div
+                      class="comment-date text-white-50"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    >
+                      Last update {{ comment.createdAt | fromNow }}
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">
+                      {{ comment.content }}
+                    </p>
+                  </div>
                 </div>
-                <b class="d-flex align-items-center">
-                  <img
-                    class="rounded-circle"
-                    :src="comment.author.avatar"
-                    alt="avatar"
-                  />
-                  <h5 class="text-white">{{ comment.author.name }}</h5>
-                </b>
-                <div
-                  class="comment-date text-white-50"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                >
-                  Last update {{ comment.createdAt | fromNow }}
-                </div>
               </div>
-              <div class="card-body">
-                <p class="card-text">
-                  {{ comment.content }}
-                </p>
-              </div>
-              <div class="card-footer bg-white p-2">
-                <CommentCreate v-if="ableToPost" :postId="post._id" />
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
+            </li>
+          </ul>
         </li>
       </ul>
     </li>

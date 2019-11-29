@@ -8,7 +8,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 5000;
 const path = require('path');
 
-//const commentRoutes = require('./routes/comments');
+const commentRoutes = require('./routes/comments');
 const threadRoutes = require('./routes/threads');
 const userRoutes = require('./routes/users');
 const categoryRoutes = require('./routes/categories');
@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors());
 
-//commentRoutes(app);
+commentRoutes(app);
 locationRoute(app);
 threadRoutes(app);
 userRoutes(app);

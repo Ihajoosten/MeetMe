@@ -45,6 +45,13 @@ export default {
       dispatch('addPostToThread', { post: res.data, threadId });
       return res.data
     },
+    async sendComment({ dispatch }, { content, postId }) {
+      const comment = { content, post: postId };
+
+      const res = await axiosInstance.post('/api/comments', comment);
+      //dispatch('addCommentToPost', { post: res.data, postId });
+      return res.data
+    },
     addPostToThread({ commit, state }, { post, threadId }) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
 
