@@ -11,8 +11,9 @@ module.exports = {
       });
 
     try {
-      await Post.find({ thread: threadId })
+      await Post.find()
         .populate('author')
+        .populate('comments')
         .exec((errors, posts) => {
           if (errors) return res.status(422).send({ errors });
           else return res.status(200).json(posts);

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 const User = require('../models/users');
-const bcrypt = require('bcryptjs');
 const auth = require('../services/authentication');
 const Meeting = require('../models/meetings');
 const Thread = require('../models/threads');
 const Post = require('../models/posts');
 const Category = require('../models/categories');
+const Comment = require('../models/comments');
 
 module.exports = {
   createUser: async (req, res) => {
@@ -83,7 +83,8 @@ module.exports = {
     Promise.all([
       fetchMeetingsByUserQuery(userId),
       fetchThreadsByUserQuery(userId),
-      fetchPostByUserQuery(userId)
+      fetchPostByUserQuery(userId),
+      fetchCommentsByUser(userId)
     ])
       // Writing [] to get data from the array
       .then(([meetings, threads, posts]) =>
@@ -156,6 +157,18 @@ async function fetchPostByUserQuery(userId) {
   let results = await Post.find({ author: userId }).exec();
   const posts = results;
   if (posts && posts.length > 0) {
+    return {
+      data: results,
+      count: results.length
+    };
+  }
+  return { data: [], count: 0 };
+}
+
+async function fetchCommentsByUser(userId) {
+  let results = await Comment.find({ author: userId }).exec();
+  const comments = results;
+  if (comments && comments.length > 0) {
     return {
       data: results,
       count: results.length

@@ -11,12 +11,12 @@ export default {
     items: []
   },
   actions: {
-    async fetchThreads ({state, commit}, {meetingId, filter = {}, init}) {
+    async fetchThreads({ state, commit }, { meetingId, filter = {}, init }) {
       if (init) {
-        commit('setItems', {resource: 'threads', items: []}, {root: true})
+        commit('setItems', { resource: 'threads', items: [] }, { root: true });
       }
 
-      const url = applyFilters(`/api/threads?meetingId=${meetingId}`, filter)
+      const url = applyFilters(`/api/threads?meetingId=${meetingId}`, filter);
       const res = await axios.get(url);
       const { threads, isAllDataLoaded } = res.data;
       commit('setAllDataLoaded', isAllDataLoaded);
@@ -43,7 +43,14 @@ export default {
 
       const res = await axiosInstance.post('/api/posts', post);
       dispatch('addPostToThread', { post: res.data, threadId });
-      return res.data
+      return res.data;
+    },
+    async sendComment({ dispatch }, { content, postId, threadId }) {
+      const comment = { content, post: postId };
+
+      const res = await axiosInstance.post('/api/comments', comment);
+      dispatch('addCommentToPost', { comment: res.data, postId, threadId });
+      return res.data;
     },
     addPostToThread({ commit, state }, { post, threadId }) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
@@ -52,6 +59,19 @@ export default {
         const threadPosts = state.items[threadIndex].posts;
         threadPosts.unshift(post);
         commit('savePostToThread', { threadPosts, index: threadIndex });
+      }
+    },
+    addCommentToPost({ commit, state }, { comment, postId, threadId }) {
+      const threadIndex = state.items.findIndex(item => item._id === threadId);
+      const postIndex = state.items[threadIndex].posts.findIndex(item => item._id === postId);
+      if (postIndex > -1) {
+        const postComments = state.items[threadIndex].posts[postIndex].comments;
+        postComments.unshift(comment);
+        commit('saveCommentToPost', {
+          postComments,
+          tIndex: threadIndex,
+          pIndex: postIndex
+        });
       }
     },
     async deleteThread(_, threadId) {
@@ -68,6 +88,9 @@ export default {
   mutations: {
     savePostToThread(state, { threadPosts, index }) {
       Vue.set(state.items[index], 'posts', threadPosts);
+    },
+    saveCommentToPost(state, { postComments, tIndex, pIndex }) {
+      Vue.set(state.items[tIndex].posts[pIndex], 'comments', postComments);
     },
     setAllDataLoaded(state, isAllDataLoaded) {
       state.isAllThreadsLoaded = isAllDataLoaded;

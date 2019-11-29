@@ -13,7 +13,7 @@ const meetingSchema = new Schema({
   startDate: { type: Date, required: true },
   timeFrom: { type: String, required: true },
   timeTo: { type: String, required: true },
-  status: String,
+  status: Boolean,
   joinedPeopleCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
