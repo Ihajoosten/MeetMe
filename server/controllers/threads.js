@@ -104,13 +104,13 @@ module.exports = {
         .json({ message: 'No thread specified or does not exist' });
 
     try {
-      await Thread.findById(id, async (err, thread) => {
+      await Thread.findById(id, (err, thread) => {
         if (err) return res.status(422).send({ err });
         if (thread.author != user._id)
           return res
             .status(401)
             .send({ errors: { message: 'Not Authorized!' } });
-        await thread.remove((err, thread) => {
+        thread.remove((err, thread) => {
           if (err) return res.status(422).send({ err });
           return res
             .status(200)
