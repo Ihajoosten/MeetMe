@@ -46,7 +46,10 @@ module.exports = {
         .populate({
           path: 'posts',
           options: { limit: 5, sort: { createdAt: -1 } },
-          populate: [{ path: 'comments' }, { path: 'author' }]
+          populate: [
+            { path: 'comments', populate: { path: 'author' } },
+            { path: 'author' }
+          ]
         })
         .exec((err, threads) => {
           if (err) return res.status(422).json({ err });
