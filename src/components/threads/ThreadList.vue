@@ -144,7 +144,7 @@
                         class="btn btn-sm btn-outline-warning mr-2"
                       ></button>
                       <button
-                        v-on:click.prevent="deleteComment(comment._id)"
+                        v-on:click.prevent="$event => deleteComment($event, comment._id)"
                         uk-icon="trash"
                         class="btn btn-sm btn-outline-danger"
                       ></button>
@@ -244,7 +244,7 @@ export default {
     },
     deleteComment(event, id) {
 event.stopPropagation();
-      const isConfirm = confirm('Are you sure you want to delete this thread?');
+      const isConfirm = confirm('Are you sure you want to delete this comment?');
       if (isConfirm) {
         this.$store
           .dispatch('threads/deleteComment', id)
