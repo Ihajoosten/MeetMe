@@ -83,6 +83,11 @@ export default {
       const res = await axiosInstance.delete(`/api/posts/${postId}`);
       const id = res.data;
       return id;
+    },
+    async deleteComment(_, commentId) {
+      const res = await axiosInstance.delete(`/api/comments/${commentId}`);
+      const id = res.data;
+      return id;
     }
   },
   mutations: {

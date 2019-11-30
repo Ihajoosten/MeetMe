@@ -27,6 +27,18 @@
             >
               Last update {{ thread.createdAt | fromNow }}
             </div>
+            <div class="offset-md-4">
+              <button
+                v-on:click.prevent="updateThread(thread._id)"
+                uk-icon="pencil"
+                class="btn btn-sm btn-outline-warning mr-2"
+              ></button>
+              <button
+                v-on:click.prevent="$event => deleteThread($event, thread._id)"
+                uk-icon="trash"
+                class="btn btn-sm btn-outline-danger"
+              ></button>
+            </div>
           </div>
           <div class="card-body">
             <p class="card-text">
@@ -68,6 +80,18 @@
                 >
                   Last update {{ post.createdAt | fromNow }}
                 </div>
+                <div class="offset-md-4">
+                  <button
+                    v-on:click.prevent="updatePost(post._id)"
+                    uk-icon="pencil"
+                    class="btn btn-sm btn-outline-warning mr-2"
+                  ></button>
+                  <button
+                    v-on:click.prevent="$event => deletePost($event, post._id)"
+                    uk-icon="trash"
+                    class="btn btn-sm btn-outline-danger"
+                  ></button>
+                </div>
               </div>
               <div class="card-body">
                 <p class="card-text">
@@ -75,7 +99,11 @@
                 </p>
               </div>
               <div class="card-footer bg-white p-2">
-                <CommentCreate v-if="ableToPost" :postId="post._id" :threadId="thread._id" />
+                <CommentCreate
+                  v-if="ableToPost"
+                  :postId="post._id"
+                  :threadId="thread._id"
+                />
               </div>
             </div>
           </div>
@@ -108,6 +136,18 @@
                       data-placement="top"
                     >
                       Last update {{ comment.createdAt | fromNow }}
+                    </div>
+                    <div class="offset-md-4">
+                      <button
+                        v-on:click.prevent="updateComment(comment._id)"
+                        uk-icon="pencil"
+                        class="btn btn-sm btn-outline-warning mr-2"
+                      ></button>
+                      <button
+                        v-on:click.prevent="deleteComment(comment._id)"
+                        uk-icon="trash"
+                        class="btn btn-sm btn-outline-danger"
+                      ></button>
                     </div>
                   </div>
                   <div class="card-body">
@@ -147,6 +187,82 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  methods: {
+    updateThread(id) {
+      this.$store.dispatch('threads/updateThread', { id });
+    },
+    deleteThread(event, id) {
+      event.stopPropagation();
+      const isConfirm = confirm('Are you sure you want to delete this thread?');
+      if (isConfirm) {
+        this.$store
+          .dispatch('threads/deleteThread', id)
+          .then(() => {
+            this.$toast.success('Succesfully deleted your thread!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your thread!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }
+    },
+    updatePost(id) {
+      this.$store.dispatch('threads/updatePost', { id });
+    },
+    deletePost(event, id) {
+      event.stopPropagation();
+      const isConfirm = confirm('Are you sure you want to delete this post?');
+      if (isConfirm) {
+        this.$store
+          .dispatch('threads/deletePost', id)
+          .then(() => {
+            this.$toast.success('Succesfully deleted your post!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your post!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }
+    },
+    updateComment(id) {
+      this.$store.dispatch('threads/updateComment', { id });
+    },
+    deleteComment(event, id) {
+event.stopPropagation();
+      const isConfirm = confirm('Are you sure you want to delete this thread?');
+      if (isConfirm) {
+        this.$store
+          .dispatch('threads/deleteComment', id)
+          .then(() => {
+            this.$toast.success('Succesfully deleted your comment!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your comment!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }    }
   }
 };
 </script>
