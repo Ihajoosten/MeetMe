@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-      <ul class="timeline-comments">
+      <ul v-if="thread.posts.length > 0" class="timeline-comments">
         <li
           v-for="post in thread.posts"
           v-bind:key="post._id"
@@ -87,7 +87,9 @@
                     class="btn btn-sm btn-outline-warning mr-2"
                   ></button>
                   <button
-                    v-on:click.prevent="$event => deletePost($event, post._id)"
+                    v-on:click.prevent="
+                      $event => deletePost($event, thread._id, post._id)
+                    "
                     uk-icon="trash"
                     class="btn btn-sm btn-outline-danger"
                   ></button>
@@ -107,7 +109,7 @@
               </div>
             </div>
           </div>
-          <ul class="timeline-comments">
+          <ul v-if="post.comments.length > 0" class="timeline-comments">
             <li
               v-for="comment in post.comments"
               v-bind:key="comment._id"
@@ -144,7 +146,9 @@
                         class="btn btn-sm btn-outline-warning mr-2"
                       ></button>
                       <button
-                        v-on:click.prevent="$event => deleteComment($event, comment._id)"
+                        v-on:click.prevent="
+                          $event => deleteComment($event, comment._id)
+                        "
                         uk-icon="trash"
                         class="btn btn-sm btn-outline-danger"
                       ></button>
@@ -217,12 +221,12 @@ export default {
     updatePost(id) {
       this.$store.dispatch('threads/updatePost', { id });
     },
-    deletePost(event, id) {
+    deletePost(event, threadId, postId) {
       event.stopPropagation();
       const isConfirm = confirm('Are you sure you want to delete this post?');
       if (isConfirm) {
         this.$store
-          .dispatch('threads/deletePost', id)
+          .dispatch('threads/deletePost', { threadId, postId })
           .then(() => {
             this.$toast.success('Succesfully deleted your post!', {
               duration: 5000,
@@ -243,8 +247,10 @@ export default {
       this.$store.dispatch('threads/updateComment', { id });
     },
     deleteComment(event, id) {
-event.stopPropagation();
-      const isConfirm = confirm('Are you sure you want to delete this comment?');
+      event.stopPropagation();
+      const isConfirm = confirm(
+        'Are you sure you want to delete this comment?'
+      );
       if (isConfirm) {
         this.$store
           .dispatch('threads/deleteComment', id)
@@ -262,7 +268,8 @@ event.stopPropagation();
               });
             }
           });
-      }    }
+      }
+    }
   }
 };
 </script>
