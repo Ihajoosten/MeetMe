@@ -12,7 +12,9 @@ const threadSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   meeting: { type: Schema.Types.ObjectId, ref: 'Meeting' },
-  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  authorId: {type: String},
+  authorName: {type: String},
+  authorAvatar: {type: String},
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }]
 });
 

@@ -45,6 +45,15 @@
         <p class="stat-val">{{ postCount }}</p>
         <p class="stat-key">Posts</p>
       </div>
+
+      <div
+        v-on:click.prevent="activeTab = 'comments'"
+        :class="{ isActive: activeTab === 'comments' }"
+        class="stats-tab col-sm text-center"
+      >
+        <p class="stat-val">{{ commentCount }}</p>
+        <p class="stat-key">comments</p>
+      </div>
     </div>
 
     <div v-if="activeTab === 'meetings'">
@@ -136,9 +145,7 @@
             <div class="card-footer">
               <button
                 class="btn btn-sm btn-outline-danger"
-                v-on:click.prevent="
-                  $event => deletePostWarning($event, post._id)
-                "
+                v-on:click.prevent="$event => deletePostWarning($event, post)"
               >
                 Delete
               </button>
@@ -149,6 +156,39 @@
       </div>
       <div v-else class="badge alert alert-warning ml-5 mt-5">
         <b>You have not created any posts yet</b>
+      </div>
+    </div>
+
+    <div v-if="activeTab === 'comments'">
+      <div v-if="comments && comments.length > 0" class="row mt-5">
+        <div
+          v-for="comment in comments"
+          v-bind:key="comment._id"
+          class="col-md-4"
+        >
+          <div class="card" style="width: auto; height: 10rem">
+            <div class="card-body">
+              <h5 class="card-title">{{ comment.content }}</h5>
+              <div>
+                Posted <b>{{ comment.createdAt | fromNow }}</b>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button
+                class="btn btn-sm btn-outline-danger"
+                v-on:click.prevent="
+                  $event => deleteCommentWarning($event, comment)
+                "
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+      <div v-else class="badge alert alert-warning ml-5 mt-5">
+        <b>You have not created any comments yet</b>
       </div>
     </div>
   </div>
@@ -173,9 +213,11 @@ export default {
       meetings: state => state.stats.meetings.data,
       threads: state => state.stats.threads.data,
       posts: state => state.stats.posts.data,
+      comments: state => state.stats.comments.data,
       meetingCount: state => state.stats.meetings.count,
       threadCount: state => state.stats.threads.count,
-      postCount: state => state.stats.posts.count
+      postCount: state => state.stats.posts.count,
+      commentCount: state => state.stats.comments.count
     })
   },
   methods: {
@@ -245,16 +287,17 @@ export default {
           });
       }
     },
-    deletePostWarning(event, postId) {
+    deletePostWarning(event, post) {
       event.stopPropagation();
-      const isConfirm = confirm(
-        'Are you sure you want to delete this post?'
-      );
+      const isConfirm = confirm('Are you sure you want to delete this post?');
       if (isConfirm) {
         this.$store
-          .dispatch('threads/deletePost', postId)
+          .dispatch('threads/deletePost', {
+            postId: post._id,
+            threadId: post.thread
+          })
           .then(() => {
-            this.$store.dispatch('stats/updatePost', postId);
+            this.$store.dispatch('stats/updatePost', post._id);
             this.$toast.success('Succesfully deleted your post!', {
               duration: 5000,
               position: 'top'
@@ -269,6 +312,40 @@ export default {
             }
           });
       }
+    },
+    deleteCommentWarning(event, comment) {
+      event.stopPropagation();
+      const isConfirm = confirm(
+        'Are you sure you want to delete this comment?'
+      );
+      if (isConfirm) {
+        this.$store
+          .dispatch('threads/deleteComment', {
+            commentId: comment._id,
+            postId: comment.post,
+            threadId: this.findThread(comment.post)
+          })
+          .then(() => {
+            this.$store.dispatch('stats/updateComment', comment._id);
+            this.$toast.success('Succesfully deleted your comment!', {
+              duration: 5000,
+              position: 'top'
+            });
+          })
+          .catch(err => {
+            if (err) {
+              this.$toast.error('Failed to delete your comment!.', {
+                duration: 5000,
+                position: 'top'
+              });
+            }
+          });
+      }
+    },
+    findThread(post) {
+      const x = this.posts.findIndex(item => item._id === post);
+      const y = this.threads[x];
+      return y._id;
     }
   },
   created() {

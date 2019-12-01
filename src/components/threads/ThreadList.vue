@@ -8,16 +8,16 @@
       <div class="timeline-comment-wrapper">
         <div class="card shadow">
           <div class="card-header d-flex bg-success align-items-center">
-            <div class="ribbon" v-if="meeting.author._id === thread.author._id">
+            <div class="ribbon" v-if="meeting.author._id === thread.authorId">
               <span>admin</span>
             </div>
             <b class="d-flex align-items-center">
               <img
                 class="rounded-circle"
-                :src="thread.author.avatar"
+                :src="thread.authorAvatar"
                 alt="avatar"
               />
-              <h5 class="text-white">{{ thread.author.name }}</h5>
+              <h5 class="text-white">{{ thread.authorName }}</h5>
             </b>
             <div
               class="comment-date text-white-50"
@@ -28,11 +28,6 @@
               Last update {{ thread.createdAt | fromNow }}
             </div>
             <div class="offset-md-4">
-              <button
-                v-on:click.prevent="updateThread(thread._id)"
-                uk-icon="pencil"
-                class="btn btn-sm btn-outline-warning mr-2"
-              ></button>
               <button
                 v-on:click.prevent="$event => deleteThread($event, thread._id)"
                 uk-icon="trash"
@@ -50,7 +45,7 @@
           </div>
         </div>
       </div>
-      <ul class="timeline-comments">
+      <ul v-if="thread.posts.length > 0" class="timeline-comments">
         <li
           v-for="post in thread.posts"
           v-bind:key="post._id"
@@ -61,17 +56,17 @@
               <div class="card-header bg-success d-flex align-items-center">
                 <div
                   class="ribbon"
-                  v-if="meeting.author._id === post.author._id"
+                  v-if="meeting.author._id === post.authorId"
                 >
                   <span>admin</span>
                 </div>
                 <b class="d-flex align-items-center">
                   <img
                     class="rounded-circle"
-                    :src="post.author.avatar"
+                    :src="post.authorAvatar"
                     alt="avatar"
                   />
-                  <h5 class="text-white">{{ post.author.name }}</h5>
+                  <h5 class="text-white">{{ post.authorName }}</h5>
                 </b>
                 <div
                   class="comment-date text-white-50"
@@ -82,12 +77,9 @@
                 </div>
                 <div class="offset-md-4">
                   <button
-                    v-on:click.prevent="updatePost(post._id)"
-                    uk-icon="pencil"
-                    class="btn btn-sm btn-outline-warning mr-2"
-                  ></button>
-                  <button
-                    v-on:click.prevent="$event => deletePost($event, post._id)"
+                    v-on:click.prevent="
+                      $event => deletePost($event, thread._id, post._id)
+                    "
                     uk-icon="trash"
                     class="btn btn-sm btn-outline-danger"
                   ></button>
@@ -107,7 +99,7 @@
               </div>
             </div>
           </div>
-          <ul class="timeline-comments">
+          <ul v-if="post.comments.length > 0" class="timeline-comments">
             <li
               v-for="comment in post.comments"
               v-bind:key="comment._id"
@@ -118,17 +110,17 @@
                   <div class="card-header bg-success d-flex align-items-center">
                     <div
                       class="ribbon"
-                      v-if="meeting.author._id === comment.author._id"
+                      v-if="meeting.author._id === comment.authorId"
                     >
                       <span>admin</span>
                     </div>
                     <b class="d-flex align-items-center">
                       <img
                         class="rounded-circle"
-                        :src="comment.author.avatar"
+                        :src="comment.authorAvatar"
                         alt="avatar"
                       />
-                      <h5 class="text-white">{{ comment.author.name }}</h5>
+                      <h5 class="text-white">{{ comment.authorName }}</h5>
                     </b>
                     <div
                       class="comment-date text-white-50"
@@ -139,12 +131,15 @@
                     </div>
                     <div class="offset-md-4">
                       <button
-                        v-on:click.prevent="updateComment(comment._id)"
-                        uk-icon="pencil"
-                        class="btn btn-sm btn-outline-warning mr-2"
-                      ></button>
-                      <button
-                        v-on:click.prevent="deleteComment(comment._id)"
+                        v-on:click.prevent="
+                          $event =>
+                            deleteComment(
+                              $event,
+                              thread._id,
+                              post._id,
+                              comment._id
+                            )
+                        "
                         uk-icon="trash"
                         class="btn btn-sm btn-outline-danger"
                       ></button>
@@ -189,9 +184,6 @@ export default {
     }
   },
   methods: {
-    updateThread(id) {
-      this.$store.dispatch('threads/updateThread', { id });
-    },
     deleteThread(event, id) {
       event.stopPropagation();
       const isConfirm = confirm('Are you sure you want to delete this thread?');
@@ -214,15 +206,12 @@ export default {
           });
       }
     },
-    updatePost(id) {
-      this.$store.dispatch('threads/updatePost', { id });
-    },
-    deletePost(event, id) {
+    deletePost(event, threadId, postId) {
       event.stopPropagation();
       const isConfirm = confirm('Are you sure you want to delete this post?');
       if (isConfirm) {
         this.$store
-          .dispatch('threads/deletePost', id)
+          .dispatch('threads/deletePost', { threadId, postId })
           .then(() => {
             this.$toast.success('Succesfully deleted your post!', {
               duration: 5000,
@@ -239,15 +228,14 @@ export default {
           });
       }
     },
-    updateComment(id) {
-      this.$store.dispatch('threads/updateComment', { id });
-    },
-    deleteComment(event, id) {
-event.stopPropagation();
-      const isConfirm = confirm('Are you sure you want to delete this thread?');
+    deleteComment(event, threadId, postId, commentId) {
+      event.stopPropagation();
+      const isConfirm = confirm(
+        'Are you sure you want to delete this comment?'
+      );
       if (isConfirm) {
         this.$store
-          .dispatch('threads/deleteComment', id)
+          .dispatch('threads/deleteComment', { threadId, postId, commentId })
           .then(() => {
             this.$toast.success('Succesfully deleted your comment!', {
               duration: 5000,
@@ -262,7 +250,8 @@ event.stopPropagation();
               });
             }
           });
-      }    }
+      }
+    }
   }
 };
 </script>

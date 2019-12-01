@@ -5,7 +5,7 @@ const Comment = require('../models/comments');
 module.exports = {
   postThread: async (req, res) => {
     const body = await req.body;
-    const author = await req.userId;
+    const author = await req.user;
 
     if (body === null)
       return res.status(400).json({ message: 'Bad request - empty body' });
@@ -13,7 +13,9 @@ module.exports = {
       return res.status(401).json({ message: 'Not Authorized' });
 
     const thread = new Thread(body);
-    thread.author = author;
+    thread.authorId = author._id
+    thread.authorAvatar = author.avatar
+    thread.authorName = author.name;
 
     try {
       await thread.save((err, thread) => {
@@ -42,17 +44,14 @@ module.exports = {
         .skip(parseInt(skips))
         .limit(parseInt(pageSize) + 1)
         .sort({ createdAt: -1 })
-        .populate('author')
         .populate({
           path: 'posts',
           options: { limit: 5, sort: { createdAt: -1 } },
           populate: [
             {
               path: 'comments',
-              options: { sort: { createdAt: -1 } },
-              populate: { path: 'author' }
-            },
-            { path: 'author' }
+              options: { sort: { createdAt: -1 } }
+            }
           ]
         })
         .exec((err, threads) => {
@@ -106,7 +105,7 @@ module.exports = {
     try {
       await Thread.findById(id, (err, thread) => {
         if (err) return res.status(422).send({ err });
-        if (thread.author != user._id)
+        if (thread.authorId != user._id)
           return res
             .status(401)
             .send({ errors: { message: 'Not Authorized!' } });

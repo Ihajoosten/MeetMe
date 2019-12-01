@@ -11,7 +11,9 @@ const postSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   thread: { type: Schema.Types.ObjectId, ref: 'Thread' },
-  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  authorId: {type: String},
+  authorName: {type: String},
+  authorAvatar: {type: String},
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 });
 
