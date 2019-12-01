@@ -5,7 +5,7 @@ const Post = require('../models/posts');
 module.exports = {
   postComment: async (req, res) => {
     const body = await req.body;
-    const author = await req.userId;
+    const author = await req.user;
 
     if (body === null)
       return res.status(400).json({ message: 'Bad request - empty body' });
@@ -13,8 +13,9 @@ module.exports = {
       return res.status(401).json({ message: 'Not Authorized' });
 
     const comment = new Comment(body);
-    comment.author = author;
-
+    comment.authorId = author._id
+    comment.authorAvatar = author.avatar
+    comment.authorName = author.name;
     try {
       await comment.save((err, comment) => {
         if (err) return res.status(422).json({ err });
@@ -70,7 +71,7 @@ module.exports = {
       await Comment.findById(id, async (err, comment) => {
         if (err) return res.status(422).send({ err });
 
-        if (comment.author != user._id)
+        if (comment.authorId != user._id)
           return res
             .status(401)
             .send({ errors: { message: 'Not Authorized!' } });

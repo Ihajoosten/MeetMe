@@ -85,17 +85,17 @@ export default {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
       commit('deleteThread', threadIndex);
     },
-    async deletePost({dispatch}, {threadId, postId}) {
+    async deletePost({dispatch}, {postId, threadId}) {
       const res = await axiosInstance.delete(`/api/posts/${postId}`);
-      dispatch('deletePostFromThread', {threadId, postId})
+      dispatch('deletePostFromThread', {postId, threadId})
       return res.data;
     },
-    deletePostFromThread({commit, state}, {threadId, postId}) {
+    deletePostFromThread({commit, state}, {postId, threadId}) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
       const postIndex = state.items[threadIndex].posts.findIndex(item => item._id === postId)
       commit('deletePost', {threadIndex, postIndex})
     },
-    async deleteComment({dispatch}, {threadId, postId, commentId}) {
+    async deleteComment({dispatch}, {commentId, postId, threadId}) {
       const res = await axiosInstance.delete(`/api/comments/${commentId}`);
       dispatch('deleteCommentFromPost', {threadId, postId, commentId})
       return res.data;

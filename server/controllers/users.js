@@ -87,8 +87,8 @@ module.exports = {
       fetchCommentsByUser(userId)
     ])
       // Writing [] to get data from the array
-      .then(([meetings, threads, posts]) =>
-        res.json({ meetings, threads, posts })
+      .then(([meetings, threads, posts, comments]) =>
+        res.json({ meetings, threads, posts, comments })
       )
       .catch(err => {
         console.log(err);
@@ -142,7 +142,7 @@ async function fetchMeetingsByUserQuery(userId) {
 }
 
 async function fetchThreadsByUserQuery(userId) {
-  let results = await Thread.find({ author: userId }).exec();
+  let results = await Thread.find({ authorId: userId }).exec();
   const threads = results;
   if (threads && threads.length > 0) {
     return {
@@ -154,7 +154,7 @@ async function fetchThreadsByUserQuery(userId) {
 }
 
 async function fetchPostByUserQuery(userId) {
-  let results = await Post.find({ author: userId }).exec();
+  let results = await Post.find({ authorId: userId }).exec();
   const posts = results;
   if (posts && posts.length > 0) {
     return {
@@ -166,7 +166,7 @@ async function fetchPostByUserQuery(userId) {
 }
 
 async function fetchCommentsByUser(userId) {
-  let results = await Comment.find({ author: userId }).exec();
+  let results = await Comment.find({ authorId: userId }).exec();
   const comments = results;
   if (comments && comments.length > 0) {
     return {

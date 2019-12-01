@@ -15,6 +15,10 @@ export default {
     posts: {
       data: [],
       count: null
+    },
+    comments: {
+      data: [],
+      count: null
     }
   },
   actions: {
@@ -27,25 +31,33 @@ export default {
     updateStats({ state, commit }, meetingId) {
       commit('deleteResource', { resource: 'meetings', itemId: meetingId });
 
-      state.threads.data.filter(thread => {
+      state.threads.data
+        .filter(thread => {
           return thread.meeting === meetingId;
-        }).flatMap(thread => {
+        })
+        .flatMap(thread => {
           commit('deleteResource', { resource: 'threads', itemId: thread._id });
-        }).map(postId => {
+        })
+        .map(postId => {
           commit('deleteResource', { resource: 'posts', itemId: postId });
         });
     },
     updateThreadsAndPosts({ state, commit }, threadId) {
       commit('deleteResource', { resource: 'threads', itemId: threadId });
 
-      state.posts.data.filter(post => {
+      state.posts.data
+        .filter(post => {
           return post.thread === threadId;
-        }).flatMap(post => {
-          commit('deleteResource', { resource: 'posts', itemId: post._id });
         })
+        .flatMap(post => {
+          commit('deleteResource', { resource: 'posts', itemId: post._id });
+        });
     },
     updatePost({ commit }, postId) {
       commit('deleteResource', { resource: 'posts', itemId: postId });
+    },
+    updateComment({ commit }, commentId) {
+      commit('deleteResource', { resource: 'comments', itemId: commentId });
     }
   },
   mutations: {

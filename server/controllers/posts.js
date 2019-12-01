@@ -12,7 +12,6 @@ module.exports = {
 
     try {
       await Post.find()
-        .populate('author')
         .populate('comments')
         .exec((errors, posts) => {
           if (errors) return res.status(422).send({ errors });
@@ -24,7 +23,7 @@ module.exports = {
   },
   createPost: async (req, res) => {
     const body = await req.body;
-    const author = await req.userId;
+    const author = await req.user;
 
     if (body === null)
       return res.status(400).json({ message: 'Bad request - empty body' });
@@ -32,7 +31,9 @@ module.exports = {
       return res.status(401).json({ message: 'Not Authorized' });
 
     const post = new Post(body);
-    post.author = author;
+    post.authorId = author._id
+    post.authorAvatar = author.avatar
+    post.authorName = author.name;
 
     try {
       await post.save((err, post) => {
@@ -64,7 +65,7 @@ module.exports = {
       await Post.findById(id, async (err, post) => {
         if (err) return res.status(422).send({ err });
 
-        if (post.author != user._id)
+        if (post.authorId != user._id)
           return res
             .status(401)
             .send({ errors: { message: 'Not Authorized!' } });

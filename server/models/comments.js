@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: [true, "User is required to write a new comment!"]
-  },
+  authorId: {type: String},
+  authorName: {type: String},
+  authorAvatar: {type: String},
   content: {
     type: String,
     required: [true, "Comment content is required!"]
