@@ -83,7 +83,7 @@ export default {
     },
     deleteThreadFromMeeting({commit, state }, threadId) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
-      commit('deleteResource', threadIndex);
+      commit('deleteThread', threadIndex);
     },
     async deletePost(_, postId) {
       const res = await axiosInstance.delete(`/api/posts/${postId}`);
@@ -111,7 +111,7 @@ export default {
     mergeThreads(state, threads) {
       state.items = [...state.items, ...threads];
     },
-    deleteResource(state, index) {
+    deleteThread(state, index) {
       Vue.set(state.items.splice(index, 1));
     }
   }
