@@ -147,7 +147,13 @@
                       ></button>
                       <button
                         v-on:click.prevent="
-                          $event => deleteComment($event, comment._id)
+                          $event =>
+                            deleteComment(
+                              $event,
+                              thread._id,
+                              post._id,
+                              comment._id
+                            )
                         "
                         uk-icon="trash"
                         class="btn btn-sm btn-outline-danger"
@@ -246,14 +252,14 @@ export default {
     updateComment(id) {
       this.$store.dispatch('threads/updateComment', { id });
     },
-    deleteComment(event, id) {
+    deleteComment(event, threadId, postId, commentId) {
       event.stopPropagation();
       const isConfirm = confirm(
         'Are you sure you want to delete this comment?'
       );
       if (isConfirm) {
         this.$store
-          .dispatch('threads/deleteComment', id)
+          .dispatch('threads/deleteComment', { threadId, postId, commentId })
           .then(() => {
             this.$toast.success('Succesfully deleted your comment!', {
               duration: 5000,

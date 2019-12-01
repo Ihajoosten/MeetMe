@@ -95,12 +95,17 @@ export default {
       const postIndex = state.items[threadIndex].posts.findIndex(item => item._id === postId)
       commit('deletePost', {threadIndex, postIndex})
     },
-    async deleteComment(_, commentId) {
+    async deleteComment({dispatch}, {threadId, postId, commentId}) {
       const res = await axiosInstance.delete(`/api/comments/${commentId}`);
-      const id = res.data;
-      return id;
+      dispatch('deleteCommentFromPost', {threadId, postId, commentId})
+      return res.data;
     },
-    deleteCommentFromPost() {}
+    deleteCommentFromPost({commit, state}, {threadId, postId, commentId}) {
+      const threadIndex = state.items.findIndex(item => item._id === threadId);
+      const postIndex = state.items[threadIndex].posts.findIndex(item => item._id === postId)
+      const commentIndex = state.items[threadIndex].posts[postIndex].comments.findIndex(item => item._id === commentId)
+      commit('deleteComment', {threadIndex, postIndex, commentIndex})
+    }
   },
   mutations: {
     savePostToThread(state, { threadPosts, index }) {
@@ -120,6 +125,9 @@ export default {
     },
     deletePost(state, {threadIndex, postIndex}) {
       Vue.set(state.items[threadIndex].posts.splice(postIndex, 1))
+    },
+    deleteComment(state, {threadIndex, postIndex, commentIndex}) {
+      Vue.set(state.items[threadIndex].posts[postIndex].comments.splice(commentIndex, 1))
     }
   }
 };
