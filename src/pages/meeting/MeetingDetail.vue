@@ -4,21 +4,17 @@
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
       <div class="col-md-4">
-        <div v-if="isActive === 'active'">
-          <h1 class="my-4">
+        <div v-if="isMeetingActive">
+          <h3 class="my-4">
             {{ meeting.title }}
-            <span class="badge badge-success">{{
-              meeting.status | capitalize
-            }}</span>
-          </h1>
+            <span v-if="meeting.status === true" class="badge badge-success">Active</span>
+          </h3>
         </div>
         <div v-else>
-          <h1 class="my-4">
+          <h3 class="my-4">
             {{ meeting.title }}
-            <span class="badge badge-danger">{{
-              meeting.status | capitalize
-            }}</span>
-          </h1>
+            <span class="badge badge-danger">Not Active</span>
+          </h3>
         </div>
         <div class="col">
           <img class="img-fluid" :src="meeting.image" alt />
@@ -35,10 +31,10 @@
           <li>Date: {{ meeting.startDate | date }}</li>
           <li>Time: {{ meeting.timeFrom }} - {{ meeting.timeTo }}</li>
           <li class="mb-3">Location: {{ meeting.location }}</li>
-          <i class="col">Persons who joined</i>
-          <div class="row mt-2">
+          <i class="col"><b>Persons who joined:</b></i>
+          <div class="row mt-3">
             <div v-for="person in meeting.joinedPeople" v-bind:key="person._id">
-              <div class="col">
+              <div class="col mb-2">
                 <img
                   class="rounded-circle img-fluid person"
                   :src="person.avatar"
@@ -51,9 +47,9 @@
           <button
             v-if="!isLoggedIn"
             :disabled="true"
-            class="alert alert-warning"
+            class="alert alert-warning mt-3"
           >
-            Login to join this meeting
+            <b>Login to join this meeting</b>
           </button>
           <button
             v-if="canJoin && isLoggedIn"
@@ -86,10 +82,18 @@
           <b>You need to join the meeting to interact with others!</b>
         </div>
 
+        <div
+          v-else
+          class="alert alert-warning text-center m-5 col-8 mt-4"
+        >
+          <b>You need to login to interact with others!</b>
+        </div>
+
         <ThreadList
           :meeting="meeting"
           :threads="orderThreads"
           :ableToPost="canPost"
+          :user="user"
         />
 
         <button
@@ -128,10 +132,9 @@ export default {
     ...mapState({
       meeting: state => state.meetings.item,
       threads: state => state.threads.items,
-      isActive: state => state.meetings.item.status,
       meetingCreator: state => state.meetings.item.author || {},
       isLoggedIn: state => state.isLoggedIn,
-      user: state => state.user,
+      user: state => state.user || {},
       isAllThreadsLoaded: state => state.threads.isAllThreadsLoaded
     }),
     isOwner() {
@@ -151,6 +154,11 @@ export default {
       return copyThreads.sort((thread, nextThread) => {
         return new Date(nextThread.createdAt) - new Date(thread.createdAt);
       });
+    },
+    isMeetingActive() {
+      // if (this.meeting.startDate - Date.now > 0) return true
+      // else return false
+      return new Date() < new Date(this.meeting.startDate)
     }
   },
   created() {
