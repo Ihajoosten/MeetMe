@@ -11,7 +11,6 @@ module.exports = {
 
     const meeting = new Meeting(body);
     meeting.author = author;
-    meeting.status = true;
 
     try {
       await meeting.save((errors, created) => {
