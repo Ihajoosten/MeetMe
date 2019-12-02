@@ -95,7 +95,7 @@ module.exports = {
         res.status(422).send({ err });
       });
   },
-  updateUser: async (req, res) => {
+  updateUser: async (req, res, next) => {
     const userId = await req.userId;
     const userData = await req.body;
     const user = await req.user;
@@ -109,15 +109,17 @@ module.exports = {
 
     if (user._id === userId) {
       try {
-        await User.findByIdAndUpdate(
-          userId,
-          { $set: userData },
-          { new: true },
-          (err, updatedUser) => {
-            if (err) return res.status(422).send({ err });
-            else return res.status(200).json(updatedUser);
+        await User.findByIdAndUpdate(userId, req.body, (err, user) => {
+          if (err) {
+            return next(err);
+          } else {
+            user.password = req.body.password;
+            user.save((err, user) => {
+              if (err) return res.status(422).json({ err });
+              else return res.status(200).json(user);
+            });
           }
-        );
+        });
       } catch (error) {
         if (error) return res.status(500).json({ error });
       }
