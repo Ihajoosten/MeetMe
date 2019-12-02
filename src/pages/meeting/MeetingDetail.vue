@@ -7,7 +7,9 @@
         <div v-if="isMeetingActive">
           <h3 class="my-4">
             {{ meeting.title }}
-            <span v-if="meeting.status === true" class="badge badge-success">Active</span>
+            <span v-if="meeting.status === true" class="badge badge-success"
+              >Active</span
+            >
           </h3>
         </div>
         <div v-else>
@@ -82,10 +84,7 @@
           <b>You need to join the meeting to interact with others!</b>
         </div>
 
-        <div
-          v-else
-          class="alert alert-warning text-center m-5 col-8 mt-4"
-        >
+        <div v-else class="alert alert-warning text-center m-5 col-8 mt-4">
           <b>You need to login to interact with others!</b>
         </div>
 
@@ -156,15 +155,22 @@ export default {
       });
     },
     isMeetingActive() {
-      // if (this.meeting.startDate - Date.now > 0) return true
-      // else return false
-      return new Date() < new Date(this.meeting.startDate)
+      return new Date() < new Date(this.meeting.startDate);
     }
   },
   created() {
     const id = this.$route.params.id;
     this.fetchMeeting(id);
     this.fetchThreadsHandler({ id, init: true });
+
+    
+      this.$socket.emit('meeting/subscribe', id);
+      this.$socket.on('meeting/postPublished', this.addPostHandler);
+    
+  },
+  destroyed() {
+    this.$socket.removeListener('meeting/postPublished', this.addPostHandler);
+    this.$socket.emit('meeting/unsubscribe');
   },
   methods: {
     ...mapActions('meetings', ['fetchMeeting']),

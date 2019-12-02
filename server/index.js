@@ -17,7 +17,10 @@ const postRoutes = require('./routes/posts');
 const locationRoute = require('./routes/location');
 
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { pingTimeout: 60000 });
 
+require('./socket')(io)
 
 
 // Database connection
@@ -69,6 +72,6 @@ app.use((error, req, res, next) => {
 });
 
 // Determine on wich port the server is listening to
-app.listen(PORT, function() {
+server.listen(PORT, function() {
   logger.debug('Server is running on port: ' + PORT);
 });

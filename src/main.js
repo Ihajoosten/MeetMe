@@ -7,7 +7,7 @@ import 'uikit/dist/css/uikit.min.css';
 import 'less-loader';
 import HomeDropdown from './components/shared/HomeDropdown';
 import Hometop from './components/shared/HomeTop';
-import moment from 'moment';
+import filters from './filters/appFilters';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 import store from './store/index';
@@ -15,11 +15,11 @@ import Spinner from './components/shared/Spinner';
 import vuelidate from 'vuelidate';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/index.css';
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import AppSocket from './plugins/socketPlugin';
 
-Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false;
 
@@ -27,49 +27,16 @@ Vue.component('HomeTop', Hometop);
 Vue.component('HomeDropdown', HomeDropdown);
 Vue.component('Spinner', Spinner);
 
-Vue.use(VueToast);
 UIkit.use(Icons);
+
+Vue.use(BootstrapVue);
+Vue.use(VueToast);
 Vue.use(vuelidate);
+Vue.use(AppSocket, {connection: process.env.VUE_APP_URI});
 
 // const conn = process.env.VUE_APP_URI
 
-Vue.filter('capitalize', function(value) {
-  if (value && typeof value === 'string') {
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  }
-
-  return '';
-});
-
-Vue.filter('fromNow', function(value) {
-  if (!value) return '';
-
-  return moment(value).fromNow();
-});
-
-Vue.filter('date', value => {
-  if (!value) {
-    return '';
-  }
-
-  return moment(value).format('DD MMM, YYYY');
-});
-
-Vue.filter('day', value => {
-  if (!value) {
-    return '';
-  }
-
-  return moment(value).format('DD');
-});
-
-Vue.filter('month', value => {
-  if (!value) {
-    return '';
-  }
-
-  return moment(value).format('MMMM');
-});
+filters();
 
 new Vue({
   router,
