@@ -14,7 +14,6 @@
         <router-link :to="{ name: 'find' }">
           <button class="btn btn-outline-success m-2">See all</button>
         </router-link>
-
       </div>
 
       <div class="row mb-5">
@@ -24,14 +23,16 @@
           :meeting="meeting"
         />
       </div>
-
-      <h1 class="text-center m-5">Categories</h1>
-      <div class="row mb-2">
-        <CategoryItem
-          v-for="category in categories"
-          v-bind:key="category._id"
-          :category="category"
-        />
+      <div class="container">
+        <h1 class="text-center m-5">Categories</h1>
+        <div class="row mb-2">
+          <CategoryItem
+            class="col-sm"
+            v-for="category in categories"
+            v-bind:key="category._id"
+            :category="category"
+          />
+        </div>
       </div>
     </div>
     <div class="container" v-else>

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-4">
+  <div class="">
     <router-link :to="{name: 'find-category-meetings', params: {category: category.name}}">
       <div class="image">
         <img

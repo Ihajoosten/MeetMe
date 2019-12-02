@@ -158,10 +158,10 @@ module.exports = {
         meeting.joinedPeople.push(user);
         meeting.joinedPeopleCount++;
 
-        return await Promise.all([
+        return Promise.all([
           await meeting.save(),
           await User.updateOne(
-            { _id: user },
+            { _id: user._id },
             { $push: { joinedMeetings: meeting } },
             (err, id) => {
               if (err) return res.status(422).send({ err });
@@ -186,13 +186,13 @@ module.exports = {
       return res.status(401).json({ message: 'Not Authorized' });
 
     try {
-      await Promise.all([
+      Promise.all([
         await Meeting.updateOne(
           { _id: id },
-          { $pull: { joinedPeople: user }, $inc: { joinedPeopleCount: -1 } }
+          { $pull: { joinedPeople: user._id }, $inc: { joinedPeopleCount: -1 } }
         ),
         await User.updateOne(
-          { _id: user },
+          { _id: user._id },
           { $pull: { joinedMeetings: id } },
           (err, id) => {
             if (err) return res.status(422).send({ err });

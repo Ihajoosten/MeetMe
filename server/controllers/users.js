@@ -124,6 +124,31 @@ module.exports = {
         if (error) return res.status(500).json({ error });
       }
     } else return res.status(401).json({ message: 'Not authorized' });
+  },
+  changePassword: async (req, res) => {
+    const email = await req.body.email;
+
+    try {
+      await User.findOne({ email: email }, (err, user) => {
+        if (err) return res.status(422).json({ err });
+        else if (!user)
+          return res
+            .status(404)
+            .json({ message: 'Sorry your email has not been registered' });
+        else {
+          user.password = req.body.password;
+          user.save(err => {
+            if (err) return res.status(422).json({ err });
+            else
+              return res
+                .status(200)
+                .json({ message: 'Successfully updated your password!' });
+          });
+        }
+      });
+    } catch (error) {
+      if (error) return res.status(500).json({ error });
+    }
   }
 };
 

@@ -7,6 +7,7 @@ import categories from './modules/categories';
 import stats from './modules/stats';
 import meta from './modules/metaData';
 import axiosInstance from '../services/axiosInstance'
+import axios from 'axios';
 import * as auth from '../services/authService';
 
 Vue.use(Vuex);
@@ -102,6 +103,9 @@ export default new Vuex.Store({
              commit('setUser', updatedUser)
              return updatedUser
          })
+     },
+     async changePassword(_, user) {
+       return await axios.patch('/api/users/change-password', user);
      }
   }
 });
