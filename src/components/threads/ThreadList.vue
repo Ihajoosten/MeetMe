@@ -17,21 +17,19 @@
                 :src="thread.authorAvatar"
                 alt="avatar"
               />
-              <h5 class="text-white">{{ thread.authorName }}</h5>
+              <i class=" ml-2 mr-3 text-white" style="font-size: 13px;">{{ thread.authorName }}</i>
             </b>
             <div
               class="comment-date text-white-50"
               data-toggle="tooltip"
-              title="Feb 5, 2018 8:21 pm"
-              data-placement="top"
             >
               Last update {{ thread.createdAt | fromNow }}
             </div>
-            <div class="offset-md-4">
+            <div v-if="user._id === thread.authorId" class="offset-md-4">
               <button
                 v-on:click.prevent="$event => deleteThread($event, thread._id)"
                 uk-icon="trash"
-                class="btn btn-sm btn-outline-danger"
+                class="btn btn-sm btn-danger"
               ></button>
             </div>
           </div>
@@ -66,7 +64,7 @@
                     :src="post.authorAvatar"
                     alt="avatar"
                   />
-                  <h5 class="text-white">{{ post.authorName }}</h5>
+              <i class=" ml-2 mr-3 text-white" style="font-size: 13px;">{{ post.authorName }}</i>
                 </b>
                 <div
                   class="comment-date text-white-50"
@@ -75,13 +73,13 @@
                 >
                   Last update {{ post.createdAt | fromNow }}
                 </div>
-                <div class="offset-md-4">
+                <div v-if="user._id === post.authorId" class="offset-md-4">
                   <button
                     v-on:click.prevent="
                       $event => deletePost($event, thread._id, post._id)
                     "
                     uk-icon="trash"
-                    class="btn btn-sm btn-outline-danger"
+                    class="btn btn-sm btn-danger"
                   ></button>
                 </div>
               </div>
@@ -120,7 +118,7 @@
                         :src="comment.authorAvatar"
                         alt="avatar"
                       />
-                      <h5 class="text-white">{{ comment.authorName }}</h5>
+              <i class=" ml-2 mr-3 text-white" style="font-size: 13px;">{{ comment.authorName }}</i>
                     </b>
                     <div
                       class="comment-date text-white-50"
@@ -129,7 +127,7 @@
                     >
                       Last update {{ comment.createdAt | fromNow }}
                     </div>
-                    <div class="offset-md-4">
+                    <div v-if="user._id === comment.authorId" class="offset-md-4">
                       <button
                         v-on:click.prevent="
                           $event =>
@@ -141,7 +139,7 @@
                             )
                         "
                         uk-icon="trash"
-                        class="btn btn-sm btn-outline-danger"
+                        class="btn btn-sm btn-danger"
                       ></button>
                     </div>
                   </div>
@@ -180,6 +178,10 @@ export default {
     },
     ableToPost: {
       type: Boolean,
+      required: true
+    },
+    user: {
+      type: Object,
       required: true
     }
   },

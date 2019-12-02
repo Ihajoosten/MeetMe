@@ -197,6 +197,7 @@
 <script>
 import { mapState } from 'vuex';
 import UpdateModal from '../../components/account/UpdateAccountModal';
+import * as auth from '../../services/authService'
 
 export default {
   data() {
@@ -225,7 +226,13 @@ export default {
       this.$store
         .dispatch('updateUser', user)
         .then(() => {
+          auth.logout();
+          this.$router.push({ name: 'login' });
           this.$toast.success('Succesfully updated your account!', {
+            duration: 5000,
+            position: 'top'
+          });
+           this.$toast.info('Please login again to use your account.', {
             duration: 5000,
             position: 'top'
           });
