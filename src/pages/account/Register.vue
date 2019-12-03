@@ -248,8 +248,21 @@ export default {
         username: this.form.username,
         password: this.form.password
       };
-      auth.registerUser(user);
-      this.$router.push({ name: 'login' });
+      auth
+        .registerUser(user)
+        .then(() => {
+          this.$toast.success('Succesfully registered your account!', {
+            duration: 5000,
+            position: 'top'
+          });
+          this.$router.push({ name: 'login' });
+        })
+        .catch(err => {
+          this.$toast.error(err.response.data.message, {
+            duration: 5000,
+            position: 'top'
+          });
+        });
     }
   }
 };

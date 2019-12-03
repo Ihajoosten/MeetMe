@@ -1,5 +1,5 @@
 <template>
-  <div class="container profile">
+  <div class="container profile mb-5 mt-3">
     <div class="row">
       <div class="col-sm text-center">
         <img class="profile-pic" :src="user.avatar" />
@@ -70,7 +70,10 @@
               <h6 class="card-title">
                 {{ meeting.title }}
               </h6>
-              <div v-if="isMeetingActive(meeting.startDate)" class="badge badge-success">
+              <div
+                v-if="isMeetingActive(meeting.startDate)"
+                class="badge badge-success"
+              >
                 <i>Active</i>
               </div>
               <div v-else class="badge badge-danger">
@@ -198,9 +201,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import UpdateModal from '../../components/account/UpdateAccountModal';
-import * as auth from '../../services/authService'
+import * as auth from '../../services/authService';
 
 export default {
   data() {
@@ -212,17 +214,33 @@ export default {
     UpdateModal
   },
   computed: {
-    ...mapState({
-      user: state => state.user,
-      meetings: state => state.stats.meetings.data,
-      threads: state => state.stats.threads.data,
-      posts: state => state.stats.posts.data,
-      comments: state => state.stats.comments.data,
-      meetingCount: state => state.stats.meetings.count,
-      threadCount: state => state.stats.threads.count,
-      postCount: state => state.stats.posts.count,
-      commentCount: state => state.stats.comments.count
-    })
+    user() {
+      return this.$store.state.user;
+    },
+    meetings() {
+      return this.$store.state.stats.meetings.data;
+    },
+    threads() {
+      return this.$store.state.stats.threads.data;
+    },
+    posts() {
+      return this.$store.state.stats.posts.data;
+    },
+    comments() {
+      return this.$store.state.stats.comments.data;
+    },
+    meetingCount() {
+      return this.$store.state.stats.meetings.count;
+    },
+    threadCount() {
+      return this.$store.state.stats.threads.count;
+    },
+    postCount() {
+      return this.$store.state.stats.posts.count;
+    },
+    commentCount() {
+      return this.$store.state.stats.comments.count;
+    }
   },
   methods: {
     isMeetingActive(date) {
@@ -238,7 +256,7 @@ export default {
             duration: 5000,
             position: 'top'
           });
-           this.$toast.info('Please login again to use your account.', {
+          this.$toast.info('Please login again to use your account.', {
             duration: 5000,
             position: 'top'
           });

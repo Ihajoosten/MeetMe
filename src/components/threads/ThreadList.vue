@@ -165,13 +165,19 @@
                 </div>
               </li>
             </ul>
-            <div class="alert alert-dark mt-2 shadow text-center" v-else><b>No Comments yet</b></div>
+            <div class="alert alert-dark mt-2 shadow text-center" v-else>
+              <b>No Comments yet</b>
+            </div>
           </li>
         </ul>
-        <div class="alert alert-dark mt-2 shadow text-center" v-else><b>No Posts yet</b></div>
+        <div class="alert alert-dark mt-2 shadow text-center" v-else>
+          <b>No Posts yet</b>
+        </div>
       </li>
     </ul>
-    <div class="alert alert-dark mt-2 shadow text-center" v-else><b>No Threads yet</b></div>
+    <div class="alert alert-dark mt-2 shadow text-center" v-else>
+      <b>No Threads yet</b>
+    </div>
   </div>
 </template>
 

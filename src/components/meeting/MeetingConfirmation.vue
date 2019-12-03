@@ -7,19 +7,34 @@
         <h1 class="result-title">
           Location
         </h1>
-        <input disabled class="form-control" type="text" :placeholder="createMeeting.location">
+        <input
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.location"
+        />
       </div>
       <div class="col">
         <h1 class="result-title">
           Title
         </h1>
-        <input disabled class="form-control" type="text" :placeholder="createMeeting.title">
+        <input
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.title"
+        />
       </div>
       <div class="col">
         <h1 class="result-title">
           Category
         </h1>
-        <input disabled class="form-control" type="text" :placeholder="createMeeting.category.name">
+        <input
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.category.name"
+        />
       </div>
     </div>
 
@@ -28,20 +43,34 @@
         <h1 class="result-title">
           Start Date
         </h1>
-                <input disabled class="form-control" type="text" :placeholder="createMeeting.startDate">
-
+        <input
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.startDate"
+        />
       </div>
       <div class="col">
         <h1 class="result-title">
           Start time
         </h1>
-        <input disabled class="form-control" type="text" :placeholder="createMeeting.timeFrom">
+        <input
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.timeFrom"
+        />
       </div>
       <div class="col">
         <h1 class="result-title">
           End time
         </h1>
-        <input disabled class="form-control" type="text" :placeholder="createMeeting.timeTo">
+        <input
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.timeTo"
+        />
       </div>
     </div>
 
@@ -50,13 +79,22 @@
         <h1 class="result-title">
           Image
         </h1>
-        <textarea disabled class="form-control" type="text" :placeholder="createMeeting.image"></textarea>
+        <textarea
+          disabled
+          class="form-control"
+          type="text"
+          :placeholder="createMeeting.image"
+        ></textarea>
       </div>
       <div class="col-6">
         <h1 class="result-title">
           Description
         </h1>
-        <textarea disabled class="form-control" :placeholder="createMeeting.description"></textarea>
+        <textarea
+          disabled
+          class="form-control"
+          :placeholder="createMeeting.description"
+        ></textarea>
       </div>
     </div>
   </div>

@@ -90,8 +90,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-
 export default {
   name: 'meeting-update',
   data() {
@@ -100,14 +98,23 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      meeting: state => state.meetings.item,
-      categories: state => state.categories.items
-    })
+    meeting() {
+      return this.$store.state.meetings.item;
+    },
+    categories() {
+      return this.$store.state.categories.items;
+    }
   },
   methods: {
-    ...mapActions('meetings', ['fetchMeeting', 'updateMeeting']),
-    ...mapActions('categories', ['fetchCategories']),
+    fetchMeeting(id) {
+      this.$store.dispatch('meetings/fetchMeeting', id);
+    },
+    updateMeeting(meeting) {
+      this.$store.dispatch('meetings/updateMeeting', meeting);
+    },
+    fetchCategories() {
+      this.$store.dispatch('categories/fetchCategories');
+    },
     onReset(evt) {
       evt.preventDefault();
       // Reset our form values

@@ -1,6 +1,6 @@
 <template>
   <!-- Page Content -->
-  <div class="container">
+  <div v-if="isDataLoaded" class="container">
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
       <div class="col-md-4">
@@ -105,37 +105,52 @@
       </div>
     </div>
   </div>
+  <div id="spinner" v-else>
+    <Spinner />
+  </div>
 
   <!-- /.container -->
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
 import { isLoggedIn } from '../../services/authService';
 import ThreadCreateModal from '../../components/threads/ThreadCreateModal';
 import ThreadList from '../../components/threads/ThreadList';
+import Spinner from '../../components/shared/Spinner';
 
 export default {
   name: 'meeting-detail',
   components: {
     ThreadCreateModal,
-    ThreadList
+    ThreadList,
+    Spinner
   },
   data() {
     return {
       threadPageNum: 1,
-      threadPageSize: 5
+      threadPageSize: 5,
+      isDataLoaded: false
     };
   },
   computed: {
-    ...mapState({
-      meeting: state => state.meetings.item,
-      threads: state => state.threads.items,
-      meetingCreator: state => state.meetings.item.author || {},
-      isLoggedIn: state => state.isLoggedIn,
-      user: state => state.user || {},
-      isAllThreadsLoaded: state => state.threads.isAllThreadsLoaded
-    }),
+    meeting() {
+      return this.$store.state.meetings.item;
+    },
+    threads() {
+      return this.$store.state.threads.items;
+    },
+    meetingCreator() {
+      return this.$store.state.meetings.item.author || {};
+    },
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
+    user() {
+      return this.$store.state.user || {};
+    },
+    isAllThreadsLoaded() {
+      return this.$store.state.threads.isAllThreadsLoaded;
+    },
     isOwner() {
       return this.$store.getters['isOwner'](this.meetingCreator._id);
     },
@@ -160,33 +175,50 @@ export default {
   },
   created() {
     const id = this.$route.params.id;
-    this.fetchMeeting(id);
-    this.fetchThreadsHandler({ id, init: true });
+    const filter = {
+      pageNum: this.threadPageNum,
+      pageSize: this.threadPageSize
+    };
+    Promise.all([
+      this.$store.dispatch('meetings/fetchMeeting', id),
+      this.$store
+        .dispatch('threads/fetchThreads', {
+          meetingId: id || this.meeting._id,
+          filter
+        })
+        .then(() => {
+          this.threadPageNum++;
+        })
+    ]).then(() => (this.isDataLoaded = true));
 
-    
-      this.$socket.emit('meeting/subscribe', id);
-      this.$socket.on('meeting/postPublished', this.addPostHandler);
-    
+    this.$socket.emit('meeting/subscribe', id);
+    this.$socket.on('meeting/postPublished', this.addPostHandler);
   },
   destroyed() {
     this.$socket.removeListener('meeting/postPublished', this.addPostHandler);
     this.$socket.emit('meeting/unsubscribe');
   },
   methods: {
-    ...mapActions('meetings', ['fetchMeeting']),
-    ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
+    fetchMeeting(id) {
+      this.$store.dispatch('meetings/fetchMeeting', id);
+    },
     fetchThreadsHandler({ id, init }) {
       const filter = {
         pageNum: this.threadPageNum,
         pageSize: this.threadPageSize
       };
-      this.fetchThreads({
-        meetingId: id || this.meeting._id,
-        filter,
-        init
-      }).then(() => {
-        this.threadPageNum++;
-      });
+      this.$store
+        .dispatch('threads/fetchThreads', {
+          meetingId: id || this.meeting._id,
+          filter,
+          init
+        })
+        .then(() => {
+          this.threadPageNum++;
+        });
+    },
+    addPostToThread({ post, threadId }) {
+      this.$store.dispatch('threads/addPostToThread', { post, threadId });
     },
     addPostHandler(post) {
       this.addPostToThread({ post, threadId: post.thread });
@@ -198,13 +230,15 @@ export default {
       this.$store.dispatch('meetings/leaveMeeting', this.meeting._id);
     },
     createThread({ title, done }) {
-      this.postThread({ title, meetingId: this.meeting._id }).then(() => {
-        this.$toast.success('Created new thread!', {
-          duration: 5000,
-          position: 'top'
+      this.$store
+        .dispatch('threads/postThread', { title, meetingId: this.meeting._id })
+        .then(() => {
+          this.$toast.success('Created new thread!', {
+            duration: 5000,
+            position: 'top'
+          });
+          done();
         });
-        done();
-      });
     }
   }
 };
@@ -218,5 +252,9 @@ ul li {
 
 img.person {
   width: 42px;
+}
+
+.spinner {
+  margin-top: 150px !important;
 }
 </style>

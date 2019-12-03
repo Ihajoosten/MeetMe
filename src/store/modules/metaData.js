@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   namespaced: true,
@@ -11,29 +11,28 @@ export default {
     }
   },
   getters: {
-    location (state) {
-      const {city, country} = state.item
-      return (city && country) ? (city + ', ' + country) : ''
+    location(state) {
+      const { city, country } = state.item;
+      return city && country ? city + ', ' + country : '';
     }
   },
   actions: {
-    fetchMetaData ({commit}) {
-      return axios.get('/api')
-        .then(res => {
-          const meta = res.data
-          commit('setItem', {item: meta, resource: 'meta'}, {root: true})
-          commit('resolveLocation', true)
-          return meta
-        })
-        .catch(err => {
-          commit('resolveLocation', true)
-          return err
-        })
+    async fetchMetaData({ commit }) {
+      try {
+        const res = await axios.get('/api');
+        const meta = res.data;
+        commit('setItem', { item: meta, resource: 'meta' }, { root: true });
+        commit('resolveLocation', true);
+        return meta;
+      } catch (err) {
+        commit('resolveLocation', true);
+        return err;
+      }
     }
   },
   mutations: {
-    resolveLocation (state, isLocationResolved) {
-      state.isLocationResolved = isLocationResolved
+    resolveLocation(state, isLocationResolved) {
+      state.isLocationResolved = isLocationResolved;
     }
   }
-}
+};

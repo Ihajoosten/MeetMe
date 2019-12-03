@@ -30,7 +30,7 @@
                   </p>
                   <form>
                     <div class="uk-margin">
-                       <div class="text-left">
+                      <div class="text-left">
                         <div
                           v-if="$v.form.email.$error"
                           class="alert alert-danger"
@@ -59,7 +59,7 @@
                         />
                       </div>
                     </div>
-                      <div class="uk-margin">
+                    <div class="uk-margin">
                       <div class="text-left">
                         <div
                           v-if="$v.form.password.$error"
@@ -144,7 +144,7 @@ export default {
             duration: 5000,
             position: 'top'
           });
-          this.$router.push({name: 'login'});
+          this.$router.push({ name: 'login' });
         })
         .catch(err => {
           this.$toast.error(err.response.data.message, {

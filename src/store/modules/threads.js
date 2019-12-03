@@ -81,30 +81,36 @@ export default {
       dispatch('deleteThreadFromMeeting', threadId);
       return res.data;
     },
-    deleteThreadFromMeeting({commit, state }, threadId) {
+    deleteThreadFromMeeting({ commit, state }, threadId) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
       commit('deleteThread', threadIndex);
     },
-    async deletePost({dispatch}, {postId, threadId}) {
+    async deletePost({ dispatch }, { postId, threadId }) {
       const res = await axiosInstance.delete(`/api/posts/${postId}`);
-      dispatch('deletePostFromThread', {postId, threadId})
+      dispatch('deletePostFromThread', { postId, threadId });
       return res.data;
     },
-    deletePostFromThread({commit, state}, {postId, threadId}) {
+    deletePostFromThread({ commit, state }, { postId, threadId }) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
-      const postIndex = state.items[threadIndex].posts.findIndex(item => item._id === postId)
-      commit('deletePost', {threadIndex, postIndex})
+      const postIndex = state.items[threadIndex].posts.findIndex(
+        item => item._id === postId
+      );
+      commit('deletePost', { threadIndex, postIndex });
     },
-    async deleteComment({dispatch}, {commentId, postId, threadId}) {
+    async deleteComment({ dispatch }, { commentId, postId, threadId }) {
       const res = await axiosInstance.delete(`/api/comments/${commentId}`);
-      dispatch('deleteCommentFromPost', {threadId, postId, commentId})
+      dispatch('deleteCommentFromPost', { threadId, postId, commentId });
       return res.data;
     },
-    deleteCommentFromPost({commit, state}, {threadId, postId, commentId}) {
+    deleteCommentFromPost({ commit, state }, { threadId, postId, commentId }) {
       const threadIndex = state.items.findIndex(item => item._id === threadId);
-      const postIndex = state.items[threadIndex].posts.findIndex(item => item._id === postId)
-      const commentIndex = state.items[threadIndex].posts[postIndex].comments.findIndex(item => item._id === commentId)
-      commit('deleteComment', {threadIndex, postIndex, commentIndex})
+      const postIndex = state.items[threadIndex].posts.findIndex(
+        item => item._id === postId
+      );
+      const commentIndex = state.items[threadIndex].posts[
+        postIndex
+      ].comments.findIndex(item => item._id === commentId);
+      commit('deleteComment', { threadIndex, postIndex, commentIndex });
     }
   },
   mutations: {
@@ -123,11 +129,16 @@ export default {
     deleteThread(state, index) {
       Vue.set(state.items.splice(index, 1));
     },
-    deletePost(state, {threadIndex, postIndex}) {
-      Vue.set(state.items[threadIndex].posts.splice(postIndex, 1))
+    deletePost(state, { threadIndex, postIndex }) {
+      Vue.set(state.items[threadIndex].posts.splice(postIndex, 1));
     },
-    deleteComment(state, {threadIndex, postIndex, commentIndex}) {
-      Vue.set(state.items[threadIndex].posts[postIndex].comments.splice(commentIndex, 1))
+    deleteComment(state, { threadIndex, postIndex, commentIndex }) {
+      Vue.set(
+        state.items[threadIndex].posts[postIndex].comments.splice(
+          commentIndex,
+          1
+        )
+      );
     }
   }
 };

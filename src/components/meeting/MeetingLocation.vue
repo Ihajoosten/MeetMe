@@ -3,8 +3,16 @@
     <h2>What is the location of your meeting?</h2>
     <div class="form-row">
       <div class="col form-group">
-        <h5 v-if="ipLocation && !wantChangeLocation" for="inputAddress">{{ ipLocation }}?</h5>
-        <a id="change-location" v-if="ipLocation" v-on:click.prevent="toggleLocation()"> (change location) </a>
+        <h5 v-if="ipLocation && !wantChangeLocation" for="inputAddress">
+          {{ ipLocation }}?
+        </h5>
+        <a
+          id="change-location"
+          v-if="ipLocation"
+          v-on:click.prevent="toggleLocation()"
+        >
+          (change location)
+        </a>
         <input
           v-if="!ipLocation || wantChangeLocation"
           v-on:input="emitFormData"

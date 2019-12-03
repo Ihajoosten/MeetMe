@@ -1,10 +1,9 @@
-import io from 'socket.io-client'
+import io from 'socket.io-client';
 
 const SocketPlugin = {
-  install (Vue, options) {
-
-    Vue.prototype.$socket = io(options.connection)
+  install(Vue, options) {
+    Vue.prototype.$socket = io(options.connection);
   }
-}
+};
 
-export default SocketPlugin
+export default SocketPlugin;

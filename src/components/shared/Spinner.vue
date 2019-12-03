@@ -1,101 +1,82 @@
 <template>
-  <div class="sk-chase">
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-  </div>
+<!-- <div class="sk-cube-grid">
+  <div class="sk-cube sk-cube1"></div>
+  <div class="sk-cube sk-cube2"></div>
+  <div class="sk-cube sk-cube3"></div>
+  <div class="sk-cube sk-cube4"></div>
+  <div class="sk-cube sk-cube5"></div>
+  <div class="sk-cube sk-cube6"></div>
+  <div class="sk-cube sk-cube7"></div>
+  <div class="sk-cube sk-cube8"></div>
+  <div class="sk-cube sk-cube9"></div>
+</div> -->
+<div class="loader">Loading...</div>
 </template>
 
 <style scoped>
-.sk-chase {
-  width: 100px;
-  height: 100px;
-  margin-left: 45%;
-  margin-top: 5%;
-  margin-bottom: 1500px;
+.loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #008000;
+  background: -moz-linear-gradient(left, #008000 10%, rgba(0,128,0, 0) 42%);
+  background: -webkit-linear-gradient(left, #008000 10%, rgba(0,128,0, 0) 42%);
+  background: -o-linear-gradient(left, #008000 10%, rgba(0,128,0, 0) 42%);
+  background: -ms-linear-gradient(left, #008000 5%, rgba(0,128,0, 0) 42%);
+  background: linear-gradient(to right, #008000 5%, rgba(0,128,0, 0) 42%);
   position: relative;
-  animation: sk-chase 2.5s infinite linear both;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
 }
-
-.sk-chase-dot {
-  width: 100%;
-  height: 100%;
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #008000;
+  border-radius: 100% 0 0 0;
   position: absolute;
-  left: 0;
   top: 0;
-  animation: sk-chase-dot 2s infinite ease-in-out both;
-}
-
-.sk-chase-dot:before {
+  left: 0;
   content: '';
-  display: block;
-  width: 25%;
-  height: 25%;
-  background-color: green;
-  border-radius: 100%;
-  animation: sk-chase-dot-before 2s infinite ease-in-out both;
 }
-
-.sk-chase-dot:nth-child(1) {
-  animation-delay: -1.1s;
+.loader:after {
+  background: #fff;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
-.sk-chase-dot:nth-child(2) {
-  animation-delay: -1s;
-}
-.sk-chase-dot:nth-child(3) {
-  animation-delay: -0.9s;
-}
-.sk-chase-dot:nth-child(4) {
-  animation-delay: -0.8s;
-}
-.sk-chase-dot:nth-child(5) {
-  animation-delay: -0.7s;
-}
-.sk-chase-dot:nth-child(6) {
-  animation-delay: -0.6s;
-}
-.sk-chase-dot:nth-child(1):before {
-  animation-delay: -1.1s;
-}
-.sk-chase-dot:nth-child(2):before {
-  animation-delay: -1s;
-}
-.sk-chase-dot:nth-child(3):before {
-  animation-delay: -0.9s;
-}
-.sk-chase-dot:nth-child(4):before {
-  animation-delay: -0.8s;
-}
-.sk-chase-dot:nth-child(5):before {
-  animation-delay: -0.7s;
-}
-.sk-chase-dot:nth-child(6):before {
-  animation-delay: -0.6s;
-}
-
-@keyframes sk-chase {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes sk-chase-dot {
-  80%,
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes sk-chase-dot-before {
-  50% {
-    transform: scale(0.4);
-  }
-  100%,
+@-webkit-keyframes load3 {
   0% {
-    transform: scale(1);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+
 </style>

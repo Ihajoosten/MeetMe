@@ -6,7 +6,7 @@ import threads from './modules/threads';
 import categories from './modules/categories';
 import stats from './modules/stats';
 import meta from './modules/metaData';
-import axiosInstance from '../services/axiosInstance'
+import axiosInstance from '../services/axiosInstance';
 import axios from 'axios';
 import * as auth from '../services/authService';
 
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     stats,
     meta
   },
-  state: {  
+  state: {
     isLoggedIn: false,
     username: null,
     email: null,
@@ -77,7 +77,7 @@ export default new Vuex.Store({
       Vue.set(state[resource].items, index, item);
     },
     setUser(state, user) {
-      return Vue.set(state.user, user)
+      return Vue.set(state.user, user);
     }
   },
   actions: {
@@ -96,16 +96,17 @@ export default new Vuex.Store({
       userMeetings.splice(index, 1);
       commit('setMeetings', userMeetings);
     },
-    async updateUser({commit}, user) {
-      return await axiosInstance.patch(`/api/users/account/${user._id}`, user)
-         .then(res => {
-             const updatedUser = res.data
-             commit('setUser', updatedUser)
-             return updatedUser
-         })
-     },
-     async changePassword(_, user) {
-       return await axios.patch('/api/users/change-password', user);
-     }
+    async updateUser({ commit }, user) {
+      return await axiosInstance
+        .patch(`/api/users/account/${user._id}`, user)
+        .then(res => {
+          const updatedUser = res.data;
+          commit('setUser', updatedUser);
+          return updatedUser;
+        });
+    },
+    async changePassword(_, user) {
+      return await axios.patch('/api/users/change-password', user);
+    }
   }
 });

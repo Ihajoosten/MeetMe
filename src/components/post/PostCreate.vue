@@ -36,9 +36,16 @@ export default {
   },
   methods: {
     savePost() {
-      this.$store.dispatch('threads/sendPost', { text: this.text, threadId: this.threadId })
-        .then((createdPost) => {
-          this.$socket.emit('meeting/postSaved', {...createdPost, meeting: this.meeting._id })
+      this.$store
+        .dispatch('threads/sendPost', {
+          text: this.text,
+          threadId: this.threadId
+        })
+        .then(createdPost => {
+          this.$socket.emit('meeting/postSaved', {
+            ...createdPost,
+            meeting: this.meeting._id
+          });
           this.text = '';
         });
     }

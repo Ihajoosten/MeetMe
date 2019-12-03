@@ -49,9 +49,9 @@
       </div>
     </div>
 
-      <EntityComponent />
-      
-      <UseCaseComponent />
+    <EntityComponent />
+
+    <UseCaseComponent />
   </div>
 </template>
 

@@ -1,6 +1,11 @@
 <template>
   <div class="">
-    <router-link :to="{name: 'find-category-meetings', params: {category: category.name}}">
+    <router-link
+      :to="{
+        name: 'find-category-meetings',
+        params: { category: category.name }
+      }"
+    >
       <div class="image">
         <img
           class="image-container"

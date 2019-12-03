@@ -154,14 +154,11 @@ export default {
           });
           this.$router.push('/');
         })
-        .catch((err) => {
-          this.$toast.error(
-            err.response.data.message,
-            {
-              duration: 5000,
-              position: 'top'
-            }
-          );
+        .catch(err => {
+          this.$toast.error(err.response.data.message, {
+            duration: 5000,
+            position: 'top'
+          });
         });
     }
   }

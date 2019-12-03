@@ -95,15 +95,16 @@
 
 <script>
 import * as auth from '../../services/authService';
-import { mapState } from 'vuex';
 
 export default {
   name: 'Navbar',
   computed: {
-    ...mapState({
-      isLoggedIn: state => state.isLoggedIn,
-      user: state => state.username
-    })
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
+    user() {
+      return this.$store.state.username;
+    }
   },
   methods: {
     logout: function() {
@@ -115,6 +116,14 @@ export default {
 </script>
 
 <style scoped>
+nav {
+  position: sticky;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  background-color: #28a745;
+  text-align: center;
+}
 .brand-name {
   font-size: 30px;
 }
@@ -122,5 +131,4 @@ li a {
   text-decoration: none !important;
   font-size: 20px;
 }
-
 </style>

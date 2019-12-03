@@ -9,7 +9,11 @@ export default {
     async fetchCategories({ state, commit }) {
       const res = await axios.get('/api/categories');
       const categories = res.data;
-      commit('setItems', { resource: 'categories', items: categories }, { root: true });
+      commit(
+        'setItems',
+        { resource: 'categories', items: categories },
+        { root: true }
+      );
       return state.items;
     }
   }

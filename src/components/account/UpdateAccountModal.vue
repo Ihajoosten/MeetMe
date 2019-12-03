@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     emitUser() {
-      this.$emit('submitUser', {user: this.user})
+      this.$emit('submitUser', { user: this.user });
     }
   }
 };
