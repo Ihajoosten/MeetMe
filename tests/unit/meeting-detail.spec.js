@@ -71,4 +71,28 @@ describe('MeetingDetail.vue', () => {
     expect(typeof MeetingDetail.validations.form).to.equal('object');
     expect(typeof MeetingDetail.validations.form.title).to.equal('object');
   });
+
+  it('renders data() correctly', () => {
+    const factory = (values = {threadPageNum, threadPageSize}) => {
+        return shallowMount(MeetingDetail, {
+          data () {
+            return {
+              ...values
+            }
+          }
+        })
+      }
+
+      it('renders threadPageNum prop correctly', () => {
+          const wrapper = factory();
+
+          expect(wrapper.find('.threadPageNum').text()).to.equal(1)
+      })
+
+      it('renders threadPageSize prop correctly', () => {
+        const wrapper = factory();
+
+        expect(wrapper.find('.threadPageSize').text()).to.equal(5)
+    })
+  })
 });

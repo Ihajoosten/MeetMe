@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import Login from '@/pages/account/Login'; // name of your Vue component
+import { shallowMount } from '@vue/test-utils'
 import { expect } from 'chai';
 
 describe('Login.vue', () => {
@@ -62,5 +63,29 @@ describe('Login.vue', () => {
       it('the methods object should contain function login()', () => {
         expect(typeof Login.methods.login).to.equal('function');
       });
+
+      it('renders data() correctly', () => {
+        const factory = (form = {email, password}) => {
+            return shallowMount(Login, {
+              data () {
+                return {
+                  ...form
+                }
+              }
+            })
+          }
+
+          it('renders email prop correctly', () => {
+              const wrapper = factory();
+
+              expect(wrapper.find('.email'.text()).to.equal(null))
+          })
+
+          it('renders password prop correctly', () => {
+            const wrapper = factory();
+
+            expect(wrapper.find('.password'.text()).to.equal(null))
+        })
+      })
 
 });

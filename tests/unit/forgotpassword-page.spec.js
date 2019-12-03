@@ -63,4 +63,27 @@ describe('ForgotPassword.vue', () => {
         expect(typeof ForgotPass.methods.changePassword).to.equal('function');
       });
 
+      it('renders data() correctly', () => {
+        const factory = (form = {email, password}) => {
+            return shallowMount(ForgotPass, {
+              data () {
+                return {
+                  ...form
+                }
+              }
+            })
+          }
+
+          it('renders email prop correctly', () => {
+              const wrapper = factory();
+
+              expect(wrapper.find('.email').text()).to.equal(null)
+          })
+
+          it('renders password prop correctly', () => {
+            const wrapper = factory();
+
+            expect(wrapper.find('.password').text()).to.equal(null)
+        })
+      })
 });
