@@ -12,7 +12,7 @@
           </button></router-link
         >
         <router-link :to="{ name: 'find' }">
-          <button class="btn btn-outline-success m-2">See all</button>
+          <button id="seeAll" class="btn btn-outline-success m-2">See all</button>
         </router-link>
       </div>
 

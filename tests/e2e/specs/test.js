@@ -2,20 +2,20 @@
 // https://nightwatchjs.org/guide
 
 module.exports = {
-  "default e2e tests": browser => {
+  "Homepage E2E test": browser => {
     browser
-      .init()
+      .url('https://meet-me-cswp.herokuapp.com/')
       .waitForElementVisible("#app")
-      .assert.elementPresent(".hello")
-      .assert.containsText("h1", "Welcome to Your Vue.js App")
-      .assert.elementCount("img", 1)
+      .assert.elementPresent(".container")
+      .assert.titleContains('meet-me')
       .end();
   },
 
-  "example e2e test using a custom command": browser => {
+  "Test if button 'see all' exists on Homepage": browser => {
     browser
-      .openHomepage()
-      .assert.elementPresent(".hello")
+      .url('https://meet-me-cswp.herokuapp.com/')
+      .waitForElementVisible("#app")
+      .assert.visible('button[id=#seeAll]')
       .end();
   }
 };
