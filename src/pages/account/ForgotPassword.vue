@@ -115,6 +115,7 @@
 import { required, email } from 'vuelidate/lib/validators';
 
 export default {
+  name: 'forgot-password',
   data() {
     return {
       form: {
