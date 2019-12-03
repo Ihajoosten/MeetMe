@@ -8,7 +8,7 @@ const localVue = createLocalVue();
 
 localVue.use(Vuex);
 
-describe('Navbar.vue', () => {
+describe('Navbar - Vuex', () => {
   let state;
   let store
 
