@@ -2,20 +2,31 @@
 // https://nightwatchjs.org/guide
 
 module.exports = {
-  "Homepage E2E test": browser => {
+    "Homepage E2E test": browser => {
+      browser
+        .url('https://meet-me-cswp.herokuapp.com/')
+        .waitForElementVisible("#app")
+        .assert.elementPresent(".container")
+        .assert.titleContains('meet-me')
+        .end();
+    },
+
+  "Button 'see all' exists on Homepage": browser => {
     browser
       .url('https://meet-me-cswp.herokuapp.com/')
       .waitForElementVisible("#app")
-      .assert.elementPresent(".container")
-      .assert.titleContains('meet-me')
+      .waitForElementVisible('#seeAll')
       .end();
   },
 
-  "Test if button 'see all' exists on Homepage": browser => {
+  "Go to see all meeting page": browser => {
     browser
       .url('https://meet-me-cswp.herokuapp.com/')
       .waitForElementVisible("#app")
-      .assert.visible('button[id=#seeAll]')
+      .waitForElementVisible('#seeAll')
+      .click('#seeAll')
       .end();
   }
 };
+
+
