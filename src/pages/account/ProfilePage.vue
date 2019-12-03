@@ -58,7 +58,7 @@
 
     <div v-if="activeTab === 'meetings'">
       <div v-if="meetings && meetings.length > 0" class="row mt-5">
-        <div v-for="meeting in meetings" v-bind:key="meeting._id" class="col">
+        <div v-for="meeting in meetings" v-bind:key="meeting._id" class="col-4">
           <div class="card" style="width: auto;">
             <img
               :src="meeting.image"
@@ -70,8 +70,11 @@
               <h6 class="card-title">
                 {{ meeting.title }}
               </h6>
-              <div class="badge badge-success">
-                {{ meeting.status | capitalize }}
+              <div v-if="isMeetingActive(meeting.startDate)" class="badge badge-success">
+                <i>Active</i>
+              </div>
+              <div v-else class="badge badge-danger">
+                <i>Not Active</i>
               </div>
               <p class="card-text mt-2">
                 {{ meeting.description }}
@@ -222,6 +225,9 @@ export default {
     })
   },
   methods: {
+    isMeetingActive(date) {
+      return new Date() < new Date(date);
+    },
     updateUser({ user }) {
       this.$store
         .dispatch('updateUser', user)

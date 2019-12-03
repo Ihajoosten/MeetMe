@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mb-5">
     <h2 class="text-center mt-4">Please confirm entered data</h2>
 
     <div class="row mt-5">
@@ -7,19 +7,19 @@
         <h1 class="result-title">
           Location
         </h1>
-        <h3>{{ createMeeting.location }}</h3>
+        <input disabled class="form-control" type="text" :placeholder="createMeeting.location">
       </div>
       <div class="col">
         <h1 class="result-title">
           Title
         </h1>
-        <h3>{{ createMeeting.title }}</h3>
+        <input disabled class="form-control" type="text" :placeholder="createMeeting.title">
       </div>
       <div class="col">
         <h1 class="result-title">
           Category
         </h1>
-        <h3>{{ createMeeting.category.name }}</h3>
+        <input disabled class="form-control" type="text" :placeholder="createMeeting.category.name">
       </div>
     </div>
 
@@ -28,19 +28,20 @@
         <h1 class="result-title">
           Start Date
         </h1>
-        <h3>{{ createMeeting.startDate | date }}</h3>
+                <input disabled class="form-control" type="text" :placeholder="createMeeting.startDate">
+
       </div>
       <div class="col">
         <h1 class="result-title">
-          From
+          Start time
         </h1>
-        <h3>{{ createMeeting.timeFrom }}</h3>
+        <input disabled class="form-control" type="text" :placeholder="createMeeting.timeFrom">
       </div>
       <div class="col">
         <h1 class="result-title">
-          To
+          End time
         </h1>
-        <h3>{{ createMeeting.timeTo }}</h3>
+        <input disabled class="form-control" type="text" :placeholder="createMeeting.timeTo">
       </div>
     </div>
 
@@ -49,13 +50,13 @@
         <h1 class="result-title">
           Image
         </h1>
-        <h3>{{ createMeeting.image }}</h3>
+        <textarea disabled class="form-control" type="text" :placeholder="createMeeting.image"></textarea>
       </div>
       <div class="col-6">
         <h1 class="result-title">
           Description
         </h1>
-        <h3>{{ createMeeting.description }}</h3>
+        <textarea disabled class="form-control" :placeholder="createMeeting.description"></textarea>
       </div>
     </div>
   </div>
