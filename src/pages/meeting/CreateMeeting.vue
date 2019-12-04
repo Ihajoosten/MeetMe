@@ -23,7 +23,7 @@ export default {
       this.$store
         .dispatch('meetings/createMeeting', meetingToCreate)
         .then(created => {
-          this.$router.push('/meetings/' + created._id);
+          this.$router.push('/meeting/' + created._id);
         });
     }
   }

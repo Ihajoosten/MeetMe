@@ -14,7 +14,14 @@ const router = new Router({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../pages/other/About')
+      component: () => import('../pages/other/About'),
+      beforeEnter: (to, from, next) => {
+        if (auth.isLoggedIn()) {
+          next();
+        } else {
+          next('/not-authorized');
+        }
+      }
     },
     {
       path: '/not-authorized',
@@ -72,34 +79,40 @@ const router = new Router({
       component: () => import('../pages/other/NotFound')
     },
     {
-      path: '/meetings/new',
-      name: 'meeting-create',
-      component: () => import('../pages/meeting/CreateMeeting'),
-      beforeEnter: (to, from, next) => {
-        if (auth.isLoggedIn()) {
-          next();
-        } else {
-          next('/not-authorized');
+      path: '/meeting',
+      component: () => import('../components/meeting/MeetingView'),
+      children: [
+        {
+          path: '/meeting/new',
+          name: 'meeting-create',
+          component: () => import('../pages/meeting/CreateMeeting'),
+          beforeEnter: (to, from, next) => {
+            if (auth.isLoggedIn()) {
+              next();
+            } else {
+              next('/not-authorized');
+            }
+          }
+        },
+        {
+          path: '/meeting/:id',
+          name: 'meeting-detail',
+          component: () => import('../pages/meeting/MeetingDetail')
+        },
+        {
+          path: '/meeting/:id/edit',
+          name: 'meeting-update',
+          component: () => import('../components/meeting/UpdateMeeting'),
+          props: true,
+          beforeEnter: (to, from, next) => {
+            if (auth.isLoggedIn()) {
+              next();
+            } else {
+              next('/not-authorized');
+            }
+          }
         }
-      }
-    },
-    {
-      path: '/meetings/:id',
-      name: 'meeting-detail',
-      component: () => import('../pages/meeting/MeetingDetail')
-    },
-    {
-      path: '/meetings/:id/edit',
-      name: 'meeting-update',
-      component: () => import('../components/meeting/UpdateMeeting'),
-      props: true,
-      beforeEnter: (to, from, next) => {
-        if (auth.isLoggedIn()) {
-          next();
-        } else {
-          next('/not-authorized');
-        }
-      }
+      ]
     }
   ],
   linkActiveClass: 'active',
