@@ -10,7 +10,8 @@
     "lint": "vue-cli-service lint",
     "heroku-postbuild": "npm run build",
     "testJest": "jest tests/vuex/*",
-    "test": "vue-cli-service test:unit"
+    "testUnit": "vue-cli-service test:unit",
+    "test": "npm run testJest && npm run testUnit"
   },
   "dependencies": {
     "axios": "^0.19.0",
