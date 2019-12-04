@@ -1,40 +1,72 @@
 <template>
   <div class="container">
     <b-form @reset="onReset" v-if="show">
-      <b-form-group id="input-group-1" label="Title:" label-for="input-1">
+      <b-form-group
+        id="input-group-1"
+        label="Title:"
+        label-for="input-1"
+        :invalid-feedback="invalidTitle()"
+        :state="titleState"
+      >
         <b-form-input
           id="input-1"
           v-model="meeting.title"
           type="text"
           required
           placeholder="Enter title"
+          :state="titleState"
+          trim
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Location:" label-for="input-2">
+      <b-form-group
+        id="input-group-2"
+        label="Location:"
+        label-for="input-2"
+        :invalid-feedback="invalidLocation()"
+        :state="locationState"
+      >
         <b-form-input
           id="input-2"
           v-model="meeting.location"
           required
           placeholder="Enter location"
+          :state="locationState"
+          trim
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Image:" label-for="input-2">
+      <b-form-group
+        id="input-group-2"
+        label="Image:"
+        label-for="input-2"
+        :invalid-feedback="invalidImage()"
+        :state="imageState"
+      >
         <b-form-input
           id="input-2"
           v-model="meeting.image"
           required
           placeholder="Enter image"
+          :state="imageState"
+          trim
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Start date:" label-for="input-2">
+      <b-form-group
+        id="input-group-2"
+        label="Start date:"
+        label-for="input-2"
+        :invalid-feedback="invalidDate()"
+        :state="startDateState"
+      >
         <b-form-input
           id="input-2"
           v-model="meeting.startDate"
           type="date"
           required
+          :state="startDateState"
+          trim
         ></b-form-input>
       </b-form-group>
 
@@ -103,9 +135,44 @@ export default {
     },
     categories() {
       return this.$store.state.categories.items;
+    },
+    titleState() {
+      return this.meeting.title.length > 0 ? true : false;
+    },
+    locationState() {
+      return this.meeting.location.length > 0 ? true : false;
+    },
+    imageState() {
+      return this.meeting.image.length > 0 ? true : false;
+    },
+    startDateState() {
+      return this.meeting.startDate.length > 0 ? true: false;
+    },
+    passwordState() {
+      return this.user.password.length > 0 ? true : false;
     }
   },
   methods: {
+    invalidLocation() {
+      if (this.meeting.location.length < 1) {
+        return 'Location is required';
+      }
+    },
+    invalidTitle() {
+      if (this.meeting.title.length < 1) {
+        return 'Title is required';
+      }
+    },
+    invalidImage() {
+      if (this.meeting.image.length < 1) {
+        return 'Image is required';
+      }
+    },
+    invalidDate() {
+      if (!this.meeting.startDate.length) {
+        return 'Start date is required';
+      }
+    },
     fetchMeeting(id) {
       this.$store.dispatch('meetings/fetchMeeting', id);
     },
@@ -135,7 +202,7 @@ export default {
     updateMeetingHandler() {
       this.updateMeeting(this.meeting)
         .then(() => {
-          this.$router.push({name: 'account'});
+          this.$router.push({ name: 'account' });
           this.$toast.success('Succesfully updated the meeting!', {
             duration: 5000,
             position: 'top'
