@@ -2,7 +2,7 @@
   <div class="mb-5">
     <HomeTop />
     <div v-if="isDataLoaded" class="container">
-      <h1 class="m-5 text-center">
+      <h1 class="m-5 text-center" id="location">
         Meetings <span v-if="location"> in {{ location }}</span>
       </h1>
       <div class="m-5 text-center">

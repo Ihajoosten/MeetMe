@@ -151,10 +151,6 @@ describe('Testing Thread mutations', () => {
     thread.posts.push(post1);
     thread.posts.push(post2)
 
-
-    // const tIndex = state.items.findIndex(item => item.id === 0);
-    // const pIndex = state.items[tIndex].posts.findIndex(item => item.id === post1.id);
-
     mutations.deletePost(state, 0, 0);
     expect(state.items).to.contain(thread);
     expect(state.items[2]).to.eq(undefined);
