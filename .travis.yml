@@ -4,5 +4,6 @@ node_js:
 
 before_script: 
   - npm run dev
+
+script:   
   - npm run test
-  
