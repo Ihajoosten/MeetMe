@@ -135,7 +135,7 @@ export default {
     updateMeetingHandler() {
       this.updateMeeting(this.meeting)
         .then(() => {
-          this.$router.push('/account');
+          this.$router.push({name: 'account'});
           this.$toast.success('Succesfully updated the meeting!', {
             duration: 5000,
             position: 'top'

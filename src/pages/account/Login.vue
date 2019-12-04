@@ -152,7 +152,7 @@ export default {
             duration: 5000,
             position: 'top'
           });
-          this.$router.push('/');
+          this.$router.push({name: 'home'});
         })
         .catch(err => {
           this.$toast.error(err.response.data.message, {

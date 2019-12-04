@@ -79,8 +79,14 @@ export default {
     this.fetchMeetings();
   },
   methods: {
+    changeQueryString(searchString, documentTitle) {
+      var urlSplit = window.location.href.split('?');
+      var obj = { Title: documentTitle, Url: urlSplit[0] + searchString };
+      history.pushState(obj, obj.Title, obj.Url);
+    },
     fetchMeetings() {
       if (this.searchedLocation) {
+        this.changeQueryString(`?location=${this.searchedLocation}`)
         this.filter['location'] = this.searchedLocation
           .toLowerCase()
           .replace(/[\s,]+/g, '')

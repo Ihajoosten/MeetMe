@@ -11,7 +11,7 @@
             New Meeting
           </button></router-link
         >
-        <router-link :to="{ name: 'find' }">
+        <router-link :to="{ name: 'find', params: { location: location } }">
           <button id="seeAll" class="btn btn-outline-success m-2">
             See all
           </button>

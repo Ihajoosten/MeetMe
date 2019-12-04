@@ -41,37 +41,32 @@ const router = new Router({
       }
     },
     {
-      path: '/account',
-      name: 'account',
-      component: () => import('../pages/account/ProfilePage')
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import('../pages/account/Register'),
-      beforeEnter: (to, from, next) => {
-        if (!auth.isLoggedIn()) {
-          next();
-        } else {
-          next('/');
-        }
-      }
-    },
-    {
-      path: '/change-password',
-      name: 'change-password',
-      component: () => import('../pages/account/ForgotPassword')
-    },
-    {
-      path: '/find',
-      name: 'find',
-      component: () => import('../pages/meeting/FindMeeting')
-    },
-    {
-      path: '/find/:category',
-      name: 'find-category-meetings',
-      component: () => import('../pages/meeting/FindMeeting'),
-      props: true
+      path: '/user',
+      component: () => import('../components/account/AccountView'),
+      children: [
+        {
+          path: '/user/account',
+          name: 'account',
+          component: () => import('../pages/account/ProfilePage')
+        },
+        {
+          path: '/user/register',
+          name: 'register',
+          component: () => import('../pages/account/Register'),
+          beforeEnter: (to, from, next) => {
+            if (!auth.isLoggedIn()) {
+              next();
+            } else {
+              next('/');
+            }
+          }
+        },
+        {
+          path: '/user/change-password',
+          name: 'change-password',
+          component: () => import('../pages/account/ForgotPassword')
+        },
+      ]
     },
     {
       path: '*',
@@ -111,6 +106,17 @@ const router = new Router({
               next('/not-authorized');
             }
           }
+        },
+        {
+          path: '/meeting/search?location=:location',
+          name: 'find',
+          component: () => import('../pages/meeting/FindMeeting')
+        },
+        {
+          path: '/meeting/search?category=:category',
+          name: 'find-category-meetings',
+          component: () => import('../pages/meeting/FindMeeting'),
+          props: true
         }
       ]
     }
