@@ -113,11 +113,17 @@ module.exports = {
           if (err) {
             return next(err);
           } else {
-            user.password = req.body.password;
-            user.save((err, user) => {
-              if (err) return res.status(422).json({ err });
-              else return res.status(200).json(user);
-            });
+            if (user.password === req.body.password) {
+              user.save((err, user) => {
+                if (err) return res.status(422).json({ err });
+                else return res.status(200).json(user);
+              });
+            } else {
+                user.save((err, user) => {
+                if (err) return res.status(422).json({ err });
+                else return res.status(200).json(user);
+              });
+            }
           }
         });
       } catch (error) {

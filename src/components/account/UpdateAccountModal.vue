@@ -8,7 +8,7 @@
         title="Update account"
         ok-variant="outline-success"
         ok-title="Save account"
-        @ok="emitUser && validated"
+        @ok="emitUser"
         cancel-variant="outline-danger"
       >
         <b class="my-2">Please fill in the form to update your account</b>
@@ -31,7 +31,6 @@
             <b-form-input
               v-model="user.username"
               id="username-input"
-              required
               :state="state"
               trim
             ></b-form-input>
@@ -41,13 +40,11 @@
             label="Avatar"
             label-for="name-input"
             :state="avatarState"
-                        :invalid-feedback="invalidAvatar()"
-
+            :invalid-feedback="invalidAvatar()"
           >
             <b-form-input
               v-model="user.avatar"
               id="avatar-input"
-              required
               :state="avatarState"
               trim
             ></b-form-input>
@@ -57,8 +54,7 @@
             label="Email"
             label-for="email-input"
             :state="emailState"
-                        :invalid-feedback="invalidEmail()"
-
+            :invalid-feedback="invalidEmail()"
           >
             <b-form-input
               v-model="user.email"
