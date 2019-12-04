@@ -3,17 +3,20 @@ import { applyFilters } from '../../../src/services/filter';
 import axios from 'axios';
 import axiosInstance  from './axiosInstance'
 
+const instance = axios.create({baseURL: 'http://localhost:5000'})
+
+
 export default {
   /** MEETINGS **/
   async fetchMeetings({ state, commit }, options = {}) {
     const url = applyFilters('/api/meetings', options.filter);
-    const res = await axios.get(url);
+    const res = await instance.get(url);
     commit('setItems', { resource: 'meetings', items: res.data });
     return state.items;
   },
 
   async fetchMeeting({ state, commit }, id) {
-    const res = await axios.get(`/api/meetings/${id}`);
+    const res = await instance.get(`/api/meetings/${id}`);
     const meeting = res.data;
     commit('setItem', { resource: 'meetings', item: meeting });
     return state.item;

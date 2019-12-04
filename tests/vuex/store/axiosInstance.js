@@ -2,7 +2,8 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken'
 
 const axiosInstance = axios.create({
-  timeout: 3000
+  baseURL: 'http://localhost:5000',
+  timeout: 7500
 });
 
 axiosInstance.interceptors.request.use(
