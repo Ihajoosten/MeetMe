@@ -29,7 +29,7 @@ export default {
   deleteThread(state, index) {
     Vue.set(state.items.splice(index, 1));
   },
-  deletePost(state, { threadIndex, postIndex }) {
+  deletePost(state, threadIndex, postIndex) {
     Vue.set(state.items[threadIndex].posts.splice(postIndex, 1));
   },
 

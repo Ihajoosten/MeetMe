@@ -101,37 +101,68 @@ describe('Testing Thread mutations', () => {
   it('IsAllDataLoaded', () => {
     const state = {
       isAllDataLoaded: false
-    }
+    };
 
     const isAllDataLoaded = false;
 
-    mutations.setAllDataLoaded({state, isAllDataLoaded})
+    mutations.setAllDataLoaded({ state, isAllDataLoaded });
     expect(typeof state.isAllDataLoaded).to.eq('boolean');
-    expect(state.isAllDataLoaded).to.not.equal(true)
+    expect(state.isAllDataLoaded).to.not.equal(true);
 
-    mutations.setAllDataLoaded({state, isAllDataLoaded})
+    mutations.setAllDataLoaded({ state, isAllDataLoaded });
     expect(typeof state.isAllDataLoaded).to.eq('boolean');
-    expect(state.isAllDataLoaded).to.equal(isAllDataLoaded)
+    expect(state.isAllDataLoaded).to.equal(isAllDataLoaded);
   });
 
   it('DeleteThread', () => {
     const state = {
       items: []
-    }
+    };
 
-    const thread1 = {id: 1};
-    const thread2 = {id: 2};
+    const thread1 = { id: 1 };
+    const thread2 = { id: 2 };
 
     state.items.push(thread1);
     state.items.push(thread2);
 
-    const index = state.items.findIndex(item => item.id === thread1.id)
+    const index = state.items.findIndex(item => item.id === thread1.id);
 
     mutations.deleteThread(state, index);
-    expect(state.items[0]).to.contain(thread2)
+    expect(state.items[0]).to.contain(thread2);
     mutations.deleteThread(state, index);
-    expect(state.items[0]).to.eq(undefined)
-    expect(state.items[1]).to.eq(undefined)
+    expect(state.items[0]).to.eq(undefined);
+    expect(state.items[1]).to.eq(undefined);
+  });
+
+  it('DeletePost', () => {
+    const state = {
+      items: [
+        {
+          posts: []
+        }
+      ]
+    };
+
+    const post1 = { id: 1 };
+    const post2 = { id: 2 };
+
+    const thread = state.items[0];
+
+    thread.posts.push(post1);
+    thread.posts.push(post2)
+
+
+    // const tIndex = state.items.findIndex(item => item.id === 0);
+    // const pIndex = state.items[tIndex].posts.findIndex(item => item.id === post1.id);
+
+    mutations.deletePost(state, 0, 0);
+    expect(state.items).to.contain(thread);
+    expect(state.items[2]).to.eq(undefined);
+    expect(state.items[0].posts).to.contain(post2)
+
+    mutations.deleteThread(state, 0);
+    expect(state.items[0]).to.eq(undefined);
+    expect(state.items[1]).to.eq(undefined);
   });
 });
 
