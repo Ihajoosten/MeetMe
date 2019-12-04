@@ -4,6 +4,7 @@ import axios from 'axios';
 import axiosInstance  from './axiosInstance'
 
 export default {
+  /** MEETINGS **/
   async fetchMeetings({ state, commit }, options = {}) {
     const url = applyFilters('/api/meetings', options.filter);
     const res = await axios.get(url);
@@ -32,5 +33,16 @@ export default {
     const res = await axiosInstance.delete(`/api/meetings/${meetingId}`);
     const id = res.data;
     return id;
-  }
+  },
+  async updateMeeting({ commit }, meeting) {
+    const res = await axiosInstance.patch(
+      `/api/meetings/${meeting._id}`,
+      meeting
+    );
+    const updatedMeeting = res.data;
+    commit('mergeMeetings', updatedMeeting);
+    return updatedMeeting;
+  },
+
+  /** THREADS **/
 };
