@@ -120,7 +120,7 @@ describe('Meeting actions', () => {
 });
 
 describe('Thread actions', () => {
-  it('fetchThreads', async () => {
+  it('FetchThreads', async () => {
     const commit = jest.fn();
     const meeting = {
       location: 'Deurne, NL',
@@ -163,17 +163,44 @@ describe('Thread actions', () => {
     expect(deleted);
   });
 
-  // it('fetchThread', async () => {
-  //   const commit = jest.fn();
-  //   const state = {
-  //     item: {}
-  //   };
+  it('PostThread', async () => {
+    const commit = jest.fn();
+    const thread = {
+      title: 'test title'
+    };
 
-  //   const res = await actions.fetchMeeting(
-  //     { state, commit },
-  //     '5de51758995e0d8d24750a4f'
-  //   );
-  //   expect(res).toEqual(state.item);
-  //   expect(commit).toHaveBeenCalled();
-  // });
+    const meeting = {
+      location: 'Deurne, NL',
+      title: 'test title',
+      startDate: new Date(),
+      timeTo: '18:00',
+      timeFrom: '19:45',
+      category: '5dda8f7db557a05df8b074d3',
+      image: 'testimage.jpg',
+      description: 'test description'
+    };
+
+    const state = {
+      items: []
+    };
+
+    const res = await actions.createMeeting(
+      '5de50756031782216877c323',
+      meeting
+    );
+    expect(res);
+
+    const post = await actions.postThread(
+      { commit, state },
+      { title: thread.title, meeting: res._id }
+    );
+    expect(post);
+    expect(commit).toHaveBeenCalledWith('addItemToArray', {
+      item: post,
+      index: 0,
+      resource: 'threads'
+    });
+    const deleted = await actions.deleteMeeting({}, res._id);
+    expect(deleted);
+  });
 });

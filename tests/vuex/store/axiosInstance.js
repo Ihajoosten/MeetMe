@@ -10,7 +10,9 @@ axiosInstance.interceptors.request.use(
   function(config) {
     const user = {
         _id: '5de50756031782216877c323',
-        username: 'LuccieBoy'
+        username: 'LuccieBoy',
+        name: 'Luc Joosten',
+        avatar: 'testAvatar.png'
     }
     const token = jwt.sign({ user }, 'token');
 
