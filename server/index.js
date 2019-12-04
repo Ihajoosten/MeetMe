@@ -5,7 +5,7 @@ const config = require('./config'); // config variables
 const logger = config.logger;
 const morgan = require('morgan');
 const cors = require('cors');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 80;
 const path = require('path');
 
 const commentRoutes = require('./routes/comments');
