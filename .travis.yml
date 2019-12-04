@@ -3,6 +3,6 @@ node_js:
   - 10
 
 before_script: 
-  - npm run start
+  - npm run dev
   - npm run test
   
