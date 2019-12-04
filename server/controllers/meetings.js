@@ -38,7 +38,6 @@ module.exports = {
           path: 'threads',
           populate: { path: 'posts' }
         })
-        .limit(5)
         .sort({ createdAt: -1 })
         .exec((errors, meetings) => {
           if (errors) return res.status(422).send({ errors });

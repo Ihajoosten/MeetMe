@@ -1,10 +1,9 @@
 // actions.js
 import { applyFilters } from '../../../src/services/filter';
 import axios from 'axios';
-import axiosInstance  from './axiosInstance'
+import axiosInstance from './axiosInstance';
 
-const instance = axios.create({baseURL: 'http://localhost:5000'})
-
+const instance = axios.create({ baseURL: 'http://localhost:5000' });
 
 export default {
   /** MEETINGS **/
@@ -22,8 +21,8 @@ export default {
     return state.item;
   },
 
-  async createMeeting({rootState}, meetingToCreate) {
-    meetingToCreate.author = rootState
+  async createMeeting({ rootState }, meetingToCreate) {
+    meetingToCreate.author = rootState;
     meetingToCreate.processedLocation = meetingToCreate.location
       .toLowerCase()
       .replace(/[\s,]+/g, '')
@@ -48,4 +47,23 @@ export default {
   },
 
   /** THREADS **/
+  async fetchThreads({ state, commit }, meetingId) {
+    const url = applyFilters(`/api/threads?meetingId=${meetingId}`);
+    const res = await instance.get(url);
+    const { threads, isAllDataLoaded } = res.data;
+    commit('setAllDataLoaded', isAllDataLoaded);
+    commit('mergeThreads', threads);
+    return state.items;
+  },
+  async postThread({ commit, state }, { title, meetingId }) {
+    const thread = {};
+    thread.title = title;
+    thread.meeting = meetingId;
+
+    const res = await axiosInstance.post('/api/threads', thread);
+    const created = res.data;
+    const index = state.items.length;
+    commit('addItemToArray', { item: created, index, resource: 'threads' });
+    return created;
+  }
 };
