@@ -230,9 +230,6 @@ export default {
     fetchMeeting(id) {
       this.$store.dispatch('meetings/fetchMeeting', id);
     },
-    updateMeeting(meeting) {
-      this.$store.dispatch('meetings/updateMeeting', meeting);
-    },
     fetchCategories() {
       this.$store.dispatch('categories/fetchCategories');
     },
@@ -254,7 +251,7 @@ export default {
       });
     },
     updateMeetingHandler() {
-      this.updateMeeting(this.meeting)
+      this.$store.dispatch('meetings/updateMeeting', this.meeting)
         .then(() => {
           this.$router.push({ name: 'account' });
           this.$toast.success('Succesfully updated the meeting!', {

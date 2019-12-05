@@ -7,7 +7,7 @@
         <div v-if="isMeetingActive">
           <h3 class="my-4">
             {{ meeting.title }}
-            <span v-if="meeting.status === true" class="badge badge-success"
+            <span class="badge badge-success"
               >Active</span
             >
           </h3>
@@ -170,7 +170,7 @@ export default {
       });
     },
     isMeetingActive() {
-      return new Date() < new Date(this.meeting.startDate);
+      return new Date(this.meeting.startDate) >= new Date() ? true : false;
     }
   },
   created() {
