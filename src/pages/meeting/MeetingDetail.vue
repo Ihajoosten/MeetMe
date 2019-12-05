@@ -1,6 +1,6 @@
 <template>
   <!-- Page Content -->
-  <div v-if="isDataLoaded" class="container">
+  <div class="container mb-5">
     <!-- Portfolio Item Heading -->
     <div class="row ml-1">
       <div class="col-md-4">
@@ -105,9 +105,6 @@
       </div>
     </div>
   </div>
-  <div id="spinner" v-else>
-    <Spinner />
-  </div>
 
   <!-- /.container -->
 </template>
@@ -116,14 +113,12 @@
 import { isLoggedIn } from '../../services/authService';
 import ThreadCreateModal from '../../components/threads/ThreadCreateModal';
 import ThreadList from '../../components/threads/ThreadList';
-import Spinner from '../../components/shared/Spinner';
 
 export default {
   name: 'meeting-detail',
   components: {
     ThreadCreateModal,
-    ThreadList,
-    Spinner
+    ThreadList
   },
   data() {
     return {
@@ -173,23 +168,10 @@ export default {
       return new Date() < new Date(this.meeting.startDate);
     }
   },
-  created() {
+  beforeMount() {
     const id = this.$route.params.id;
-    const filter = {
-      pageNum: this.threadPageNum,
-      pageSize: this.threadPageSize
-    };
-    Promise.all([
-      this.$store.dispatch('meetings/fetchMeeting', id),
-      this.$store
-        .dispatch('threads/fetchThreads', {
-          meetingId: id || this.meeting._id,
-          filter
-        })
-        .then(() => {
-          this.threadPageNum++;
-        })
-    ]).then(() => (this.isDataLoaded = true));
+    this.fetchMeeting(id);
+    this.fetchThreadsHandler({id});
 
     this.$socket.emit('meeting/subscribe', id);
     this.$socket.on('meeting/postPublished', this.addPostHandler);

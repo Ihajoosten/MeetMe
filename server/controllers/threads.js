@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const Thread = require('../models/threads');
-const Comment = require('../models/comments');
 
 module.exports = {
   postThread: async (req, res) => {

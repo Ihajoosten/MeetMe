@@ -111,11 +111,11 @@
 
     <div v-if="activeTab === 'threads'">
       <div v-if="threads && threads.length > 0" class="row mt-5">
-        <div v-for="thread in threads" v-bind:key="thread._id" class="col-md-4">
+        <div v-for="thread in threads" v-bind:key="thread._id" class="col-md-5">
           <div class="card" style="width: auto; height: 10rem">
             <div class="card-body">
-              <h5 class="card-title">{{ thread.title }}</h5>
-              <div>
+              <b class="card-title">{{ thread.title }}</b>
+              <div class="mt-3">
                 Posted <b>{{ thread.createdAt | fromNow }}</b>
               </div>
             </div>
