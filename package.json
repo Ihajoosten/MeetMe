@@ -11,7 +11,7 @@
     "heroku-postbuild": "npm run build",
     "testJest": "jest tests/vuex/*",
     "testUnit": "vue-cli-service test:unit",
-    "test": "npm run testUnit"
+    "test": "npm run testUnit && npm run testJest"
   },
   "dependencies": {
     "axios": "^0.19.0",
