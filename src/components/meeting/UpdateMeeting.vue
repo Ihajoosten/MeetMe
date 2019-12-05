@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container py-5">
     <b-form @reset="onReset" v-if="show">
       <b-form-group
         id="input-group-1"
@@ -70,32 +70,56 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Start time:" label-for="input-2">
+      <b-form-group
+        id="input-group-2"
+        label="Start time:"
+        label-for="input-2"
+        :invalid-feedback="invalidTimeFrom()"
+        :state="timeFromState"
+      >
         <b-form-input
           id="input-2"
           v-model="meeting.timeFrom"
           type="time"
           required
           placeholder="Enter start time"
+          :state="timeFromState"
+          trim
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="End time:" label-for="input-2">
+      <b-form-group
+        id="input-group-2"
+        label="End time:"
+        label-for="input-2"
+        :invalid-feedback="invalidTimeTo()"
+        :state="timeToState"
+      >
         <b-form-input
           id="input-2"
           v-model="meeting.timeTo"
           type="time"
           required
           placeholder="Enter end time"
+          :state="timeToState"
+          trim
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Description:" label-for="input-2">
+      <b-form-group
+        id="input-group-2"
+        label="Description:"
+        label-for="input-2"
+        :invalid-feedback="invalidDescription()"
+        :state="descriptionState"
+      >
         <b-form-input
           id="input-2"
           v-model="meeting.description"
           required
           placeholder="Enter description"
+          :state="descriptionState"
+          trim
         ></b-form-input>
       </b-form-group>
 
@@ -116,6 +140,12 @@
         v-on:click.prevent="updateMeetingHandler"
         variant="outline-success"
         >Update</b-button
+      >
+      <b-button
+        class="ml-2"
+        v-on:click.prevent="goBack()"
+        variant="outline-secondary"
+        >Cancel</b-button
       >
     </b-form>
   </div>
@@ -146,13 +176,22 @@ export default {
       return this.meeting.image.length > 0 ? true : false;
     },
     startDateState() {
-      return this.meeting.startDate.length > 0 ? true: false;
+      return this.meeting.startDate.length > 0 ? true : false;
     },
-    passwordState() {
-      return this.user.password.length > 0 ? true : false;
+    timeToState() {
+      return this.meeting.timeTo.length > 0 ? true : false;
+    },
+    timeFromState() {
+      return this.meeting.timeFrom.length > 0 ? true : false;
+    },
+    descriptionState() {
+      return this.meeting.description.length > 0 ? true : false;
     }
   },
   methods: {
+    goBack() {
+      this.$router.push({ name: 'account' });
+    },
     invalidLocation() {
       if (this.meeting.location.length < 1) {
         return 'Location is required';
@@ -171,6 +210,21 @@ export default {
     invalidDate() {
       if (!this.meeting.startDate.length) {
         return 'Start date is required';
+      }
+    },
+    invalidTimeFrom() {
+      if (!this.meeting.timeFrom.length) {
+        return 'Start time is required';
+      }
+    },
+    invalidTimeTo() {
+      if (!this.meeting.timeTo.length) {
+        return 'End time is required';
+      }
+    },
+    invalidDescription() {
+      if (!this.meeting.description.length) {
+        return 'Description is required';
       }
     },
     fetchMeeting(id) {
