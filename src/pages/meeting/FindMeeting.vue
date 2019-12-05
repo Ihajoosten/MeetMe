@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="isDataLoaded" class="container">
     <div class="lookup-prebody">
       <div class="meeting-lookup-wrap mb-2">
         <div class="meeting-lookup row bg-light shadow p-3 mb-5 rounded">
@@ -47,11 +47,15 @@
       </div>
     </div>
   </div>
+  <div v-else>
+    <Spinner />
+  </div>
 </template>
 
 <script>
 import MeetingItem from '../../components/meeting/MeetingItem';
 import pageLoader from '../../mixins/pageloader';
+import Spinner from '../../components/shared/Spinner'
 
 export default {
   props: {
@@ -64,11 +68,13 @@ export default {
   data() {
     return {
       searchedLocation: this.$store.getters['meta/location'],
-      filter: {}
+      filter: {},
+      isDataLoaded: false
     };
   },
   components: {
-    MeetingItem
+    MeetingItem,
+    Spinner
   },
   computed: {
     meetings() {
@@ -86,7 +92,7 @@ export default {
     },
     fetchMeetings() {
       if (this.searchedLocation) {
-        this.changeQueryString(`?location=${this.searchedLocation}`)
+        this.changeQueryString(`?location=${this.searchedLocation}`);
         this.filter['location'] = this.searchedLocation
           .toLowerCase()
           .replace(/[\s,]+/g, '')
@@ -101,6 +107,7 @@ export default {
       this.$store
         .dispatch('meetings/fetchMeetings', { filter: this.filter })
         .then(() => {
+          this.isDataLoaded = true;
           this.pageLoader_resolveData();
           this.$toast.success('Data is loaded!', {
             duration: 5000,
